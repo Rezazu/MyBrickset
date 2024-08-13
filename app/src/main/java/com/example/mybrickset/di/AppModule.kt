@@ -1,9 +1,11 @@
 package com.example.mybrickset.di
 
-import com.example.mybrickset.const.BASE_URL
+import com.example.mybrickset.Const.BASE_URL
 import com.example.mybrickset.data.remote.BricksetApi
 import com.example.mybrickset.data.repository.BricksetRepositoryImplementation
 import com.example.mybrickset.domain.BricksetRepository
+import com.example.mybrickset.domain.usecase.BricksetUseCases
+import com.example.mybrickset.domain.usecase.GetNewReleasedSets
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,5 +52,15 @@ object AppModule {
         api: BricksetApi
     ): BricksetRepository {
         return BricksetRepositoryImplementation(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBricksetUseCase(
+        bricksetRepository: BricksetRepository
+    ): BricksetUseCases {
+        return BricksetUseCases(
+            getNewReleasedSets = GetNewReleasedSets(bricksetRepository)
+        )
     }
 }

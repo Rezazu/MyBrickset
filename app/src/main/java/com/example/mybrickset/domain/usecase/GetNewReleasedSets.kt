@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class GetSets(
+class GetNewReleasedSets(
     private val bricksetRepository: BricksetRepository
 ) {
-    operator fun invoke(
-        theme: String
-    ): Flow<Result<List<Set>>> = flow{
+    operator fun invoke(): Flow<Result<List<Set>>> = flow{
         try {
             emit(Result.Loading)
-            val sets = bricksetRepository.getSets(theme).sets
+            val sets = bricksetRepository.getNewReleasedSets().sets.filterNot {
+                it.name.contains("{?}", ignoreCase = true)
+            }
             emit(Result.Success(sets))
         } catch (e: HttpException) {
             emit(Result.Error(e.localizedMessage ?: "An unexpected error, but a welcome one"))
