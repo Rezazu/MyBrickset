@@ -27,10 +27,11 @@ private val LightColorScheme = lightColorScheme(
     primary = YellowMain,
     secondary = Blue,
     tertiary = LightYellow,
+    primaryContainer = YellowMain,
     secondaryContainer = YellowMain,
     onSecondaryContainer = Color.White,
     background = Color.White,
-    onBackground = WhiteBackground,
+    onBackground = Color.Black,
     onSurface = DarkGray,
     onSurfaceVariant = DarkGray,
 

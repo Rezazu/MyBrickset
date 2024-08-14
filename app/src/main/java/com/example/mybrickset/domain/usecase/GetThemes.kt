@@ -1,22 +1,25 @@
 package com.example.mybrickset.domain.usecase
 
 import com.example.mybrickset.data.Result
-import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.domain.BricksetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class GetNewReleasedSets(
-    private val bricksetRepository: BricksetRepository
+class GetThemes (
+   private val bricksetRepository: BricksetRepository
 ) {
-    operator fun invoke(): Flow<Result<List<Set>>> = flow{
+    operator fun invoke(): Flow<Result<List<Theme>>> = flow {
         try {
             emit(Result.Loading)
-            val sets = bricksetRepository.getNewReleasedSets().sets
+            val sets = bricksetRepository.getThemes().themes
                 .filterNot {
-                    it.name.contains("{?}", ignoreCase = true)
+                    it.theme.contains("{unknown}", ignoreCase = true)
+                }
+                .filter {
+                    it.yearTo.toString().contains("2024")
                 }
             emit(Result.Success(sets))
         } catch (e: HttpException) {

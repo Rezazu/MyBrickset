@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,23 +57,29 @@ import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.UK
 import com.example.mybrickset.data.remote.dto.getsets.US
+import com.example.mybrickset.data.remote.dto.getthemes.Theme
+import com.example.mybrickset.presentation.component.Banner
 import com.example.mybrickset.presentation.component.LegoItem
+import com.example.mybrickset.presentation.component.SectionText
+import com.example.mybrickset.presentation.component.ThemeItem
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
 ) {
-   val state = viewModel.state.value
-   HomeContent(
-       sets = state.sets
-   )
+    val stateSets = viewModel.stateSets.value
+    val stateThemes = viewModel.stateThemes.value
+    HomeContent(
+       sets = stateSets.sets,
+       themes = stateThemes.themes
+    )
 }
 
 @Composable
 fun HomeContent(
     sets: List<Set>,
+    themes: List<Theme>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -81,10 +88,26 @@ fun HomeContent(
             .verticalScroll(rememberScrollState())
     ) {
         Banner(banner = R.drawable.dnd_banner)
+        SectionText(title = "Lego Themes")
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 16.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+        ) {
+            items(themes.size) {
+                themes[it].let { theme ->
+                    ThemeItem(
+                        theme = theme
+                    )
+                }
+            }
+        }
+        SectionText(title = "New 2024 Released sets")
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 8.dp)
         ) {
             items(sets.size) {
                 sets[it].let { set ->
@@ -99,15 +122,3 @@ fun HomeContent(
     }
 }
 
-@Composable
-fun Banner(
-    banner: Int,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        painter = painterResource(id = banner),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
-}

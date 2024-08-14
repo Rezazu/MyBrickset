@@ -6,6 +6,7 @@ import com.example.mybrickset.data.repository.BricksetRepositoryImplementation
 import com.example.mybrickset.domain.BricksetRepository
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.GetNewReleasedSets
+import com.example.mybrickset.domain.usecase.GetThemes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,7 +61,8 @@ object AppModule {
         bricksetRepository: BricksetRepository
     ): BricksetUseCases {
         return BricksetUseCases(
-            getNewReleasedSets = GetNewReleasedSets(bricksetRepository)
+            getNewReleasedSets = GetNewReleasedSets(bricksetRepository),
+            getThemes = GetThemes(bricksetRepository)
         )
     }
 }

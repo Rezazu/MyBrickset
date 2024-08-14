@@ -2,6 +2,7 @@ package com.example.mybrickset.data.remote
 
 import com.example.mybrickset.Const.API_KEY
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
+import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,4 +14,9 @@ interface BricksetApi {
         @Query("userHash") userHash: String?,
         @Query("params") params:String,
     ): SetsResponse
+
+    @GET("getThemes")
+    suspend fun getTheme(
+        @Query("apiKey") apiKey: String = API_KEY,
+    ): ThemesResponse
 }

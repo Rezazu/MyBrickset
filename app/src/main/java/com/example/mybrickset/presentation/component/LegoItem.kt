@@ -99,7 +99,6 @@ fun LegoItem(
             ) {
                 Text(
                     text = set.name,
-                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -112,7 +111,6 @@ fun LegoItem(
                 ) {
                     Text(
                         text = set.number,
-                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier

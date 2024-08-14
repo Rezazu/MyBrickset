@@ -3,6 +3,7 @@ package com.example.mybrickset.data.repository
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.BricksetApi
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
+import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.domain.BricksetRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Calendar
@@ -12,11 +13,14 @@ class BricksetRepositoryImplementation @Inject constructor(
     private val bricksetApi: BricksetApi
 ): BricksetRepository {
 
+    val calendar = Calendar.getInstance()
+    val currentYear = calendar.get(Calendar.YEAR)
+
     override suspend fun getNewReleasedSets(): SetsResponse {
-        val calendar = Calendar.getInstance()
-        val currentYear = calendar.get(Calendar.YEAR)
-        return bricksetApi.getSets(userHash ="", params = "{'year':$currentYear,'pageSize':30}")
+        return bricksetApi.getSets(userHash ="", params = "{'year':'$currentYear','orderBy':'Random','pageSize':30}")
     }
-//    {'theme':'star wars','year':'2019,2024'}
-//    {'year':'2024','pageSize':4}
+
+    override suspend fun getThemes(): ThemesResponse {
+        return bricksetApi.getTheme()
+    }
 }
