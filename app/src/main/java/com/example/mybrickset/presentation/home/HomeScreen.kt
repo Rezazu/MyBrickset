@@ -61,6 +61,8 @@ import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.component.Banner
 import com.example.mybrickset.presentation.component.LegoItem
 import com.example.mybrickset.presentation.component.SectionText
+import com.example.mybrickset.presentation.component.SetLazyRow
+import com.example.mybrickset.presentation.component.StoreBanner
 import com.example.mybrickset.presentation.component.ThemeItem
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
@@ -111,27 +113,15 @@ fun HomeContent(
         SectionText(title = "Celebrate Star Wars Day!")
         Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(top = 8.dp))
         SetLazyRow(setsList = themeSets, modifier = Modifier.padding(top = 8.dp))
+        StoreBanner(
+            location = "LEGO® Summarecon Mall Bekasi – 1st Floor",
+            image = R.drawable.banner_store,
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+        )
         Banner(banner = R.drawable.brickset_banner)
     }
 }
 
-@Composable
-fun SetLazyRow(
-    setsList: List<Set>,
-    modifier: Modifier = Modifier
-) {
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-    ) {
-        items(setsList.size) {
-            setsList[it].let { set ->
-                LegoItem(
-                    set = set
-                )
-            }
-        }
-    }
-}
+
 

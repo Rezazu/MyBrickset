@@ -4,4 +4,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_collection">Collection</string>
     <string name="menu_profile">Profile</string>
+    <string name="banner_open_store">Telah Dibuka!</string>
+    <string name="banner_all_store">Lihat Semua LEGO® Stores</string>
 </resources>
