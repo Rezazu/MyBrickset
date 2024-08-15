@@ -15,9 +15,21 @@ import com.example.mybrickset.data.remote.dto.getsets.US
 import com.example.mybrickset.presentation.component.LegoItem
 
 object Dummy {
-    val themes = listOf(
+    val DummyTheme = listOf(
         "Star Wars",
-        "Ninjago"
+        "Ninjago",
+        "City",
+        "Classic",
+        "Creator",
+        "Disney",
+        "Duplo",
+        "Friends",
+        "Harry Potter",
+        "Ideas",
+        "Marvel",
+        "Minecraft",
+        "Speed",
+        "Technic"
     )
     val DummySet =
             Set(

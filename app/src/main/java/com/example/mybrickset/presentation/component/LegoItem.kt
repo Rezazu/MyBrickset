@@ -47,13 +47,13 @@ fun LegoItem(
             containerColor = MaterialTheme.colorScheme.background
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
+            defaultElevation = 1.dp
         ),
         modifier = modifier
             .height(220.dp)
             .width(140.dp),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, Color.LightGray)
+        border = BorderStroke(1.dp, LightGray)
     ) {
         Column(
             modifier = Modifier
