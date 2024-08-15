@@ -20,14 +20,18 @@ class HomeViewModel @Inject constructor(
     private val bricksetRepository: BricksetRepository
 ): ViewModel() {
 
-    private val _stateSets = mutableStateOf(SetsState())
-    val stateSets: State<SetsState> = _stateSets
+    private val _newStateSets = mutableStateOf(NewSetsState())
+    val newStateSets: State<NewSetsState> = _newStateSets
+
+    private val _theme1StateSets = mutableStateOf(Theme1SetsState())
+    val theme1StateSets: State<Theme1SetsState> = _theme1StateSets
 
     private val _stateThemes = mutableStateOf(ThemeState())
     val stateThemes: State<ThemeState> = _stateThemes
 
     init {
         getNewReleasedSet()
+        getSetsByTheme()
         getThemes()
     }
 
@@ -35,14 +39,31 @@ class HomeViewModel @Inject constructor(
         bricksetUseCases.getNewReleasedSets().onEach { result ->
             when(result) {
                 is Result.Success -> {
-                    _stateSets.value = SetsState(sets = result.data)
+                    _newStateSets.value = NewSetsState(sets = result.data)
                 }
                 is Result.Error -> {
-                    _stateSets.value = SetsState(error = result.error ?:
+                    _newStateSets.value = NewSetsState(error = result.error ?:
                     "An unexpected error, but a welcome one")
                 }
                 is Result.Loading -> {
-                    _stateSets.value = SetsState(isLoading = true)
+                    _newStateSets.value = NewSetsState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getSetsByTheme(){
+        bricksetUseCases.getSetsByTheme("Star Wars").onEach { result ->
+            when(result) {
+                is Result.Success -> {
+                    _theme1StateSets.value = Theme1SetsState(sets = result.data)
+                }
+                is Result.Error -> {
+                    _theme1StateSets.value = Theme1SetsState(error = result.error ?:
+                    "An unexpected error, but a welcome one")
+                }
+                is Result.Loading -> {
+                    _theme1StateSets.value = Theme1SetsState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
@@ -66,7 +87,13 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-data class SetsState (
+data class NewSetsState (
+    val isLoading: Boolean = false,
+    val sets: List<Set> = emptyList(),
+    val error: String = ""
+)
+
+data class Theme1SetsState (
     val isLoading: Boolean = false,
     val sets: List<Set> = emptyList(),
     val error: String = ""

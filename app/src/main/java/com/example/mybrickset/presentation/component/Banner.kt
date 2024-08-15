@@ -16,9 +16,8 @@ fun Banner(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
     ) {
         Image(
             painter = painterResource(id = banner),

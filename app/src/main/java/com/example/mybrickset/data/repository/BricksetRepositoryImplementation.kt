@@ -23,4 +23,8 @@ class BricksetRepositoryImplementation @Inject constructor(
     override suspend fun getThemes(): ThemesResponse {
         return bricksetApi.getTheme()
     }
+
+    override suspend fun getSetsByTheme(theme: String): SetsResponse {
+        return bricksetApi.getSets(userHash ="", params = "{'theme':'$theme','year': '${currentYear-1},$currentYear','orderBy':'Random','pageSize':30}")
+    }
 }

@@ -68,17 +68,20 @@ import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val stateSets = viewModel.stateSets.value
+    val stateNewSets = viewModel.newStateSets.value
+    val stateThemeSets = viewModel.theme1StateSets.value
     val stateThemes = viewModel.stateThemes.value
     HomeContent(
-       sets = stateSets.sets,
-       themes = stateThemes.themes
+        newSets = stateNewSets.sets,
+        themeSets = stateThemeSets.sets,
+        themes = stateThemes.themes
     )
 }
 
 @Composable
 fun HomeContent(
-    sets: List<Set>,
+    newSets: List<Set>,
+    themeSets: List<Set>,
     themes: List<Theme>,
     modifier: Modifier = Modifier
 ) {
@@ -104,21 +107,31 @@ fun HomeContent(
             }
         }
         SectionText(title = "New 2024 Released sets")
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 8.dp)
-        ) {
-            items(sets.size) {
-                sets[it].let { set ->
-                    LegoItem(
-                        set = set
-                    )
-                }
+        SetLazyRow(setsList = newSets)
+        SectionText(title = "Celebrate Star Wars Day!")
+        Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(top = 8.dp))
+        SetLazyRow(setsList = themeSets, modifier = Modifier.padding(top = 8.dp))
+        Banner(banner = R.drawable.brickset_banner)
+    }
+}
+
+@Composable
+fun SetLazyRow(
+    setsList: List<Set>,
+    modifier: Modifier = Modifier
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+    ) {
+        items(setsList.size) {
+            setsList[it].let { set ->
+                LegoItem(
+                    set = set
+                )
             }
         }
-        Banner(banner = R.drawable.starwars_banner)
-        Banner(banner = R.drawable.brickset_banner)
     }
 }
 
