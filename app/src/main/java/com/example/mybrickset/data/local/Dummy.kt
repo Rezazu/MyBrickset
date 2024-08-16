@@ -1,5 +1,6 @@
 package com.example.mybrickset.data.local
 
+import com.example.mybrickset.R
 import com.example.mybrickset.data.remote.dto.getsets.AgeRange
 import com.example.mybrickset.data.remote.dto.getsets.Barcode
 import com.example.mybrickset.data.remote.dto.getsets.CA
@@ -12,6 +13,7 @@ import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.UK
 import com.example.mybrickset.data.remote.dto.getsets.US
+import com.example.mybrickset.domain.model.News
 import com.example.mybrickset.presentation.component.LegoItem
 
 object Dummy {
@@ -30,6 +32,28 @@ object Dummy {
         "Minecraft",
         "Speed",
         "Technic"
+    )
+    val DummyNews = listOf(
+        News(
+            "Lego Zelda is out",
+            R.drawable.news_banner_1
+        ),
+        News(
+            "Lego Zelda is out",
+            R.drawable.news_banner_2
+        ),
+        News(
+            "Lego Zelda is out",
+            R.drawable.news_banner_3
+        ),
+        News(
+            "Lego Zelda is out",
+            R.drawable.news_banner_4
+        ),
+        News(
+            "Lego Zelda is out",
+            R.drawable.news_banner_5
+        )
     )
     val DummySet =
             Set(

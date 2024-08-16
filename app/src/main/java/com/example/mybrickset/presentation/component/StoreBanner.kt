@@ -38,7 +38,7 @@ fun StoreBanner (
 ) {
     Box(
         modifier = modifier
-            .height(140.dp)
+            .height(160.dp)
             .fillMaxWidth()
             .background(CreamBackground)
     ) {

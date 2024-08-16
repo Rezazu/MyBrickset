@@ -1,6 +1,7 @@
 package com.example.mybrickset.presentation.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
+import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getsets.AgeRange
 import com.example.mybrickset.data.remote.dto.getsets.Barcode
 import com.example.mybrickset.data.remote.dto.getsets.CA
@@ -60,6 +64,7 @@ import com.example.mybrickset.data.remote.dto.getsets.US
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.component.Banner
 import com.example.mybrickset.presentation.component.LegoItem
+import com.example.mybrickset.presentation.component.NewsCard
 import com.example.mybrickset.presentation.component.SectionText
 import com.example.mybrickset.presentation.component.SetLazyRow
 import com.example.mybrickset.presentation.component.StoreBanner
@@ -80,6 +85,7 @@ fun HomeScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(
     newSets: List<Set>,
@@ -87,12 +93,20 @@ fun HomeContent(
     themes: List<Theme>,
     modifier: Modifier = Modifier
 ) {
+
+    val pagerState = rememberPagerState(pageCount = { 5 })
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Banner(banner = R.drawable.dnd_banner)
+        HorizontalPager(state = pagerState) { page ->
+            val listDummyNews = Dummy.DummyNews
+            NewsCard(
+                listDummyNews[page]
+            )
+        }
         SectionText(title = "Lego Themes")
 
         LazyRow(
@@ -116,9 +130,7 @@ fun HomeContent(
         StoreBanner(
             location = "LEGO® Summarecon Mall Bekasi – 1st Floor",
             image = R.drawable.banner_store,
-            modifier = Modifier
-                .padding(vertical = 16.dp)
-        )
+            modifier = Modifier)
         Banner(banner = R.drawable.brickset_banner)
     }
 }
