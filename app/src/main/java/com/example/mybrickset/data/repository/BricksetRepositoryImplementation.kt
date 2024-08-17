@@ -2,6 +2,7 @@ package com.example.mybrickset.data.repository
 
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.BricksetApi
+import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.domain.BricksetRepository
@@ -26,5 +27,9 @@ class BricksetRepositoryImplementation @Inject constructor(
 
     override suspend fun getSetsByTheme(theme: String): SetsResponse {
         return bricksetApi.getSets(userHash ="", params = "{'theme':'$theme','year': '${currentYear-1},$currentYear','orderBy':'Random','pageSize':30}")
+    }
+
+    override suspend fun searchSets(query: String): SetsResponse {
+        return bricksetApi.getSets(userHash = "", params = "{'query':'$query'}")
     }
 }

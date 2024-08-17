@@ -8,6 +8,7 @@ import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.GetNewReleasedSets
 import com.example.mybrickset.domain.usecase.GetSetsByTheme
 import com.example.mybrickset.domain.usecase.GetThemes
+import com.example.mybrickset.domain.usecase.SearchSets
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -65,6 +66,7 @@ object AppModule {
             getNewReleasedSets = GetNewReleasedSets(bricksetRepository),
             getSetsByTheme = GetSetsByTheme(bricksetRepository),
             getThemes = GetThemes(bricksetRepository),
+            searchSets = SearchSets(bricksetRepository)
         )
     }
 }

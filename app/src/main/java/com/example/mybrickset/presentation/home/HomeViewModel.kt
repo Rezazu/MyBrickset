@@ -10,8 +10,11 @@ import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.domain.BricksetRepository
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,9 +32,12 @@ class HomeViewModel @Inject constructor(
     private val _stateThemes = mutableStateOf(ThemeState())
     val stateThemes: State<ThemeState> = _stateThemes
 
+    private val _stateSearchSets = MutableStateFlow(SearchSetsState())
+    val stateSearchSets: StateFlow<SearchSetsState> get() = _stateSearchSets
+
     init {
-        getNewReleasedSet()
-        getSetsByTheme()
+//        getNewReleasedSet()
+//        getSetsByTheme()
         getThemes()
     }
 
@@ -85,6 +91,48 @@ class HomeViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    private val _query = MutableStateFlow("")
+    val query : StateFlow<String> get() = _query
+
+    fun onQueryChanged(query: String) {
+        _query.value = query
+//        if (_query.value.length > 3) {
+//            bricksetUseCases.searchSets(query).onEach { result ->
+//                when(result) {
+//                    is Result.Success -> {
+//                        _stateSearchSets.value = SearchSetsState(sets = result.data)
+//                    }
+//                    is Result.Error -> {
+//                        _stateSearchSets.value = SearchSetsState(
+//                            error = result.error ?: "An unexpected error, but a welcome one"
+//                        )
+//                    }
+//                    is Result.Loading -> {
+//                        _stateSearchSets.value = SearchSetsState(isLoading = true)
+//                    }
+//                }
+//            }.launchIn(viewModelScope)
+//        }
+    }
+
+    fun onSearch(query: String) {
+        bricksetUseCases.searchSets(query).onEach { result ->
+            when(result) {
+                is Result.Success -> {
+                    _stateSearchSets.value = SearchSetsState(sets = result.data)
+                }
+                is Result.Error -> {
+                    _stateSearchSets.value = SearchSetsState(
+                        error = result.error ?: "An unexpected error, but a welcome one"
+                    )
+                }
+                is Result.Loading -> {
+                    _stateSearchSets.value = SearchSetsState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 }
 
 data class NewSetsState (
@@ -102,5 +150,11 @@ data class Theme1SetsState (
 data class ThemeState (
     val isLoading: Boolean = false,
     val themes: List<Theme> = emptyList(),
+    val error: String = ""
+)
+
+data class SearchSetsState (
+    val isLoading: Boolean = false,
+    val sets: List<Set> = emptyList(),
     val error: String = ""
 )

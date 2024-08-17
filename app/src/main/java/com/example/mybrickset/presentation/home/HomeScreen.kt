@@ -30,6 +30,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,6 +67,7 @@ import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.component.Banner
 import com.example.mybrickset.presentation.component.LegoItem
 import com.example.mybrickset.presentation.component.NewsCard
+import com.example.mybrickset.presentation.component.SearchBar
 import com.example.mybrickset.presentation.component.SectionText
 import com.example.mybrickset.presentation.component.SetLazyRow
 import com.example.mybrickset.presentation.component.StoreBanner
@@ -78,11 +81,24 @@ fun HomeScreen(
     val stateNewSets = viewModel.newStateSets.value
     val stateThemeSets = viewModel.theme1StateSets.value
     val stateThemes = viewModel.stateThemes.value
-    HomeContent(
-        newSets = stateNewSets.sets,
-        themeSets = stateThemeSets.sets,
-        themes = stateThemes.themes
-    )
+
+    val stateSearchSets by viewModel.stateSearchSets.collectAsState()
+
+    val query by viewModel.query.collectAsState()
+
+    Column {
+        SearchBar(
+            query = query,
+            onSearch = viewModel::onSearch,
+            onQueryChange = viewModel::onQueryChanged,
+            result = stateSearchSets.sets
+        )
+        HomeContent(
+            newSets = stateNewSets.sets,
+            themeSets = stateThemeSets.sets,
+            themes = stateThemes.themes
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

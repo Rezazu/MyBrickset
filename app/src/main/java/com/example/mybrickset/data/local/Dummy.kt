@@ -35,23 +35,23 @@ object Dummy {
     )
     val DummyNews = listOf(
         News(
-            "Lego Zelda is out",
+            "For a long time now, lovers of LEGO® sets have wondered when Link, Princess Zelda and the world of Hyrule would appear in LEGO brick form.",
             R.drawable.news_banner_1
         ),
         News(
-            "Lego Zelda is out",
+            "Enter a zone of complete mindfulness with the impressive new LEGO® Technic™ Ferrari Daytona SP3",
             R.drawable.news_banner_2
         ),
         News(
-            "Lego Zelda is out",
+            "In April, we invited some critically charismatic D&D® players for an epic game night featuring the glorious LEGO® Ideas DUNGEONS & DRAGONS®: Red Dragon’s Tale set",
             R.drawable.news_banner_3
         ),
         News(
-            "Lego Zelda is out",
+            "Action-packed LEGO® Minecraft® set, with caves to explore, skeletons to battle and endless hands-on creative play.",
             R.drawable.news_banner_4
         ),
         News(
-            "Lego Zelda is out",
+            "One of the most iconic locations in Middle-earth™, the Dark Tower is brought to life in a detailed LEGO® model filled with secrets and surprises.",
             R.drawable.news_banner_5
         )
     )
