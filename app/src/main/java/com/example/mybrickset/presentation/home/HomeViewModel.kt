@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
 
     init {
 //        getNewReleasedSet()
-//        getSetsByTheme()
+        getSetsByTheme()
         getThemes()
     }
 

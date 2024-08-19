@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,36 +53,59 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.mybrickset.presentation.AppViewModel
 import com.example.mybrickset.presentation.NavigationItem
 import com.example.mybrickset.presentation.Screen
+import com.example.mybrickset.presentation.SearchWidgetState
 import com.example.mybrickset.presentation.collection.CollectionScreen
+import com.example.mybrickset.presentation.component.SearchBar
+import com.example.mybrickset.presentation.detail.DetailScreen
 import com.example.mybrickset.presentation.home.HomeScreen
 import com.example.mybrickset.presentation.profile.ProfileScreen
+import com.example.mybrickset.presentation.search.SearchScreen
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun BricksetApp(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    appViewModel: AppViewModel = hiltViewModel()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isSearch by remember {
-        mutableStateOf(false)
-    }
+
+    val searchWidgetState by appViewModel.searchWidgetState
+
+    val query by appViewModel.query.collectAsState()
+
 
     Scaffold (
         topBar = {
-            TopBar(navController = navController)
+            TopBar(
+                searchWidgetState = searchWidgetState,
+                query = query,
+                onSearch = appViewModel::onSearch,
+                onQueryChange = appViewModel::onQueryChanged,
+                onCloseClicked = {
+                    appViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
+                },
+                onSearchTriggered = {
+                    appViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
+                }
+            )
         },
         bottomBar = {
+            if (currentRoute != Screen.DetailScreen.route)
             BottomBar(navController = navController)
         },
         modifier = Modifier
@@ -92,7 +116,11 @@ fun BricksetApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) {
-                HomeScreen()
+                HomeScreen(
+                    navigateToDetail = {
+                        navController.navigate(Screen.DetailScreen.route)
+                    }
+                )
             }
             composable(Screen.CollectionScreen.route) {
                 CollectionScreen()
@@ -100,14 +128,47 @@ fun BricksetApp(
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen()
             }
+            composable(Screen.DetailScreen.route) {
+                DetailScreen()
+            }
+            composable(
+                Screen.SearchScreen.route,
+//                listOf(navArgument("query") { type = NavType.StringType})
+            ) {
+                val query = it.arguments?.getString("query") ?: "Lego"
+            }
+        }
+    }
+}
+
+@Composable
+fun TopBar(
+    searchWidgetState: SearchWidgetState,
+    query: String,
+    onSearch: (String) -> Unit,
+    onQueryChange: (String) -> Unit,
+    onCloseClicked: () -> Unit,
+    onSearchTriggered: () -> Unit
+) {
+    when(searchWidgetState) {
+        SearchWidgetState.CLOSED -> {
+            DefaultTopBar(
+                onSearchTriggered = { onSearchTriggered() })
+        }
+        SearchWidgetState.OPENED -> {
+            SearchBar(
+                query = query,
+                onSearch = onSearch,
+                onQueryChange = onQueryChange,
+                onCloseClicked = onCloseClicked)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(
-    navController: NavHostController,
+fun DefaultTopBar(
+    onSearchTriggered: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -129,7 +190,7 @@ fun TopBar(
         },
         actions = {
             IconButton(
-                onClick = { /* do something */ },
+                onClick = { onSearchTriggered() },
                 modifier = Modifier
                     .size(48.dp)
             ) {
@@ -151,45 +212,6 @@ fun TopBar(
                 )
             }
         },
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBar(
-    query: String,
-    onSearch: (String) -> Unit,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var active by rememberSaveable { mutableStateOf(false) }
-
-    androidx.compose.material3.SearchBar(
-        query = query,
-        onQueryChange = onQueryChange,
-        onSearch = {
-            onSearch(query)
-            active = false
-        },
-        active = active,
-        onActiveChange = { active = it },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        },
-        placeholder = {
-            Text(text = "Search News")
-        },
-        shape = MaterialTheme.shapes.small,
-        modifier = modifier
-            .wrapContentWidth()
-            .heightIn(min = 36.dp),
-        content = {
-
-        }
     )
 }
 
@@ -250,6 +272,6 @@ fun BottomBar(
 @Composable
 fun BricksetAppPreview() {
     MyBricksetTheme {
-        BricksetApp()
+
     }
 }

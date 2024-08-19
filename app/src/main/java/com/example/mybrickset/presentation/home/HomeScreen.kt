@@ -77,26 +77,17 @@ import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    navigateToDetail: () -> Unit
 ) {
     val stateNewSets = viewModel.newStateSets.value
     val stateThemeSets = viewModel.theme1StateSets.value
     val stateThemes = viewModel.stateThemes.value
-
-    val stateSearchSets by viewModel.stateSearchSets.collectAsState()
-
-    val query by viewModel.query.collectAsState()
-
     Column {
-        SearchBar(
-            query = query,
-            onSearch = viewModel::onSearch,
-            onQueryChange = viewModel::onQueryChanged,
-            result = stateSearchSets.sets
-        )
         HomeContent(
             newSets = stateNewSets.sets,
             themeSets = stateThemeSets.sets,
-            themes = stateThemes.themes
+            themes = stateThemes.themes,
+            navigateToDetail = navigateToDetail
         )
     }
 }
@@ -107,6 +98,7 @@ fun HomeContent(
     newSets: List<Set>,
     themeSets: List<Set>,
     themes: List<Theme>,
+    navigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -139,10 +131,10 @@ fun HomeContent(
             }
         }
         SectionText(title = "New 2024 Released sets")
-        SetLazyRow(setsList = newSets)
+        SetLazyRow(setsList = newSets, navigateToDetail)
         SectionText(title = "Celebrate Star Wars Day!")
         Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(top = 8.dp))
-        SetLazyRow(setsList = themeSets, modifier = Modifier.padding(top = 8.dp))
+        SetLazyRow(setsList = themeSets, navigateToDetail, modifier = Modifier.padding(top = 8.dp))
         StoreBanner(
             location = "LEGO® Summarecon Mall Bekasi – 1st Floor",
             image = R.drawable.banner_store,

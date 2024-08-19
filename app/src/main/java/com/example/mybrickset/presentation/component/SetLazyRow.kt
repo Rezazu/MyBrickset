@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -11,6 +12,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 @Composable
 fun SetLazyRow(
     setsList: List<Set>,
+    navigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -21,7 +23,11 @@ fun SetLazyRow(
         items(setsList.size) {
             setsList[it].let { set ->
                 LegoItem(
-                    set = set
+                    set = set,
+                    modifier = Modifier
+                        .clickable {
+                            navigateToDetail()
+                        }
                 )
             }
         }
