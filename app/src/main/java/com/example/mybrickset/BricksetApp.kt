@@ -86,18 +86,22 @@ fun BricksetApp(
 
     val searchWidgetState by appViewModel.searchWidgetState
 
-    val query by appViewModel.query.collectAsState()
+    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
+    val input by appViewModel.query.collectAsState()
 
 
     Scaffold (
         topBar = {
             TopBar(
+                navController = navController,
                 searchWidgetState = searchWidgetState,
-                query = query,
+                query = input,
                 onSearch = appViewModel::onSearch,
                 onQueryChange = appViewModel::onQueryChanged,
                 onCloseClicked = {
                     appViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
+                    navController.navigate(Screen.HomeScreen.route)
                 },
                 onSearchTriggered = {
                     appViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
@@ -105,8 +109,9 @@ fun BricksetApp(
             )
         },
         bottomBar = {
-            if (currentRoute != Screen.DetailScreen.route)
-            BottomBar(navController = navController)
+            if (bottomBarState.value == true) {
+                BottomBar(navController = navController)
+            }
         },
         modifier = Modifier
     ) { innerPadding ->
@@ -116,6 +121,7 @@ fun BricksetApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) {
+                bottomBarState.value = true
                 HomeScreen(
                     navigateToDetail = {
                         navController.navigate(Screen.DetailScreen.route)
@@ -123,19 +129,24 @@ fun BricksetApp(
                 )
             }
             composable(Screen.CollectionScreen.route) {
+                bottomBarState.value = true
                 CollectionScreen()
             }
             composable(Screen.ProfileScreen.route) {
+                bottomBarState.value = true
                 ProfileScreen()
             }
             composable(Screen.DetailScreen.route) {
+                bottomBarState.value = false
                 DetailScreen()
             }
             composable(
                 Screen.SearchScreen.route,
-//                listOf(navArgument("query") { type = NavType.StringType})
+                listOf(navArgument("query") { type = NavType.StringType})
             ) {
                 val query = it.arguments?.getString("query") ?: "Lego"
+                bottomBarState.value = false
+                SearchScreen(query)
             }
         }
     }
@@ -143,6 +154,7 @@ fun BricksetApp(
 
 @Composable
 fun TopBar(
+    navController: NavHostController,
     searchWidgetState: SearchWidgetState,
     query: String,
     onSearch: (String) -> Unit,
@@ -160,7 +172,11 @@ fun TopBar(
                 query = query,
                 onSearch = onSearch,
                 onQueryChange = onQueryChange,
-                onCloseClicked = onCloseClicked)
+                onCloseClicked = onCloseClicked,
+                navigateToSearchScreen = {
+                    navController.navigate(Screen.SearchScreen.createRoute(query))
+                }
+            )
         }
     }
 }

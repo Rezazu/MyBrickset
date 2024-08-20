@@ -64,6 +64,7 @@ fun SearchBar(
     onSearch: (String) -> Unit,
     onQueryChange: (String) -> Unit,
     onCloseClicked: () -> Unit,
+    navigateToSearchScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -116,10 +117,14 @@ fun SearchBar(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = { onSearch }
+                onSearch = {
+                    onSearch
+                    navigateToSearchScreen()
+                }
             ),
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                cursorColor = Color.White,
             ),
             modifier = Modifier
                 .fillMaxWidth()
@@ -194,6 +199,8 @@ private fun SearchBarPreview() {
             query = "Searching",
             onSearch = {},
             onQueryChange = {},
-            onCloseClicked = {})
+            navigateToSearchScreen = {},
+            onCloseClicked = {}
+        )
     }
 }

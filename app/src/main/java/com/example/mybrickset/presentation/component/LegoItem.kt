@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -25,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
@@ -50,29 +54,31 @@ fun LegoItem(
             defaultElevation = 1.dp
         ),
         modifier = modifier
-            .height(220.dp)
+            .wrapContentHeight()
             .width(140.dp),
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(1.dp, LightGray)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .wrapContentSize()
         ) {
             Box(
                 modifier = Modifier
                     .wrapContentSize()
-
+                    .align(Alignment.CenterHorizontally),
             ) {
                 AsyncImage(
                     modifier = Modifier
                         .size(140.dp)
                         .padding(4.dp),
+                    alignment = Alignment.Center,
                     contentScale = ContentScale.Fit,
                     model = ImageRequest
                         .Builder(context)
                         .data(set.image.thumbnailURL)
                         .build(),
+                    placeholder = painterResource(id = R.drawable.logo_brickset),
                     contentDescription = null
                 )
                 Text(
@@ -95,12 +101,12 @@ fun LegoItem(
             )
             Column(
                 modifier
+                    .heightIn(min = 72.dp)
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Text(
                     text = set.name,
                     style = MaterialTheme.typography.titleSmall,
-                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier

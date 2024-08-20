@@ -32,12 +32,9 @@ class HomeViewModel @Inject constructor(
     private val _stateThemes = mutableStateOf(ThemeState())
     val stateThemes: State<ThemeState> = _stateThemes
 
-    private val _stateSearchSets = MutableStateFlow(SearchSetsState())
-    val stateSearchSets: StateFlow<SearchSetsState> get() = _stateSearchSets
-
     init {
-//        getNewReleasedSet()
-        getSetsByTheme()
+        getNewReleasedSet()
+        getSetsByTheme("Star Wars")
         getThemes()
     }
 
@@ -58,8 +55,8 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getSetsByTheme(){
-        bricksetUseCases.getSetsByTheme("Star Wars").onEach { result ->
+    private fun getSetsByTheme(theme: String){
+        bricksetUseCases.getSetsByTheme(theme).onEach { result ->
             when(result) {
                 is Result.Success -> {
                     _theme1StateSets.value = Theme1SetsState(sets = result.data)
@@ -115,24 +112,6 @@ class HomeViewModel @Inject constructor(
 //            }.launchIn(viewModelScope)
 //        }
     }
-
-    fun onSearch(query: String) {
-        bricksetUseCases.searchSets(query).onEach { result ->
-            when(result) {
-                is Result.Success -> {
-                    _stateSearchSets.value = SearchSetsState(sets = result.data)
-                }
-                is Result.Error -> {
-                    _stateSearchSets.value = SearchSetsState(
-                        error = result.error ?: "An unexpected error, but a welcome one"
-                    )
-                }
-                is Result.Loading -> {
-                    _stateSearchSets.value = SearchSetsState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
 }
 
 data class NewSetsState (
@@ -150,11 +129,5 @@ data class Theme1SetsState (
 data class ThemeState (
     val isLoading: Boolean = false,
     val themes: List<Theme> = emptyList(),
-    val error: String = ""
-)
-
-data class SearchSetsState (
-    val isLoading: Boolean = false,
-    val sets: List<Set> = emptyList(),
     val error: String = ""
 )
