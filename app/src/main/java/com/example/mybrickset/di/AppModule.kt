@@ -1,6 +1,8 @@
 package com.example.mybrickset.di
 
+import android.app.Application
 import com.example.mybrickset.Const.BASE_URL
+import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.data.remote.BricksetApi
 import com.example.mybrickset.data.repository.BricksetRepositoryImplementation
 import com.example.mybrickset.domain.BricksetRepository
@@ -8,6 +10,7 @@ import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.GetNewReleasedSets
 import com.example.mybrickset.domain.usecase.GetSetsByTheme
 import com.example.mybrickset.domain.usecase.GetThemes
+import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
 import dagger.Module
 import dagger.Provides
@@ -66,7 +69,14 @@ object AppModule {
             getNewReleasedSets = GetNewReleasedSets(bricksetRepository),
             getSetsByTheme = GetSetsByTheme(bricksetRepository),
             getThemes = GetThemes(bricksetRepository),
-            searchSets = SearchSets(bricksetRepository)
+            searchSets = SearchSets(bricksetRepository),
+            login = Login(bricksetRepository)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthPreferences(application: Application): AuthPreferences {
+        return AuthPreferences(application.applicationContext)
     }
 }

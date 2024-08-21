@@ -103,9 +103,12 @@ dependencies {
     //Paging 3
     val paging_version = "3.1.1"
     implementation (libs.androidx.paging.runtime)
-    implementation ("androidx.paging:paging-compose:3.3.2")
+    implementation (libs.androidx.paging.compose)
 
     //Coil
     implementation(libs.coil.compose)
     implementation(kotlin("script-runtime"))
+
+    //Data Store
+    implementation(libs.androidx.datastore.preferences)
 }

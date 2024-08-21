@@ -5,6 +5,7 @@ import com.example.mybrickset.data.remote.BricksetApi
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
+import com.example.mybrickset.data.remote.dto.login.LoginResponse
 import com.example.mybrickset.domain.BricksetRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Calendar
@@ -31,5 +32,13 @@ class BricksetRepositoryImplementation @Inject constructor(
 
     override suspend fun searchSets(query: String): SetsResponse {
         return bricksetApi.getSets(userHash = "", params = "{'query':'$query'}")
+    }
+
+    override suspend fun getCollection(): SetsResponse {
+        return bricksetApi.getSets(userHash = "tbxexiNQXt", params = "{'owned':'1'}")
+    }
+
+    override suspend fun login(username: String, password: String): LoginResponse {
+        return bricksetApi.login(username = username, password = password)
     }
 }

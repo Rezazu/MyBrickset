@@ -3,6 +3,7 @@ accompanistFlowlayout = "0.17.0"
 agp = "8.5.1"
 coilCompose = "2.4.0"
 converterGson = "2.9.0"
+datastorePreferences = "1.1.1"
 hiltAndroid = "2.50"
 hiltCompiler = "1.2.0"
 kotlin = "1.9.0"
@@ -19,6 +20,7 @@ lifecycleRuntimeKtxVersion = "2.3.1"
 loggingInterceptor = "5.0.0-alpha.2"
 navigationCompose = "2.7.7"
 okhttp = "5.0.0-alpha.3"
+pagingCompose = "3.3.2"
 pagingRuntime = "3.1.1"
 retrofit = "2.9.0"
 roomKtx = "2.5.1"
@@ -26,12 +28,14 @@ roomKtx = "2.5.1"
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltCompiler" }
 androidx-lifecycle-runtime-ktx-v231 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtx" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }

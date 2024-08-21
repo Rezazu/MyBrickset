@@ -36,28 +36,4 @@ class SearchViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-//    fun onSearch(query: String) {
-//        bricksetUseCases.searchSets(query).onEach { result ->
-//            when(result) {
-//                is Result.Success -> {
-//                    _searchSetsState.value = SearchSetsState(sets = result.data)
-//                }
-//                is Result.Error -> {
-//                    _searchSetsState.value = SearchSetsState(
-//                        error = result.error ?: "An unexpected error, but a welcome one"
-//                    )
-//                }
-//                is Result.Loading -> {
-//                    _searchSetsState.value = SearchSetsState(isLoading = true)
-//                }
-//            }
-//        }.launchIn(viewModelScope)
-//    }
 }
-
-data class SearchSetsState (
-    val isLoading: Boolean = false,
-    val sets: List<Set> = emptyList(),
-    val error: String = ""
-)

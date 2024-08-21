@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -71,6 +73,7 @@ import com.example.mybrickset.presentation.collection.CollectionScreen
 import com.example.mybrickset.presentation.component.SearchBar
 import com.example.mybrickset.presentation.detail.DetailScreen
 import com.example.mybrickset.presentation.home.HomeScreen
+import com.example.mybrickset.presentation.login.LoginScreen
 import com.example.mybrickset.presentation.profile.ProfileScreen
 import com.example.mybrickset.presentation.search.SearchScreen
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
@@ -86,41 +89,65 @@ fun BricksetApp(
 
     val searchWidgetState by appViewModel.searchWidgetState
 
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+    val topBarState = rememberSaveable { mutableStateOf(false) }
+    val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
 
     val input by appViewModel.query.collectAsState()
 
 
     Scaffold (
         topBar = {
-            TopBar(
-                navController = navController,
-                searchWidgetState = searchWidgetState,
-                query = input,
-                onSearch = appViewModel::onSearch,
-                onQueryChange = appViewModel::onQueryChanged,
-                onCloseClicked = {
-                    appViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
-                    navController.navigate(Screen.HomeScreen.route)
-                },
-                onSearchTriggered = {
-                    appViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
-                }
-            )
+            if (topBarState.value == true) {
+                TopBar(
+                    navController = navController,
+                    searchWidgetState = searchWidgetState,
+                    query = input,
+                    onSearch = appViewModel::onSearch,
+                    onQueryChange = appViewModel::onQueryChanged,
+                    onCloseClicked = {
+                        appViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
+                        if (currentRoute != Screen.HomeScreen.route) {
+                            navController.navigate(Screen.HomeScreen.route)
+                        }
+                    },
+                    onSearchTriggered = {
+                        appViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
+                    }
+                )
+            }
         },
         bottomBar = {
             if (bottomBarState.value == true) {
                 BottomBar(navController = navController)
             }
         },
+        floatingActionButton = {
+            if (currentRoute == Screen.CollectionScreen.route) {
+                FloatingActionButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                }
+            }
+        },
         modifier = Modifier
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.LoginScreen.route,
             modifier = Modifier.padding(innerPadding)
         ) {
+            composable(Screen.LoginScreen.route) {
+                topBarState.value = false
+                bottomBarState.value = false
+                LoginScreen(
+                    navigateToHomeScreen = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(0)
+                        }
+                    }
+                )
+            }
             composable(Screen.HomeScreen.route) {
+                topBarState.value = true
                 bottomBarState.value = true
                 HomeScreen(
                     navigateToDetail = {
@@ -129,10 +156,12 @@ fun BricksetApp(
                 )
             }
             composable(Screen.CollectionScreen.route) {
+                topBarState.value = true
                 bottomBarState.value = true
                 CollectionScreen()
             }
             composable(Screen.ProfileScreen.route) {
+                topBarState.value = true
                 bottomBarState.value = true
                 ProfileScreen()
             }

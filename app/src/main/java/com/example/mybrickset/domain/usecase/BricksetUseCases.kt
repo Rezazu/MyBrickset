@@ -4,5 +4,6 @@ data class BricksetUseCases(
     val getNewReleasedSets: GetNewReleasedSets,
     val getSetsByTheme: GetSetsByTheme,
     val getThemes: GetThemes,
-    val searchSets: SearchSets
+    val searchSets: SearchSets,
+    val login: Login
 )
