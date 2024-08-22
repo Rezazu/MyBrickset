@@ -1,9 +1,21 @@
 package com.example.mybrickset.data.local
 
+import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
-//interface CollectionDao {
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertSetCollection(setCollection: SetCollection)
-//}
+@Dao
+interface CollectionDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSetCollection(setCollection: SetCollection)
+
+    @Delete
+    suspend fun deleteSetCollection(setCollection: SetCollection)
+
+    @Query("SELECT * FROM set_collection")
+    fun getAllSetCollection(): Flow<List<SetCollection>>
+}

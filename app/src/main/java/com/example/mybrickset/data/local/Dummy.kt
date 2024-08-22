@@ -17,6 +17,13 @@ import com.example.mybrickset.domain.model.News
 import com.example.mybrickset.presentation.component.LegoItem
 
 object Dummy {
+
+    val DummyCondition = listOf(
+        "New",
+        "MISB",
+        "Used"
+    )
+
     val DummyTheme = listOf(
         "Star Wars",
         "Ninjago",
