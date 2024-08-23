@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
@@ -45,21 +46,17 @@ fun CollectionScreen(
         ) {
             if (formState) {
                 Dialog(
+                    properties =  DialogProperties( usePlatformDefaultWidth = false ),
                     onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
                 ) {
                     CollectionForm(
-                        onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
+                        onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) },
                     )
                 }
             }
         }
 
     }
-}
-
-@Composable
-fun FloatingActionButton(modifier: Modifier = Modifier) {
-
 }
 
 @Preview

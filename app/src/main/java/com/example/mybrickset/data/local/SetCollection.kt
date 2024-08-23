@@ -14,15 +14,15 @@ import java.util.Date
 
 @Entity(tableName = "set_collection")
 data class SetCollection(
-    @PrimaryKey(autoGenerate = true)
-    val setID: Int,
     val number: String,
     val numberVariant: Int,
-//    val image: Uri,
+    val image: String,
     val name: String,
 
     val condition: String,
     val acquiredDate: String,
-    val price: Float
+    val price: Int,
 
+    @PrimaryKey(autoGenerate = true)
+    val setId : Int? = null,
 )

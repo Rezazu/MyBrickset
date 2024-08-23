@@ -43,7 +43,9 @@ import com.example.mybrickset.presentation.NavigationItem
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.SearchWidgetState
 import com.example.mybrickset.presentation.collection.CollectionScreen
+import com.example.mybrickset.presentation.component.BottomBar
 import com.example.mybrickset.presentation.component.SearchBar
+import com.example.mybrickset.presentation.component.TopBar
 import com.example.mybrickset.presentation.detail.DetailScreen
 import com.example.mybrickset.presentation.home.HomeScreen
 import com.example.mybrickset.presentation.login.LoginScreen
@@ -65,7 +67,6 @@ fun BricksetApp(
     val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
 
     val input by appViewModel.query.collectAsState()
-
 
     Scaffold (
         topBar = {
@@ -146,35 +147,6 @@ fun BricksetApp(
     }
 }
 
-@Composable
-fun TopBar(
-    navController: NavHostController,
-    searchWidgetState: SearchWidgetState,
-    query: String,
-    onSearch: (String) -> Unit,
-    onQueryChange: (String) -> Unit,
-    onCloseClicked: () -> Unit,
-    onSearchTriggered: () -> Unit
-) {
-    when(searchWidgetState) {
-        SearchWidgetState.CLOSED -> {
-            DefaultTopBar(
-                onSearchTriggered = { onSearchTriggered() })
-        }
-        SearchWidgetState.OPENED -> {
-            SearchBar(
-                query = query,
-                onSearch = onSearch,
-                onQueryChange = onQueryChange,
-                onCloseClicked = onCloseClicked,
-                navigateToSearchScreen = {
-                    navController.navigate(Screen.SearchScreen.createRoute(query))
-                }
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DefaultTopBar(
@@ -223,59 +195,6 @@ fun DefaultTopBar(
             }
         },
     )
-}
-
-@Composable
-fun BottomBar(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
-) {
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background,
-        modifier = modifier
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        val navigationItems = listOf(
-            NavigationItem(
-                title = stringResource(R.string.menu_home),
-                icon = Icons.Default.Home,
-                screen = Screen.HomeScreen
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_collection),
-                icon = Icons.AutoMirrored.Filled.List,
-                screen = Screen.CollectionScreen
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_profile),
-                icon = Icons.Default.AccountCircle,
-                screen = Screen.ProfileScreen
-            ),
-        )
-        navigationItems.map { item ->
-            NavigationBarItem(
-                selected = currentRoute == item.screen.route,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                        launchSingleTop = true
-                    }
-                },
-                label = { Text(text = item.title)},
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title
-                    )
-                }
-            )
-        }
-    }
 }
 
 @Preview(showBackground = true)

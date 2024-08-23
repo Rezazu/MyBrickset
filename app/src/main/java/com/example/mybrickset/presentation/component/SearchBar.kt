@@ -44,15 +44,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.semantics.onClick
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.example.mybrickset.TopBar
-import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import kotlin.math.sin
 import kotlin.math.truncate
@@ -70,12 +64,12 @@ fun SearchBar(
 
     val focusRequester = remember { FocusRequester() }
 
-    Surface (
+    Surface(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp),
         color = MaterialTheme.colorScheme.primaryContainer
-    ){
+    ) {
         TextField(
             value = query,
             onValueChange = onQueryChange,
@@ -136,59 +130,6 @@ fun SearchBar(
         }
 
     }
-
-//    var active by rememberSaveable { mutableStateOf(false) }
-//
-//    androidx.compose.material3.SearchBar(
-//        query = query,
-//        onQueryChange = onQueryChange,
-//        onSearch = onSearch,
-//        active = false,
-//        onActiveChange = { active = it },
-//        leadingIcon = {
-//            Icon(
-//                imageVector = Icons.Default.Search,
-//                contentDescription = null,
-//                tint = MaterialTheme.colorScheme.onSurfaceVariant
-//            )
-//        },
-//        placeholder = {
-//            Text(
-//                text = "",
-//                style = MaterialTheme.typography.bodyMedium
-//            )
-//        },
-//        colors = SearchBarDefaults.colors(
-//            containerColor = Color.White,
-//        ),
-//        modifier = modifier
-//            .heightIn(min = 48.dp)
-//            .padding(bottom = 8.dp),
-//        content = {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(Color.White)
-//            ) {
-////                result?.forEach {
-////                    LazyVerticalGrid(
-////                        columns = GridCells.Fixed(2),
-////                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-////                        verticalArrangement = Arrangement.spacedBy(8.dp),
-////                        modifier = Modifier
-////                            .fillMaxWidth()
-////                            .padding(8.dp)
-////                    ) {
-////                        items(result.size) {
-////                            result[it].let { set ->
-////                                LegoItem(set = set)
-////                            }
-////                        }
-////                    }
-////                }
-//            }
-//        }
-//    )
 }
 
 @Preview
