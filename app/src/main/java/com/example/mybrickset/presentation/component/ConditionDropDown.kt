@@ -48,7 +48,7 @@ fun ConditionDropDown(
         ) {
             OutlinedTextField(
                 value = selectedText,
-                onValueChange = { onValueChanged(selectedText)},
+                onValueChange = onValueChanged,
                 label = { Text(text = "Condition", style = MaterialTheme.typography.labelSmall, fontSize = 12.sp)},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},

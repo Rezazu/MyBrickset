@@ -91,27 +91,6 @@ class HomeViewModel @Inject constructor(
 
     private val _query = MutableStateFlow("")
     val query : StateFlow<String> get() = _query
-
-    fun onQueryChanged(query: String) {
-        _query.value = query
-//        if (_query.value.length > 3) {
-//            bricksetUseCases.searchSets(query).onEach { result ->
-//                when(result) {
-//                    is Result.Success -> {
-//                        _stateSearchSets.value = SearchSetsState(sets = result.data)
-//                    }
-//                    is Result.Error -> {
-//                        _stateSearchSets.value = SearchSetsState(
-//                            error = result.error ?: "An unexpected error, but a welcome one"
-//                        )
-//                    }
-//                    is Result.Loading -> {
-//                        _stateSearchSets.value = SearchSetsState(isLoading = true)
-//                    }
-//                }
-//            }.launchIn(viewModelScope)
-//        }
-    }
 }
 
 data class NewSetsState (

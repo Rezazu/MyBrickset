@@ -27,4 +27,8 @@ object Services {
         }
         return image
     }
+
+    fun getPriceIDR(price: Int): String {
+        return "Rp. $price"
+    }
 }

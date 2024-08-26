@@ -1,7 +1,10 @@
 package com.example.mybrickset.presentation.collection
 
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -18,6 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
+import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.presentation.component.CollectionItem
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
@@ -25,8 +31,8 @@ fun CollectionScreen(
     modifier: Modifier = Modifier,
     viewModel: CollectionViewModel = hiltViewModel()
 ) {
-
     val formState by viewModel.formState.collectAsState()
+    val setCollectionList = viewModel.getAllSetCollection().collectAsState(initial = emptyList())
 
     Scaffold(
         floatingActionButton = {
@@ -54,18 +60,31 @@ fun CollectionScreen(
                     )
                 }
             }
+            CollectionContent(
+                setCollectionList = setCollectionList.value
+            )
         }
 
     }
 }
 
+@Composable
+fun CollectionContent(
+    setCollectionList: List<SetCollection>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn {
+        items(setCollectionList.size) {
+            CollectionItem(setCollection = setCollectionList[it])
+        }
+    }
+}
+
 @Preview
 @Composable
-private fun CollectionScreenPreview(
-
-) {
+private fun CollectionContentPreview() {
     MyBricksetTheme {
-        CollectionScreen()
+
     }
 
 }

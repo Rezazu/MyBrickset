@@ -2,12 +2,14 @@ package com.example.mybrickset.presentation.collection
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.domain.usecase.local.LocalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,27 +29,45 @@ class CollectionViewModel @Inject constructor(
     private val _numberInput = MutableStateFlow("")
     val numberInput: StateFlow<String> = _numberInput
 
-    private val _variantInput = MutableStateFlow(0)
-    val variantInput: StateFlow<Int> = _variantInput
+    private val _variantInput = MutableStateFlow("")
+    val variantInput: StateFlow<String> = _variantInput
 
-    private val _imageInput = MutableStateFlow("")
-    val imageInput: StateFlow<String> = _imageInput
+    private val _imageInput = mutableStateOf("")
+    val imageInput: State<String> get() = _imageInput
 
     private val _conditionInput = MutableStateFlow("")
     val conditionInput: StateFlow<String> = _conditionInput
 
-    private val _acquiredDatenInput = MutableStateFlow("")
-    val acquiredDateInput: StateFlow<String> = _acquiredDatenInput
+    private val _acquiredDateInput = MutableStateFlow("")
+    val acquiredDateInput: StateFlow<String> = _acquiredDateInput
 
-    private val _priceInput = MutableStateFlow(0)
-    val priceInput: StateFlow<Int> = _priceInput
+    private val _priceInput = MutableStateFlow("")
+    val priceInput: StateFlow<String> = _priceInput
 
     private fun insertSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.insertSetCollection(setCollection)
     }
 
-    fun insertSetCollection(setCollection: SetCollection) {
-        insertSetCollectionIntoDb(setCollection)
+    init {
+        getAllSetCollection()
+    }
+
+    fun insertSetCollection() {
+        insertSetCollectionIntoDb(
+            SetCollection(
+                _numberInput.value,
+                _variantInput.value.toInt(),
+                _imageInput.value,
+                _nameInput.value,
+                _conditionInput.value,
+                _acquiredDateInput.value,
+                _priceInput.value.toInt()
+            )
+        )
+    }
+
+    fun getAllSetCollection(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollection()
     }
 
     fun onFloatingActionButtonClicked(value: Boolean){
@@ -63,7 +83,7 @@ class CollectionViewModel @Inject constructor(
     }
 
     fun onVariantInputChange(input: String) {
-        _variantInput.value = input.toInt()
+        _variantInput.value = input
     }
 
     fun onImageInputChange(input: String) {
@@ -75,10 +95,10 @@ class CollectionViewModel @Inject constructor(
     }
 
     fun onAcquiredDateInputChange(input: String) {
-        _acquiredDatenInput.value = input
+        _acquiredDateInput.value = input
     }
 
     fun onPriceInputChange(input: String) {
-        _priceInput.value = input.toInt()
+        _priceInput.value = input
     }
 }

@@ -1,8 +1,14 @@
 package com.example.mybrickset.presentation.collection
 
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -58,6 +64,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -66,6 +73,7 @@ import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.component.ConditionDropDown
 import com.example.mybrickset.presentation.component.DatePickerForm
+import com.example.mybrickset.presentation.component.NumberForm
 import com.example.mybrickset.presentation.component.TextForm
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import java.text.SimpleDateFormat
@@ -74,7 +82,6 @@ import java.util.Locale
 import java.util.UUID
 import kotlin.math.exp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectionForm(
     modifier: Modifier = Modifier,
@@ -85,26 +92,20 @@ fun CollectionForm(
     val context = LocalContext.current
     val nameInput = viewModel.nameInput.collectAsState()
     val numberInput = viewModel.numberInput.collectAsState()
+    val variantInput = viewModel.variantInput.collectAsState()
+    val imageInput = viewModel.imageInput.value
     val conditionInput = viewModel.conditionInput.collectAsState()
     val dateInput = viewModel.acquiredDateInput.collectAsState()
+    val priceInput = viewModel.priceInput.collectAsState()
 
-
-    var nameText by remember { mutableStateOf("") }
-
-    var numberText by remember { mutableStateOf("") }
-    var variantText by remember { mutableStateOf("") }
-
-    var uriImage by remember { mutableStateOf<Uri?>(null) }
-    var conditionText by remember { mutableStateOf("") }
-
-    var priceText by remember { mutableStateOf("") }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri: Uri? ->
-            uri?.let { uriImage = it }
-        }
-    )
+    val singlePhotoPickerLauncher =
+        rememberLauncherForActivityResult(contract =
+            ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri: Uri? ->
+                viewModel.onImageInputChange(uri.toString())
+                Log.d("URI RESULT", "$uri")
+            }
+        )
 
     Box(
         contentAlignment = Alignment.Center,
@@ -151,45 +152,39 @@ fun CollectionForm(
                         modifier = Modifier
                             .padding(4.dp)
                     )
-                    OutlinedTextField(
-                        value = variantText,
-                        onValueChange = { variantText = it },
-                        label = { Text(text = "",style = MaterialTheme.typography.labelSmall) },
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        singleLine = true,
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.White,
-                            focusedLabelColor = Color.Black,
-                            unfocusedLabelColor = Color.DarkGray,
-                            cursorColor = Color.Black,
-                        ),
-                        )
+                    NumberForm(
+                        numberInput = variantInput.value,
+                        label = "",
+                        onValueChange = viewModel::onVariantInputChange
+                    )
                 }
                 Row (
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    if (uriImage != null) {
+                    if (imageInput != "") {
                         AsyncImage(
                             modifier = Modifier
                                 .padding(4.dp)
                                 .size(150.dp),
                             model = ImageRequest.Builder(LocalContext.current)
                                 .placeholder(R.drawable.img_placeholder)
-                                .data(uriImage)
+                                .data(Uri.parse(imageInput))
                                 .build(),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                         )
                     }
                     ConditionDropDown(
-                        condition = conditionText,
+                        condition = conditionInput.value,
                         onValueChanged = viewModel::onConditionInputChange,
                     )
                 }
                 Button(
                     onClick = {
-                                launcher.launch("image/*")
+                                singlePhotoPickerLauncher.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                )
                               },
                     shape = RoundedCornerShape(8.dp)
                 ) {
@@ -203,18 +198,10 @@ fun CollectionForm(
                         onValueChange =  viewModel::onAcquiredDateInputChange
                     )
                     HorizontalDivider(modifier = Modifier.width(16.dp))
-                    OutlinedTextField(
-                        value = priceText,
-                        onValueChange = { priceText = it },
-                        label = { Text(text = "Price",style = MaterialTheme.typography.labelSmall) },
-                        singleLine = true,
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.White,
-                            focusedLabelColor = Color.Black,
-                            unfocusedLabelColor = Color.DarkGray,
-                            cursorColor = Color.Black,
-                        ),
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
+                    NumberForm(
+                        numberInput = priceInput.value,
+                        label = "Price",
+                        onValueChange = viewModel::onPriceInputChange
                     )
                 }
             }
@@ -229,12 +216,11 @@ fun CollectionForm(
                     Text(text = "Cancel")
                 }
                 Button(onClick = {
-                    uriImage?.let {
-                        saveImageToInternalStorage(context,
-                            it
-                        )
-                        onDismissRequest()
+                    imageInput.let {
+                        saveImage(context, Uri.parse(it))
                     }
+                    viewModel.insertSetCollection()
+                    onDismissRequest()
                 }) {
                     Text(text = "Add Set")
                 }
@@ -243,21 +229,10 @@ fun CollectionForm(
     }
 }
 
-fun saveImageToInternalStorage(context: Context, uri: Uri): String {
-    val fileName = UUID.randomUUID().toString() + ".jpg"
-    val inputStream = context.contentResolver.openInputStream(uri)
-    val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
-    inputStream?.use { input ->
-        outputStream.use { output ->
-            input.copyTo(output)
-        }
-    }
-    return fileName
-}
-
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
+fun saveImage(context: Context, uri: Uri){
+    val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    val resolver = context.contentResolver
+    resolver.takePersistableUriPermission(uri, flags)
 }
 
 @Preview

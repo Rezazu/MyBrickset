@@ -54,7 +54,7 @@ fun LegoItem(
             defaultElevation = 1.dp
         ),
         modifier = modifier
-            .wrapContentHeight()
+            .height(220.dp)
             .width(140.dp),
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(1.dp, LightGray)
@@ -109,6 +109,7 @@ fun LegoItem(
                     style = MaterialTheme.typography.titleSmall,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold,
+                    maxLines = 3,
                     modifier = Modifier
                 )
                 Row (
