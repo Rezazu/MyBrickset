@@ -31,4 +31,14 @@ object Services {
     fun getPriceIDR(price: Int): String {
         return "Rp. $price"
     }
+
+    fun getConditionIcon(condition: String): Int {
+        var image: Int = R.drawable.brickset_banner
+        when(condition) {
+            "New" -> { image = R.drawable.icon_new}
+            "MISB" -> { image = R.drawable.icon_misb}
+            "Used" -> { image = R.drawable.icon_used}
+        }
+        return image
+    }
 }

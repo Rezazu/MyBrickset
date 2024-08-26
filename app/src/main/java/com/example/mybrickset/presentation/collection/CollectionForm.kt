@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,11 +25,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
@@ -76,6 +80,7 @@ import com.example.mybrickset.presentation.component.DatePickerForm
 import com.example.mybrickset.presentation.component.NumberForm
 import com.example.mybrickset.presentation.component.TextForm
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
+import com.example.mybrickset.presentation.ui.theme.Red
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -197,7 +202,7 @@ fun CollectionForm(
                         date = dateInput.value,
                         onValueChange =  viewModel::onAcquiredDateInputChange
                     )
-                    HorizontalDivider(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
                     NumberForm(
                         numberInput = priceInput.value,
                         label = "Price",
@@ -210,18 +215,31 @@ fun CollectionForm(
                 verticalAlignment = Alignment.Bottom,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp)
+                    .padding(top = 8.dp, bottom = 32.dp, start = 16.dp, end = 16.dp)
             ) {
-                Button(onClick = { onDismissRequest() }) {
+                Button(
+                    onClick = { onDismissRequest() },
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Red),
+                    modifier = Modifier
+                        .wrapContentWidth()
+                ) {
                     Text(text = "Cancel")
                 }
                 Button(onClick = {
                     imageInput.let {
                         saveImage(context, Uri.parse(it))
                     }
-                    viewModel.insertSetCollection()
-                    onDismissRequest()
-                }) {
+                    if (nameInput.value != "") {
+                        viewModel.insertSetCollection()
+                        onDismissRequest()
+                    }
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .wrapContentWidth()
+
+                ) {
                     Text(text = "Add Set")
                 }
             }
@@ -232,7 +250,9 @@ fun CollectionForm(
 fun saveImage(context: Context, uri: Uri){
     val flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     val resolver = context.contentResolver
-    resolver.takePersistableUriPermission(uri, flags)
+    if (uri.toString() != "") {
+        resolver.takePersistableUriPermission(uri, flags)
+    }
 }
 
 @Preview

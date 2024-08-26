@@ -29,7 +29,7 @@ class CollectionViewModel @Inject constructor(
     private val _numberInput = MutableStateFlow("")
     val numberInput: StateFlow<String> = _numberInput
 
-    private val _variantInput = MutableStateFlow("")
+    private val _variantInput = MutableStateFlow("1")
     val variantInput: StateFlow<String> = _variantInput
 
     private val _imageInput = mutableStateOf("")
@@ -46,6 +46,13 @@ class CollectionViewModel @Inject constructor(
 
     private fun insertSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.insertSetCollection(setCollection)
+        _numberInput.value = ""
+        _variantInput.value = ""
+        _imageInput.value = ""
+        _nameInput.value = ""
+        _conditionInput.value = ""
+        _acquiredDateInput.value = ""
+        _priceInput.value = ""
     }
 
     init {

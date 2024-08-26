@@ -2,6 +2,7 @@ package com.example.mybrickset.presentation.collection
 
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,12 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.component.CollectionItem
+import com.example.mybrickset.presentation.component.CollectionItem2
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
@@ -73,9 +76,11 @@ fun CollectionContent(
     setCollectionList: List<SetCollection>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    LazyColumn (
+        contentPadding = PaddingValues(vertical = 16.dp)
+    ) {
         items(setCollectionList.size) {
-            CollectionItem(setCollection = setCollectionList[it])
+            CollectionItem2(setCollection = setCollectionList[it])
         }
     }
 }

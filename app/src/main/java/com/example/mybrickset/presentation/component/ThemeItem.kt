@@ -36,18 +36,6 @@ fun ThemeItem(
             .height(120.dp)
             .width(100.dp),
     ) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(8.dp),
-//            verticalArrangement = Arrangement.Center,
-//
-//        ) {
-//            Text(
-//                text = theme.theme,
-//                style = MaterialTheme.typography.titleSmall
-//            )
-//        }
         val imageResource = Services.GetThemeImage(theme = theme.theme)
         Image(
             painter = painterResource(id = imageResource),

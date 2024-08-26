@@ -32,10 +32,6 @@ fun ConditionDropDown(
         mutableStateOf(false)
     }
 
-    var selectedText by remember {
-        mutableStateOf(condition)
-    }
-
     Column(
         modifier = Modifier
             .height(72.dp)
@@ -47,7 +43,7 @@ fun ConditionDropDown(
             modifier = Modifier
         ) {
             OutlinedTextField(
-                value = selectedText,
+                value = condition,
                 onValueChange = onValueChanged,
                 label = { Text(text = "Condition", style = MaterialTheme.typography.labelSmall, fontSize = 12.sp)},
                 readOnly = true,
@@ -65,16 +61,16 @@ fun ConditionDropDown(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
             ) {
-                Dummy.DummyCondition.forEach { condition ->
+                Dummy.DummyCondition.forEach { conditionItem ->
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = condition,
+                                text = conditionItem,
                                 color = Color.Black
                             )
                         },
                         onClick = {
-                            selectedText = condition
+                            onValueChanged(conditionItem)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
