@@ -8,12 +8,15 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.presentation.Screen
 
 @Composable
 fun SetLazyRow(
     setsList: List<Set>,
-    navigateToDetail: () -> Unit,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -26,7 +29,7 @@ fun SetLazyRow(
                 set = setsList[it],
                 modifier = Modifier
                     .clickable {
-                        navigateToDetail()
+                        navController.navigate(Screen.DetailScreen)
                     }
             )
         }

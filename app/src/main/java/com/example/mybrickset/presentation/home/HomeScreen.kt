@@ -47,6 +47,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
@@ -64,6 +66,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.UK
 import com.example.mybrickset.data.remote.dto.getsets.US
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
+import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.Banner
 import com.example.mybrickset.presentation.component.LegoItem
 import com.example.mybrickset.presentation.component.NewsCard
@@ -77,7 +80,7 @@ import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToDetail: () -> Unit
+    navController: NavHostController,
 ) {
     val stateNewSets = viewModel.newStateSets.value
     val stateThemeSets = viewModel.theme1StateSets.value
@@ -87,7 +90,7 @@ fun HomeScreen(
             newSets = stateNewSets.sets,
             themeSets = stateThemeSets.sets,
             themes = stateThemes.themes,
-            navigateToDetail = navigateToDetail
+            navController = navController
         )
     }
 }
@@ -98,7 +101,7 @@ fun HomeContent(
     newSets: List<Set>,
     themeSets: List<Set>,
     themes: List<Theme>,
-    navigateToDetail: () -> Unit,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
 
@@ -125,16 +128,20 @@ fun HomeContent(
             items(themes.size) {
                 themes[it].let { theme ->
                     ThemeItem(
-                        theme = theme
+                        theme = theme,
+                        navigateToThemeScreen = { navController.navigate(Screen.ThemeScreen(
+                            theme = theme
+                        ))
+                        }
                     )
                 }
             }
         }
         SectionText(title = "New 2024 Released sets")
-        SetLazyRow(setsList = newSets, navigateToDetail)
+        SetLazyRow(setsList = newSets, navController = navController)
         SectionText(title = "Celebrate Star Wars Day!")
         Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(top = 8.dp))
-        SetLazyRow(setsList = themeSets, navigateToDetail, modifier = Modifier.padding(top = 8.dp))
+        SetLazyRow(setsList = themeSets, navController = navController, modifier = Modifier.padding(top = 8.dp))
         StoreBanner(
             location = "LEGO® Summarecon Mall Bekasi – 1st Floor",
             image = R.drawable.banner_store,

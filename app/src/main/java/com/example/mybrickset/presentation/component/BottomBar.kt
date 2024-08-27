@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -30,7 +31,7 @@ fun BottomBar(
         modifier = modifier
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+        val currentRoute = navBackStackEntry?.destination
 
         val navigationItems = listOf(
             NavigationItem(
@@ -50,25 +51,27 @@ fun BottomBar(
             ),
         )
         navigationItems.map { item ->
-            NavigationBarItem(
-                selected = currentRoute == item.screen.route,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            if (currentRoute != null) {
+                NavigationBarItem(
+                    selected = currentRoute.hasRoute(item.screen::class),
+                    onClick = {
+                        navController.navigate(item.screen) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            restoreState = true
+                            launchSingleTop = true
                         }
-                        restoreState = true
-                        launchSingleTop = true
+                    },
+                    label = { Text(text = item.title) },
+                    icon = {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.title
+                        )
                     }
-                },
-                label = { Text(text = item.title) },
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title
-                    )
-                }
-            )
+                )
+            }
         }
     }
 }

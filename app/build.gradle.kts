@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id ("kotlin-kapt")
     id ("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.serialization)
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // this version matches your Kotlin version
 }
 
 android {
@@ -111,4 +113,7 @@ dependencies {
 
     //Data Store
     implementation(libs.androidx.datastore.preferences)
+
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

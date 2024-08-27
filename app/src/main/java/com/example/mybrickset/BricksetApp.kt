@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -38,6 +39,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.AppViewModel
 import com.example.mybrickset.presentation.NavigationItem
 import com.example.mybrickset.presentation.Screen
@@ -51,7 +54,9 @@ import com.example.mybrickset.presentation.home.HomeScreen
 import com.example.mybrickset.presentation.login.LoginScreen
 import com.example.mybrickset.presentation.profile.ProfileScreen
 import com.example.mybrickset.presentation.search.SearchScreen
+import com.example.mybrickset.presentation.theme.ThemeScreen
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
+import kotlin.reflect.typeOf
 
 @Composable
 fun BricksetApp(
@@ -59,7 +64,6 @@ fun BricksetApp(
     appViewModel: AppViewModel = hiltViewModel()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
 
     val searchWidgetState by appViewModel.searchWidgetState
 
@@ -79,9 +83,12 @@ fun BricksetApp(
                     onQueryChange = appViewModel::onQueryChanged,
                     onCloseClicked = {
                         appViewModel.updateSearchWidgetState(SearchWidgetState.CLOSED)
-                        if (currentRoute != Screen.HomeScreen.route) {
-                            navController.navigate(Screen.HomeScreen.route)
+                        navBackStackEntry?.destination?.let { currentDestionation ->
+                            if (currentDestionation.hasRoute(Screen.HomeScreen::class)) {
+                                navController.navigate(Screen.HomeScreen)
+                            }
                         }
+                        navController.navigate(Screen.HomeScreen)
                     },
                     onSearchTriggered = {
                         appViewModel.updateSearchWidgetState(SearchWidgetState.OPENED)
@@ -98,52 +105,113 @@ fun BricksetApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.LoginScreen.route,
+            startDestination = Screen.LoginScreen,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Screen.LoginScreen.route) {
+            composable<Screen.LoginScreen> {
                 topBarState.value = false
                 bottomBarState.value = false
                 LoginScreen(
                     navigateToHomeScreen = {
-                        navController.navigate(Screen.HomeScreen.route) {
+                        navController.navigate(Screen.HomeScreen) {
                             popUpTo(0)
                         }
                     }
                 )
             }
-            composable(Screen.HomeScreen.route) {
+            composable<Screen.HomeScreen> {
                 topBarState.value = true
                 bottomBarState.value = true
                 HomeScreen(
-                    navigateToDetail = {
-                        navController.navigate(Screen.DetailScreen.route)
-                    }
+                    navController = navController,
                 )
             }
-            composable(Screen.CollectionScreen.route) {
+            composable<Screen.CollectionScreen> {
                 topBarState.value = true
                 bottomBarState.value = true
                 CollectionScreen()
             }
-            composable(Screen.ProfileScreen.route) {
+            composable<Screen.ProfileScreen> {
                 topBarState.value = true
                 bottomBarState.value = true
                 ProfileScreen()
             }
-            composable(Screen.DetailScreen.route) {
+            composable<Screen.DetailScreen> { 
                 bottomBarState.value = false
                 DetailScreen()
             }
-            composable(
-                Screen.SearchScreen.route,
-                listOf(navArgument("query") { type = NavType.StringType})
-            ) {
-                val query = it.arguments?.getString("query") ?: "Lego"
+            composable<Screen.SearchScreen> { 
+                topBarState.value = true
                 bottomBarState.value = false
-                SearchScreen(query)
+                val args = it.toRoute<Screen.SearchScreen>()
+                SearchScreen(query = args.query)
+            }
+            composable<Screen.ThemeScreen>(
+                typeMap = mapOf(
+                    typeOf<Theme>() to CustomNavType.theme
+                )
+            ) {
+                topBarState.value = true
+                bottomBarState.value = false
+                val args = it.toRoute<Screen.ThemeScreen>()
+                ThemeScreen(theme = args.theme)
             }
         }
+//        NavHost(
+//            navController = navController,
+//            startDestination = Screen.LoginScreen.route,
+//            modifier = Modifier.padding(innerPadding)
+//        ) {
+//            composable(Screen.LoginScreen.route) {
+//                topBarState.value = false
+//                bottomBarState.value = false
+//                LoginScreen(
+//                    navigateToHomeScreen = {
+//                        navController.navigate(Screen.HomeScreen.route) {
+//                            popUpTo(0)
+//                        }
+//                    }
+//                )
+//            }
+//            composable(Screen.HomeScreen.route) {
+//                topBarState.value = true
+//                bottomBarState.value = true
+//                HomeScreen(
+//                    navController = navController
+//                )
+//            }
+//            composable(Screen.CollectionScreen.route) {
+//                topBarState.value = true
+//                bottomBarState.value = true
+//                CollectionScreen()
+//            }
+//            composable(Screen.ProfileScreen.route) {
+//                topBarState.value = true
+//                bottomBarState.value = true
+//                ProfileScreen()
+//            }
+//            composable(Screen.DetailScreen.route) {
+//                bottomBarState.value = false
+//                DetailScreen()
+//            }
+//            composable(
+//                Screen.SearchScreen.route,
+//                listOf(navArgument("query") { type = NavType.StringType})
+//            ) {
+//                val query = it.arguments?.getString("query") ?: "Lego"
+//                bottomBarState.value = false
+//                SearchScreen(query)
+//            }
+//            composable(
+//                Screen.ThemeScreen.route,
+//                listOf(navArgument("theme") { type = NavType.ReferenceType},)
+//            ) {
+//                val theme = it.arguments?.getString("theme") ?: ""
+//                bottomBarState.value = false
+//                ThemeScreen(theme)
+//            }
+//
+//        }
     }
 }
 

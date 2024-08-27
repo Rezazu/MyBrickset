@@ -28,7 +28,9 @@ fun TopBar(
                 onQueryChange = onQueryChange,
                 onCloseClicked = onCloseClicked,
                 navigateToSearchScreen = {
-                    navController.navigate(Screen.SearchScreen.createRoute(query))
+                    navController.navigate(Screen.SearchScreen(
+                        query = query
+                    ))
                 }
             )
         }

@@ -2,6 +2,7 @@ package com.example.mybrickset.presentation.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 @Composable
 fun ThemeItem(
     theme: Theme,
+    navigateToThemeScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -34,7 +36,10 @@ fun ThemeItem(
         ),
         modifier = modifier
             .height(120.dp)
-            .width(100.dp),
+            .width(100.dp)
+            .clickable {
+                navigateToThemeScreen()
+            },
     ) {
         val imageResource = Services.GetThemeImage(theme = theme.theme)
         Image(
@@ -57,7 +62,8 @@ private fun ThemeItemPreview() {
                 theme = "Star Wars",
                 yearFrom = 1999,
                 yearTo = 2024
-            )
+            ),
+            navigateToThemeScreen = {}
         )
     }
 }

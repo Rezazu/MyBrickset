@@ -19,7 +19,6 @@ class SearchViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _searchSetsState: MutableStateFlow<Result<List<Set>>> = MutableStateFlow(Result.Loading)
-
     val searchSetsState: StateFlow<Result<List<Set>>> get() = _searchSetsState
 
     fun onSearch(query: String) {

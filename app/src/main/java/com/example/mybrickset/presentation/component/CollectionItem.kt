@@ -56,7 +56,7 @@ fun CollectionItem(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 2.dp
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -137,6 +137,7 @@ fun CollectionItem2(
     setCollection: SetCollection,
     modifier: Modifier = Modifier) {
     Card(
+        border = BorderStroke(1.dp, Color.LightGray),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
