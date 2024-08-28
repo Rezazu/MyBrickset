@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 
 interface BricksetRepository {
     suspend fun getNewReleasedSets(): SetsResponse
-    suspend fun getSetsByTheme(theme: String): SetsResponse
+    suspend fun getSetsByTheme(theme: String, pageSize: String): SetsResponse
     suspend fun getThemes(): ThemesResponse
     suspend fun searchSets(query: String): SetsResponse
     suspend fun getCollection(): SetsResponse

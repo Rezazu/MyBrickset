@@ -56,7 +56,7 @@ fun CollectionItem(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
+            defaultElevation = 1.dp
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -203,13 +203,7 @@ fun CollectionItem2(
                 AsyncImage(
                     modifier = Modifier
                         .size(56.dp)
-                        .align(Alignment.CenterVertically)
-                        .border(
-                            BorderStroke(
-                                1.dp,
-                                Color.LightGray
-                            )
-                        ),
+                        .align(Alignment.CenterVertically),
                     model = ImageRequest.Builder(LocalContext.current)
                         .placeholder(R.drawable.img_placeholder)
                         .data(Uri.parse(setCollection.image))

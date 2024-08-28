@@ -23,8 +23,11 @@ class ThemeViewModel @Inject constructor(
     private val _themeSets: MutableStateFlow<Result<List<Set>>> = MutableStateFlow(Result.Loading)
     val themeSets: StateFlow<Result<List<Set>>> get() = _themeSets
 
+    private val _countSets: MutableStateFlow<String> = MutableStateFlow("")
+    val countSets: StateFlow<String> get() = _countSets
+
     fun getSetsByTheme(theme: String){
-        bricksetUseCases.getSetsByTheme(theme).onEach { result ->
+        bricksetUseCases.getSetsByTheme(theme, 0).onEach { result ->
             when(result) {
                 is Result.Error -> {
                 }
@@ -32,7 +35,8 @@ class ThemeViewModel @Inject constructor(
                     _themeSets.value = Result.Loading
                 }
                 is Result.Success -> {
-                    _themeSets.value = Result.Success(result.data)
+                    _themeSets.value = Result.Success(result.data.sets)
+                    _countSets.value = result.data.matches.toString()
                 }
             }
         }.launchIn(viewModelScope)
