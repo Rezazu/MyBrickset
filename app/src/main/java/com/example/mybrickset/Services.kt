@@ -1,5 +1,6 @@
 package com.example.mybrickset
 
+import android.text.Html
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.mybrickset.data.local.Dummy.DummyTheme
@@ -55,4 +56,8 @@ object Services {
             text = text.replace("\\p{C}".toRegex(), "")
             return text.trim()
         }
+
+    val decoded: String = Html
+        .fromHtml("&lt;&gt;&amp;&#39;&quot;", Html.FROM_HTML_MODE_COMPACT)
+        .toString() // <>&'"
 }

@@ -1,7 +1,11 @@
 package com.example.mybrickset.presentation.detail
 
+import android.content.ClipDescription
 import android.content.Context
+import android.text.Html
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +26,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +40,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +55,8 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.HtmlCompat
+import androidx.core.text.htmlEncode
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -54,6 +70,7 @@ import com.example.mybrickset.data.remote.dto.getsets.UK
 import com.example.mybrickset.data.remote.dto.getsets.US
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Typography
+import com.example.mybrickset.presentation.ui.theme.YellowMain
 
 @Composable
 fun DetailScreen(
@@ -90,10 +107,11 @@ fun DetailScreenContent(
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { additionalImage.size })
+    val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(scrollState)
     ) {
         DetailPager(
             images = additionalImage,
@@ -128,18 +146,73 @@ fun DetailScreenContent(
                 text = "Released ${set.released}"
             )
             Spacer(modifier = Modifier.height(36.dp))
-            Text(
-                text = "Description",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
+            DetailDescription(
+                description = set.extendedData.description
             )
-            Text(
-                text = set.extendedData.description.cleanTextContent,
-                style = MaterialTheme.typography.bodySmall
+            HorizontalDivider(
+                modifier = Modifier.height(1.dp)
             )
+            DetailReview(
+                rating = set.rating,
+                reviewCount = set.reviewCount,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
         }
     }
 
+}
+
+@Composable
+fun DetailDescription(
+    description: String?,
+    modifier: Modifier = Modifier
+) {
+    var descriptionState by remember {
+        mutableStateOf(false)
+    }
+
+    Surface (
+        modifier = if (descriptionState == false) {
+            Modifier
+                .fillMaxWidth()
+                .height(128.dp)
+        } else {
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+        }
+    ){
+        Column {
+            Row (
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 6.dp)
+            ) {
+                Text(
+                    text = "Description",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                Icon(
+                    imageVector =
+                    if (descriptionState == false) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable {
+                            descriptionState = !descriptionState
+                        }
+                )
+            }
+            description?.let { description ->
+                Text(
+                    text = HtmlCompat.fromHtml(description, Html.FROM_HTML_MODE_LEGACY).toString(),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -160,12 +233,12 @@ fun DetailPager(
     ) {
         HorizontalPager(
             state = pagerState
-        ) {
+        ) { page ->
             AsyncImage(
                 model = ImageRequest
                     .Builder(context)
                     .placeholder(R.drawable.logo_brickset)
-                    .data(images[0].imageURL)
+                    .data(images[page].imageURL)
                     .build(),
                 contentDescription = null,
                 alignment = Alignment.Center,
@@ -195,26 +268,75 @@ fun DetailPager(
                 Text(
                     text = (pagerState.currentPage + 1).toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray
                 )
                 Text(
                     text = "/",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray
                 )
                 Text(
                     text = pagerState.pageCount.toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray
                 )
             }
         }
     }
+}
+
+@Composable
+fun DetailReview(
+    rating: Double,
+    reviewCount: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(256.dp)
+            .padding(vertical = 6.dp)
+    ) {
+        Text(
+            text = "Review",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+        )
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(36.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = null,
+                tint = YellowMain,
+                modifier = Modifier
+                    .padding(horizontal = 2.dp)
+            )
+            Text(
+                text = rating.toString(),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .padding(horizontal = 2.dp)
+                    .align(Alignment.CenterVertically)
+            )
+            Text(
+                text = "${reviewCount} reviews",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .align(Alignment.CenterVertically)
+            )
 
 
+        }
+    }
 }
 
 
