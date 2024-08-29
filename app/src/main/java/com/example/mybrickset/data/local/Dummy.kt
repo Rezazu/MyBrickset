@@ -74,7 +74,7 @@ object Dummy {
                 themeGroup = "Licensed",
                 subtheme = "The Book of Boba Fett",
                 category = "Normal",
-                released =  true,
+                released =  false,
                 pieces = 412,
                 minifigs = 4,
                 image = Image(

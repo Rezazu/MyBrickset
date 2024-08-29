@@ -4,6 +4,7 @@ import android.text.Html
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.mybrickset.data.local.Dummy.DummyTheme
+import com.example.mybrickset.data.remote.dto.getsets.Image
 
 object Services {
 
@@ -29,6 +30,19 @@ object Services {
         return image
     }
 
+    fun getThemeIcon(theme: String): Int {
+        var image: Int = R.drawable.ic_launcher_background
+
+        when(theme) {
+            "Star Wars" -> { image = R.drawable.ic_starwars }
+            "Ninjago" -> { image = R.drawable.ic_ninjago }
+            "Technic" -> { image = R.drawable.ic_technic }
+            "City" -> { image = R.drawable.ic_city }
+            "Ideas" -> { image = R.drawable.ic_ideas }
+        }
+        return image
+    }
+
     fun getPriceIDR(price: Int): String {
         return "Rp. $price"
     }
@@ -43,21 +57,4 @@ object Services {
         return image
     }
 
-    val String.cleanTextContent: String
-        get() {
-            // strips off all non-ASCII characters
-            var text = this
-            text = text.replace("[^\\x00-\\x7F]".toRegex(), "")
-
-            // erases all the ASCII control characters
-            text = text.replace("[\\p{Cntrl}&&[^\r\n\t]]".toRegex(), "")
-
-            // removes non-printable characters from Unicode
-            text = text.replace("\\p{C}".toRegex(), "")
-            return text.trim()
-        }
-
-    val decoded: String = Html
-        .fromHtml("&lt;&gt;&amp;&#39;&quot;", Html.FROM_HTML_MODE_COMPACT)
-        .toString() // <>&'"
 }

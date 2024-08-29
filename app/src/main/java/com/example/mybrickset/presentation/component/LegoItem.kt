@@ -112,6 +112,7 @@ fun LegoItem(
                 Text(
                     text = set.name,
                     style = MaterialTheme.typography.titleSmall,
+                    color = Color.Black,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold,
                     maxLines = 3,
@@ -125,6 +126,7 @@ fun LegoItem(
                         text = set.number,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
+                        color = Color.Black,
                         modifier = Modifier
                     )
                 }

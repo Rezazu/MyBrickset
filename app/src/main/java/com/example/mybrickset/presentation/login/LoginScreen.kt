@@ -119,8 +119,9 @@ fun LoginScreen(
                 Column {
                     Text(
                         text = "Username",
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color.Black,
+                        )
                     OutlinedTextField(
 //                    value = usernameText,
                         value = "",
@@ -147,8 +148,9 @@ fun LoginScreen(
                 Column {
                     Text(
                         text = "Password",
-                        style = MaterialTheme.typography.labelLarge
-                    )
+                        style = MaterialTheme.typography.labelLarge,
+                        color = Color.Black,
+                        )
                     OutlinedTextField(
 //                    value = passwordText,
                         value = "abcd",
