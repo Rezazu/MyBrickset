@@ -14,7 +14,9 @@ import com.example.mybrickset.data.repository.LocalRepositoryImplementation
 import com.example.mybrickset.domain.BricksetRepository
 import com.example.mybrickset.domain.LocalRepository
 import com.example.mybrickset.domain.usecase.BricksetUseCases
+import com.example.mybrickset.domain.usecase.GetAdditionalImage
 import com.example.mybrickset.domain.usecase.GetNewReleasedSets
+import com.example.mybrickset.domain.usecase.GetSetById
 import com.example.mybrickset.domain.usecase.GetSetsByTheme
 import com.example.mybrickset.domain.usecase.GetThemes
 import com.example.mybrickset.domain.usecase.Login
@@ -82,7 +84,9 @@ object AppModule {
             getSetsByTheme = GetSetsByTheme(bricksetRepository),
             getThemes = GetThemes(bricksetRepository),
             searchSets = SearchSets(bricksetRepository),
-            login = Login(bricksetRepository)
+            login = Login(bricksetRepository),
+            getAdditionalImage = GetAdditionalImage(bricksetRepository),
+            getSetById = GetSetById(bricksetRepository)
         )
     }
 

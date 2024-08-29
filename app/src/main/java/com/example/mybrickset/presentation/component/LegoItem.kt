@@ -43,6 +43,7 @@ import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 @Composable
 fun LegoItem(
     set: Set,
+    navigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -57,7 +58,8 @@ fun LegoItem(
             .height(220.dp)
             .width(140.dp),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, LightGray)
+        border = BorderStroke(1.dp, LightGray),
+        onClick = { navigateToDetail() }
     ) {
         Column(
             modifier = Modifier
@@ -102,7 +104,10 @@ fun LegoItem(
             Column(
                 modifier
                     .heightIn(min = 72.dp)
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 4.dp
+                    )
             ) {
                 Text(
                     text = set.name,
@@ -134,7 +139,8 @@ fun LegoItem(
 private fun LegoItemPreview() {
     MyBricksetTheme {
         LegoItem(
-            set = Dummy.DummySet
+            set = Dummy.DummySet,
+            navigateToDetail = {}
         )
     }
 }

@@ -13,15 +13,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.mybrickset.data.Result
+import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.LegoItem
 
 @Composable
 fun SearchScreen(
     query: String,
     viewModel: SearchViewModel = hiltViewModel(),
-//    navigateBack: () -> Unit,
-//    navigateToDetail: () -> Unit
+    navController: NavHostController,
 ) {
 
     viewModel.searchSetsState.collectAsState(initial = Result.Loading).value.let { result ->
@@ -38,9 +39,14 @@ fun SearchScreen(
                         .padding(vertical = 24.dp, horizontal = 8.dp)
                 ) {
                     val data = result.data
-                    items(data.size) { set ->
-                        data[set].let {
-                            LegoItem(set = it)
+                    items(data.size) {
+                        data[it].let { set ->
+                            LegoItem(
+                                set = set,
+                                navigateToDetail = {
+                                    navController.navigate(Screen.DetailScreen(set.setID))
+                                }
+                            )
                         }
                     }
                 }

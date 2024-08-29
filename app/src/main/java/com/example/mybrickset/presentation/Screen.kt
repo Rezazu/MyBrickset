@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation
 
+import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import kotlinx.serialization.Serializable
 
@@ -33,7 +34,9 @@ sealed class Screen(
     data object ProfileScreen : Screen()
 
     @Serializable
-    data object DetailScreen : Screen()
+    data class DetailScreen(
+        val setId: Int
+    ): Screen()
 
     @Serializable
     data class SearchScreen(

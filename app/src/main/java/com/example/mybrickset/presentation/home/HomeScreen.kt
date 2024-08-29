@@ -95,7 +95,6 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(
     newSets: List<Set>,

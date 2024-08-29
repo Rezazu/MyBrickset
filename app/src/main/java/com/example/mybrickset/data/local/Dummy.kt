@@ -8,6 +8,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Collection
 import com.example.mybrickset.data.remote.dto.getsets.Collections
 import com.example.mybrickset.data.remote.dto.getsets.DE
 import com.example.mybrickset.data.remote.dto.getsets.Dimensions
+import com.example.mybrickset.data.remote.dto.getsets.ExtendedData
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
@@ -117,16 +118,22 @@ object Dummy {
                 instructionsCount = 3,
                 additionalImageCount = 7,
                 ageRange = AgeRange(
-                    min = 9
+                    min = 9,
+                    max = 12
                 ),
                 dimensions = Dimensions(
                     height = 26.2,
                     width = 38.2,
-                    depth = 5.7
+                    depth = 5.7,
+                    weight = 500.0
                 ),
                 barcode =  Barcode(
                     EAN= "5702017155517",
                     UPC = "673419357456"
+                ),
+                extendedData = ExtendedData(
+                    description = "<p>Tatooine tales from <i>Star&nbsp;Wars</i>: The Book of Boba Fett come to life for young builders with this LEGOÂ® brick model of The Mandalorianâ€™s N-1 Starfighter (75325). It has a minifigure cockpit, passenger space for Grogu, a cargo compartment, a spring-loaded shooter and realistic details. A fun gift for kids aged 9 and up, this building toy features LEGO minifigures of The Mandalorian and Peli Motto, plus LEGO figures of Grogu (affectionately known by fans as â€˜Baby Yodaâ€™) and a BD Droid to inspire creative role play.</p><p>Digital building tools<br />Step-by-step, illustrated building instructions are included with this set. And check out the LEGO Building Instructions app, with intuitive zoom and rotate viewing tools to add another dimension to the creative experience.</p><p>Awesome building toys<br />The LEGO Group has been creating brick-built versions of iconic <i>Star&nbsp;Wars</i>â„¢ starships, vehicles, locations and characters since 1999. LEGO <i>Star&nbsp;Wars</i> has become its most successful theme, with sets to excite fans of all ages.</p><ul><li>The Mandalorianâ€™s N-1 Starfighter (75325) from <i>Star&nbsp;Wars</i>: The Book of Boba Fett â€“ Fans can relive <i>Star&nbsp;Wars</i>: The Book of Boba Fett stories on Tatooine with this authentically detailed building toy</li><li>4 <i>Star&nbsp;Wars</i>â„¢ characters â€“ LEGOÂ® minifigures of The Mandalorian, with a darksaber and a jetpack accessory element, and Peli Motto with a wrench, plus LEGO figures of Grogu and a BD Droid</li><li>Play-inspiring features â€“ The starfighter features a minifigure cockpit, passenger space for Grogu, a small cargo compartment, a spring-loaded shooter and lots of authentic bashed-up details</li><li>Fun gift idea for ages 9 and up â€“ Give this 412-piece buildable toy playset as a birthday present, Christmas gift or special reward to creative kids who are into <i>Star&nbsp;Wars</i>: The Book of Boba Fett</li><li>For play and display â€“ This buildable N-1 Starfighter model measures over 7 cm (2.5 in.) high, 42 cm (16.5 in.) long and 29 cm (11.5 in.) wide, and can be displayed between playtimes</li><li>App-assisted building â€“ Find instructions in the box and on the LEGOÂ® Building Instructions app, which features digital viewing tools to add to the fun, creative experience</li><li>Building toys for all ages â€“ Discover LEGOÂ® <i>Star&nbsp;Wars</i>â„¢ sets for kids and adult fans to recreate iconic scenes, make up their own stories or simply display the buildable models</li><li>Premium quality â€“ LEGOÂ® bricks and pieces meet stringent quality standards, ensuring that they connect simply and securely</li><li>Safety assurance â€“ LEGOÂ® components are dropped, heated, crushed, twisted and carefully analysed to make sure they comply with rigorous global safety standards</li></ul>",
+                    tags = listOf("Grogu","Mandalorian","Tatooine"),
                 ),
                 lastUpdated = "2022-05-04T16:21:28.11Z"
             )

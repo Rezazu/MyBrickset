@@ -11,6 +11,7 @@ data class Set(
     val collection: Collection,
     val collections: Collections,
     val dimensions: Dimensions,
+    val extendedData: ExtendedData,
     val image: Image,
     val instructionsCount: Int,
     val lastUpdated: String,

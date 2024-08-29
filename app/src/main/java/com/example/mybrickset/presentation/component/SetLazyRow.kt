@@ -24,13 +24,10 @@ fun SetLazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
     ) {
-        items(setsList.size) {
+        items(setsList.size) { index ->
             LegoItem(
-                set = setsList[it],
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(Screen.DetailScreen)
-                    }
+                set = setsList[index],
+                navigateToDetail = { navController.navigate(Screen.DetailScreen(setId = setsList[index].setID)) }
             )
         }
     }

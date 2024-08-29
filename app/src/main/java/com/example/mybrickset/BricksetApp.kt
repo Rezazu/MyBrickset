@@ -4,17 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,28 +21,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.toRoute
+import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.AppViewModel
-import com.example.mybrickset.presentation.NavigationItem
+import com.example.mybrickset.presentation.CustomNavType
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.SearchWidgetState
 import com.example.mybrickset.presentation.collection.CollectionScreen
 import com.example.mybrickset.presentation.component.BottomBar
-import com.example.mybrickset.presentation.component.SearchBar
 import com.example.mybrickset.presentation.component.TopBar
 import com.example.mybrickset.presentation.detail.DetailScreen
 import com.example.mybrickset.presentation.home.HomeScreen
@@ -136,15 +127,16 @@ fun BricksetApp(
                 bottomBarState.value = true
                 ProfileScreen()
             }
-            composable<Screen.DetailScreen> { 
+            composable<Screen.DetailScreen> {
                 bottomBarState.value = false
-                DetailScreen()
+                val args = it.toRoute<Screen.DetailScreen>()
+                DetailScreen(setId = args.setId)
             }
             composable<Screen.SearchScreen> { 
                 topBarState.value = true
                 bottomBarState.value = false
                 val args = it.toRoute<Screen.SearchScreen>()
-                SearchScreen(query = args.query)
+                SearchScreen(query = args.query, navController = navController)
             }
             composable<Screen.ThemeScreen>(
                 typeMap = mapOf(
@@ -154,7 +146,7 @@ fun BricksetApp(
                 topBarState.value = true
                 bottomBarState.value = false
                 val args = it.toRoute<Screen.ThemeScreen>()
-                ThemeScreen(theme = args.theme)
+                ThemeScreen(theme = args.theme, navController = navController)
             }
         }
 //        NavHost(

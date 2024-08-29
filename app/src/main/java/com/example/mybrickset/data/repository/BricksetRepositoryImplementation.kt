@@ -2,6 +2,7 @@ package com.example.mybrickset.data.repository
 
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.BricksetApi
+import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
@@ -40,5 +41,13 @@ class BricksetRepositoryImplementation @Inject constructor(
 
     override suspend fun login(username: String, password: String): LoginResponse {
         return bricksetApi.login(username = username, password = password)
+    }
+
+    override suspend fun getAdditionalImage(setId: Int): ImageResponse {
+        return bricksetApi.getAdditionalImages(setId = setId)
+    }
+
+    override suspend fun getSetById(setId: Int): SetsResponse {
+        return bricksetApi.getSets(userHash = "", params = "{'setID':$setId}")
     }
 }
