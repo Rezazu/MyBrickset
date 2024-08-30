@@ -142,7 +142,7 @@ fun CollectionItem2(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 1.dp
         ),
         modifier = modifier
             .fillMaxWidth()

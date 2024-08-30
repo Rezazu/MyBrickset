@@ -59,7 +59,11 @@ class HomeViewModel @Inject constructor(
         bricksetUseCases.getSetsByTheme(theme, 30).onEach { result ->
             when(result) {
                 is Result.Success -> {
-                    _theme1StateSets.value = Theme1SetsState(sets = result.data.sets)
+                    _theme1StateSets.value = Theme1SetsState(
+                        sets = result.data.sets.filterNot {
+                            it.name.contains("{?}")
+                        }
+                    )
                 }
                 is Result.Error -> {
                     _theme1StateSets.value = Theme1SetsState(error = result.error ?:

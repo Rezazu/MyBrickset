@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -29,12 +32,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,6 +56,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
@@ -60,12 +67,12 @@ import com.example.mybrickset.R
 import com.example.mybrickset.Services
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.local.Dummy
-import com.example.mybrickset.data.remote.dto.getadditionalimages.AdditionalImage
+import com.example.mybrickset.data.remote.dto.getreviews.Review
+import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.ui.theme.CreamBackground
 import com.example.mybrickset.presentation.ui.theme.Green
-import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
 import com.example.mybrickset.presentation.ui.theme.YellowMain
@@ -76,6 +83,8 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val images = viewModel.images.collectAsState()
+    val reviews = viewModel.reviews.collectAsState()
+
     val context = LocalContext.current
     viewModel.set.collectAsState(initial = Result.Loading).value.let { result ->
         when(result) {
@@ -89,6 +98,7 @@ fun DetailScreen(
                 DetailScreenContent(
                     set = result.data,
                     additionalImage = images.value.images,
+                    reviews = reviews.value.reviews,
                     context
                 )
             }
@@ -100,7 +110,8 @@ fun DetailScreen(
 @Composable
 fun DetailScreenContent(
     set: Set,
-    additionalImage: List<AdditionalImage>,
+    additionalImage: List<Image>,
+    reviews: List<Review>,
     context: Context,
     modifier: Modifier = Modifier
 ) {
@@ -198,6 +209,7 @@ fun DetailScreenContent(
         )
         DetailReview(
             rating = set.rating,
+            reviews = reviews,
             reviewCount = set.reviewCount,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -322,26 +334,30 @@ fun DetailDescription(
     var descriptionState by remember {
         mutableStateOf(false)
     }
-
-    Surface (
-        color = CreamBackground,
-        modifier = if (descriptionState == false) {
-            modifier
-                .fillMaxWidth()
-                .height(128.dp)
-        } else {
-            Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-        }
-    ){
+    
+    Column(
+        modifier = Modifier
+            .wrapContentSize()
+            .background(CreamBackground)
+    ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    vertical = 6.dp,
-                    horizontal = 12.dp
-                )
+            modifier = if (descriptionState == false) {
+                modifier
+                    .fillMaxWidth()
+                    .height(128.dp)
+                    .padding(
+                        vertical = 6.dp,
+                        horizontal = 12.dp
+                    )
+            } else {
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(
+                        vertical = 6.dp,
+                        horizontal = 12.dp
+                    )
+            }
         ) {
             Row (
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -353,7 +369,7 @@ fun DetailDescription(
                     text = "Description",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                )
+                    )
                 Icon(
                     imageVector =
                     if (descriptionState == false) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
@@ -372,12 +388,34 @@ fun DetailDescription(
                 )
             }
         }
+        TextButton(
+            onClick = { descriptionState = !descriptionState },
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.CenterHorizontally)
+        ) {
+            if (descriptionState == false) {
+                Text(
+                    text = "Read More",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+            } else {
+                Text(
+                    text = "Read Less",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun DetailPager(
-    images: List<AdditionalImage>,
+    images: List<Image>,
     context: Context,
     pagerState: PagerState,
     modifier: Modifier = Modifier
@@ -451,54 +489,138 @@ fun DetailPager(
 @Composable
 fun DetailReview(
     rating: Double,
+    reviews: List<Review>,
     reviewCount: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
+            .wrapContentSize()
+    ) {
+        if (reviews.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 6.dp,
+                        bottom = 0.dp,
+                        start = 12.dp,
+                        end = 12.dp
+                    )
+
+            ) {
+                Text(
+                    text = "Review",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = null,
+                        tint = YellowMain,
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                    )
+                    Text(
+                        text = rating.toString(),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                    Text(
+                        text = "${reviewCount} reviews",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                }
+            }
+            Column {
+                ReviewCard(review = reviews[0])
+                HorizontalDivider()
+                ReviewCard(review = reviews[1])
+                HorizontalDivider()
+            }
+        } else {
+            Text(
+                text = "This set has no review yet",
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier
+                    .padding(vertical = 6.dp)
+                )
+        }
+    }
+}
+
+@Composable
+fun ReviewCard(
+    review: Review,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        shape = RoundedCornerShape(0.dp),
+        modifier = Modifier
             .fillMaxWidth()
-            .height(256.dp)
-            .padding(
-                vertical = 6.dp,
-                horizontal = 12.dp
-            )
+            .height(160.dp)
+            .padding(8.dp)
     ) {
         Text(
-            text = "Review",
+            text = review.author,
             style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Bold
         )
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(36.dp)
-        ) {
+        Row {
+            Text(
+                text = review.rating.overall.toString()
+            )
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
                 tint = YellowMain,
                 modifier = Modifier
-                    .padding(horizontal = 2.dp)
             )
-            Text(
-                text = rating.toString(),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .padding(horizontal = 2.dp)
-                    .align(Alignment.CenterVertically)
-            )
-            Text(
-                text = "${reviewCount} reviews",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .align(Alignment.CenterVertically)
-            )
-
-
         }
+        Text(
+            text = review.title,
+            style = MaterialTheme.typography.titleSmall,
+            )
+        Text(
+            text = HtmlCompat.fromHtml(review.review, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .padding(4.dp)
+        )
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ReviewCardPreview() {
+    MyBricksetTheme {
+        DetailReview(
+            rating = 5.0,
+            reviews = listOf(
+                Dummy.DummyReview,
+                Dummy.DummyReview,
+                Dummy.DummyReview,
+            ),
+            reviewCount = 5
+        )
     }
 }
 
@@ -512,13 +634,17 @@ private fun DetailScreenPreview(
         DetailScreenContent(
             additionalImage =
             listOf(
-                AdditionalImage(
+                Image(
                     thumbnailURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/tn_40674_alt1_jpg.jpg",
                     imageURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/40674_alt1.jpg",
                 )
             ),
             context = LocalContext.current,
-            set = Dummy.DummySet
+            set = Dummy.DummySet,
+            reviews = listOf(
+                Dummy.DummyReview,
+                Dummy.DummyReview,
+            )
         )
     }
 }

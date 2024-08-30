@@ -2,6 +2,7 @@ package com.example.mybrickset.domain
 
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
+import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
@@ -17,4 +18,5 @@ interface BricksetRepository {
     suspend fun login(username: String, password: String): LoginResponse
     suspend fun getAdditionalImage(setId: Int): ImageResponse
     suspend fun getSetById(setId: Int): SetsResponse
+    suspend fun getReviews(setId: Int): ReviewsResponse
 }

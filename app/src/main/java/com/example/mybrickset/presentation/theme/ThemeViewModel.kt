@@ -35,7 +35,11 @@ class ThemeViewModel @Inject constructor(
                     _themeSets.value = Result.Loading
                 }
                 is Result.Success -> {
-                    _themeSets.value = Result.Success(result.data.sets)
+                    _themeSets.value = Result.Success(
+                        result.data.sets.filterNot {
+                            it.name.contains("{?}")
+                        } ?: emptyList()
+                    )
                     _countSets.value = result.data.matches.toString()
                 }
             }

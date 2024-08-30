@@ -2,6 +2,7 @@ package com.example.mybrickset.data.remote
 
 import com.example.mybrickset.Const.API_KEY
 import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
+import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
@@ -34,4 +35,10 @@ interface BricksetApi {
         @Query("apiKey") apiKey: String = API_KEY,
         @Query("setID") setId: Int
     ): ImageResponse
+
+    @GET("getReviews")
+    suspend fun getReviews(
+        @Query("apiKey") apiKey: String = API_KEY,
+        @Query("setID") setId: Int
+    ): ReviewsResponse
 }

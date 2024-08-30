@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -248,7 +249,7 @@ fun DefaultTopBar(
                     .size(48.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Notifications,
+                    imageVector = Icons.Filled.Favorite,
                     contentDescription = "Localized description",
                     tint = MaterialTheme.colorScheme.onSecondaryContainer,
                 )

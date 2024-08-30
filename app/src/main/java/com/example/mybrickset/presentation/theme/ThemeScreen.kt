@@ -53,7 +53,10 @@ fun ThemeScreen(
         viewModel.themeSets.collectAsState(initial = Result.Loading).value.let { result ->
             when(result) {
                 is Result.Error -> {
-
+                    Text(
+                        text = result.error ?: "An unexpected error, but a welcome one",
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
                 is Result.Loading -> {
                     viewModel.getSetsByTheme(theme.theme)
