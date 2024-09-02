@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -29,15 +31,19 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -71,10 +77,17 @@ import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.presentation.component.DetailButton
+import com.example.mybrickset.presentation.component.DetailDescription
+import com.example.mybrickset.presentation.component.DetailPager
+import com.example.mybrickset.presentation.component.DetailPrice
+import com.example.mybrickset.presentation.component.DetailReview
 import com.example.mybrickset.presentation.ui.theme.CreamBackground
 import com.example.mybrickset.presentation.ui.theme.Green
+import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
+import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 import com.example.mybrickset.presentation.ui.theme.YellowMain
 
 @Composable
@@ -130,27 +143,8 @@ fun DetailScreenContent(
         HorizontalDivider(modifier = Modifier.height(1.dp))
         Column(
             modifier = Modifier
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp, vertical = 18.dp)
         ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(36.dp)
-                    .padding(horizontal = 8.dp)
-            ) {
-//                IconButton(
-//                    onClick = {},
-//                    modifier = Modifier
-//                        .size(24.dp)
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_web),
-//                        contentDescription = "",
-//                        tint = MatteBlue
-//                    )
-//                }
-            }
             Column {
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
@@ -159,7 +153,7 @@ fun DetailScreenContent(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = set.name,
+                        text = "${set.name} ${set.number}-${set.numberVariant}",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
@@ -197,12 +191,13 @@ fun DetailScreenContent(
         DetailPrice(
             price = set.LEGOCom
         )
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+        DetailButton(bricksetUrl = set.bricksetURL, isFavorite = set.collection.wanted)
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
         )
         DetailDescription(
-            description = set.extendedData.description,
+            set = set,
         )
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
@@ -214,416 +209,7 @@ fun DetailScreenContent(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
-
 }
-
-@Composable
-fun DetailPrice(
-    price: LEGOCom,
-    modifier: Modifier = Modifier
-) {
-    Column (
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = 12.dp)
-    ){
-        Text(
-            text = "Set Prices",
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(vertical = 4.dp)
-        )
-        Row (
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(72.dp)
-                .background(CreamBackground)
-                .border(
-                    BorderStroke(
-                        1.dp,
-                        Color.LightGray
-                    )
-                )
-                .clip(RoundedCornerShape(8.dp))
-        ) {
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_de),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(24.dp)
-                )
-                Text(
-                    text = "${price.DE.retailPrice} kr",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(vertical = 2.dp)
-                )
-            }
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_us),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(24.dp)
-                )
-                Text(
-                    text = "$ ${price.US.retailPrice} USD",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(vertical = 2.dp)
-                )
-            }
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_uk),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(24.dp)
-                )
-                Text(
-                    text = "£ ${price.UK.retailPrice} GBP",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(vertical = 2.dp)
-                )
-            }
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_ca),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(24.dp)
-                )
-                Text(
-                    text = " $ ${price.CA.retailPrice} CAD",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .padding(vertical = 2.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun DetailDescription(
-    description: String?,
-    modifier: Modifier = Modifier
-) {
-    var descriptionState by remember {
-        mutableStateOf(false)
-    }
-    
-    Column(
-        modifier = Modifier
-            .wrapContentSize()
-            .background(CreamBackground)
-    ) {
-        Column(
-            modifier = if (descriptionState == false) {
-                modifier
-                    .fillMaxWidth()
-                    .height(128.dp)
-                    .padding(
-                        vertical = 6.dp,
-                        horizontal = 12.dp
-                    )
-            } else {
-                Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(
-                        vertical = 6.dp,
-                        horizontal = 12.dp
-                    )
-            }
-        ) {
-            Row (
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 6.dp)
-            ) {
-                Text(
-                    text = "Description",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    )
-                Icon(
-                    imageVector =
-                    if (descriptionState == false) Icons.Filled.KeyboardArrowDown else Icons.Filled.KeyboardArrowUp,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clickable {
-                            descriptionState = !descriptionState
-                        }
-                )
-            }
-            description?.let { description ->
-                Text(
-                    text = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
-                    color = Color.Black,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-        }
-        TextButton(
-            onClick = { descriptionState = !descriptionState },
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally)
-        ) {
-            if (descriptionState == false) {
-                Text(
-                    text = "Read More",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-            } else {
-                Text(
-                    text = "Read Less",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun DetailPager(
-    images: List<Image>,
-    context: Context,
-    pagerState: PagerState,
-    modifier: Modifier = Modifier
-) {
-
-    val configuration = LocalConfiguration.current
-
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
-
-    Box(
-        modifier = modifier
-    ) {
-        HorizontalPager(
-            state = pagerState
-        ) { page ->
-            AsyncImage(
-                model = ImageRequest
-                    .Builder(context)
-                    .placeholder(R.drawable.logo_brickset)
-                    .data(images[page].imageURL)
-                    .build(),
-                contentDescription = null,
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .width(screenWidth)
-                    .height(screenWidth)
-            )
-        }
-        Surface(
-            color = Color.White,
-            modifier = Modifier
-                .padding(24.dp)
-                .width(52.dp)
-                .height(32.dp)
-                .align(Alignment.BottomStart),
-            border = BorderStroke(1.dp, Color.LightGray),
-            shape = RoundedCornerShape(8.dp)
-
-            ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Text(
-                    text = (pagerState.currentPage + 1).toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.DarkGray
-                )
-                Text(
-                    text = "/",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.DarkGray
-                )
-                Text(
-                    text = pagerState.pageCount.toString(),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.DarkGray
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun DetailReview(
-    rating: Double,
-    reviews: List<Review>,
-    reviewCount: Int,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .wrapContentSize()
-    ) {
-        if (reviews.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 6.dp,
-                        bottom = 0.dp,
-                        start = 12.dp,
-                        end = 12.dp
-                    )
-
-            ) {
-                Text(
-                    text = "Review",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                )
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(36.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = YellowMain,
-                        modifier = Modifier
-                            .padding(horizontal = 2.dp)
-                    )
-                    Text(
-                        text = rating.toString(),
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier
-                            .padding(horizontal = 2.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                    Text(
-                        text = "${reviewCount} reviews",
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                }
-            }
-            Column {
-                ReviewCard(review = reviews[0])
-                HorizontalDivider()
-                ReviewCard(review = reviews[1])
-                HorizontalDivider()
-            }
-        } else {
-            Text(
-                text = "This set has no review yet",
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier
-                    .padding(vertical = 6.dp)
-                )
-        }
-    }
-}
-
-@Composable
-fun ReviewCard(
-    review: Review,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
-        ),
-        shape = RoundedCornerShape(0.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(160.dp)
-            .padding(8.dp)
-    ) {
-        Text(
-            text = review.author,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold
-        )
-        Row {
-            Text(
-                text = review.rating.overall.toString()
-            )
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = null,
-                tint = YellowMain,
-                modifier = Modifier
-            )
-        }
-        Text(
-            text = review.title,
-            style = MaterialTheme.typography.titleSmall,
-            )
-        Text(
-            text = HtmlCompat.fromHtml(review.review, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
-            style = MaterialTheme.typography.bodySmall,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(4.dp)
-        )
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ReviewCardPreview() {
-    MyBricksetTheme {
-        DetailReview(
-            rating = 5.0,
-            reviews = listOf(
-                Dummy.DummyReview,
-                Dummy.DummyReview,
-                Dummy.DummyReview,
-            ),
-            reviewCount = 5
-        )
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -17,6 +19,14 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        val keyStoreFile = project.rootProject.file("gradle.properties")
+        val properties = Properties()
+        properties.load(keyStoreFile.inputStream())
+        val API_KEY = properties.getProperty("API_KEY") ?: ""
+        val BASE_URL = properties.getProperty("BASE_URL") ?: ""
+        buildConfigField ( "String", "API_KEY", API_KEY)
+        buildConfigField ( "String", "BASE_URL", BASE_URL)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -42,6 +52,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

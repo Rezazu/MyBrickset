@@ -101,7 +101,7 @@ object Dummy {
                 bricksetURL = "https://brickset.com/sets/75325-1",
                 collection = Collection(
                     owned = true,
-                    wanted = false,
+                    wanted = true,
                     qtyOwned = 1,
                     rating = 0,
                     notes = ""

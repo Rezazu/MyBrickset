@@ -3,7 +3,7 @@ package com.example.mybrickset.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.mybrickset.Const.BASE_URL
+import com.example.mybrickset.BuildConfig
 import com.example.mybrickset.Const.DATABASE_NAME
 import com.example.mybrickset.data.local.CollectionDao
 import com.example.mybrickset.data.local.CollectionDatabase
@@ -51,7 +51,7 @@ object AppModule {
         val authInterceptor = Interceptor { chain ->
             val req = chain.request()
             val requestHeaders = req.newBuilder()
-                .addHeader("Authorization", BASE_URL)
+                .addHeader("Authorization", BuildConfig.BASE_URL)
                 .build()
             chain.proceed(requestHeaders)
         }
@@ -60,7 +60,7 @@ object AppModule {
             .addInterceptor(interceptor)
             .build()
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

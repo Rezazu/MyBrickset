@@ -35,7 +35,9 @@ class HomeViewModel @Inject constructor(
     init {
 //        getNewReleasedSet()
 //        getSetsByTheme("Star Wars")
-        getThemes()
+        if (_stateThemes.value.themes.isEmpty()) {
+            getThemes()
+        }
     }
 
     private fun getNewReleasedSet(){
@@ -55,26 +57,26 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getSetsByTheme(theme: String){
-        bricksetUseCases.getSetsByTheme(theme, 30).onEach { result ->
-            when(result) {
-                is Result.Success -> {
-                    _theme1StateSets.value = Theme1SetsState(
-                        sets = result.data.sets.filterNot {
-                            it.name.contains("{?}")
-                        }
-                    )
-                }
-                is Result.Error -> {
-                    _theme1StateSets.value = Theme1SetsState(error = result.error ?:
-                    "An unexpected error, but a welcome one")
-                }
-                is Result.Loading -> {
-                    _theme1StateSets.value = Theme1SetsState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
+//    private fun getSetsByTheme(theme: String){
+//        bricksetUseCases.getSetsByTheme(theme, 30).onEach { result ->
+//            when(result) {
+//                is Result.Success -> {
+//                    _theme1StateSets.value = Theme1SetsState(
+//                        sets = result.data.sets.filterNot {
+//                            it.name.contains("{?}")
+//                        }
+//                    )
+//                }
+//                is Result.Error -> {
+//                    _theme1StateSets.value = Theme1SetsState(error = result.error ?:
+//                    "An unexpected error, but a welcome one")
+//                }
+//                is Result.Loading -> {
+//                    _theme1StateSets.value = Theme1SetsState(isLoading = true)
+//                }
+//            }
+//        }.launchIn(viewModelScope)
+//    }
 
     private fun getThemes() {
         bricksetUseCases.getThemes().onEach { result ->

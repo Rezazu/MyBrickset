@@ -13,6 +13,7 @@ val Pink40 = Color(0xFF7D5260)
 val YellowMain = Color(0xFFFFCF00)
 val LightYellow = Color(0xFFFFEA90)
 val DarkGray = Color(0xFF434343)
+
 val MatteBlue = Color(0XFF2D84BF)
 val WhiteBackground = Color(0xFFEBEBEB)
 val CreamBackground = Color(0xFFFEFAF2)

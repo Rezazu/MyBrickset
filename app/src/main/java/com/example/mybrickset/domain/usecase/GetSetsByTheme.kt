@@ -1,5 +1,6 @@
 package com.example.mybrickset.domain.usecase
 
+import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
@@ -12,19 +13,16 @@ import java.io.IOException
 class GetSetsByTheme(
     private val bricksetRepository: BricksetRepository,
 ) {
-    operator fun invoke(themes: String, count: Int): Flow<Result<SetsResponse>> = flow{
+    operator fun invoke(themes: String, count: Int): Flow<Resource<SetsResponse>> = flow{
         try {
-            emit(Result.Loading)
+            emit(Resource.Loading())
             val pageSize = if (count >= 1) ",'pageSize':$count" else ""
-//            val sets = bricksetRepository.getSetsByTheme(theme = themes, pageSize = pageSize).sets.filterNot {
-//                it.name.contains("{?}")
-//            }
             val sets = bricksetRepository.getSetsByTheme(theme = themes, pageSize = pageSize)
-            emit(Result.Success(sets))
+            emit(Resource.Success(sets))
         } catch (e: HttpException) {
-            emit(Result.Error(e.localizedMessage ?: "An unexpected error, but a welcome one"))
+            emit(Resource.Error(e.localizedMessage ?: "An unexpected error, but a welcome one"))
         } catch (e: IOException) {
-            emit(Result.Error("So unicivilized (No Connection!)"))
+            emit(Resource.Error("So unicivilized (No Connection!)"))
         }
     }
 }

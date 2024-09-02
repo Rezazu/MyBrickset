@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -119,15 +120,14 @@ fun LoginScreen(
                 Column {
                     Text(
                         text = "Username",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontFamily = FontFamily.SansSerif
+                        ),
                         color = Color.Black,
                         )
                     OutlinedTextField(
 //                    value = usernameText,
                         value = "",
-                        placeholder = {
-                            Text(text = "Username")
-                        },
                         onValueChange = {
 //                        viewModel.onUsernameTextChange(it)
                         },
@@ -148,15 +148,14 @@ fun LoginScreen(
                 Column {
                     Text(
                         text = "Password",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = Color.Black,
-                        )
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontFamily = FontFamily.SansSerif
+                        ),
+                        color = Color.Black
+                    )
                     OutlinedTextField(
 //                    value = passwordText,
-                        value = "abcd",
-                        placeholder = {
-                            Text(text = "Password")
-                        },
+                        value = "",
                         onValueChange = {
 //                        viewModel.onPasswordTextChange(it)
                         },

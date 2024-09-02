@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.Screen
@@ -32,56 +33,63 @@ fun ThemeScreen(
 ) {
     
     val setCount = viewModel.countSets.collectAsState().value
+    val setState = viewModel.themeSets2.value
 
-    Column {
-        Text(
-            buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
-                    append("Showing ")
-                }
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(setCount)
-                }
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
-                    append(" Result")
-                }
-            },
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
-        )
-
-        viewModel.themeSets.collectAsState(initial = Result.Loading).value.let { result ->
-            when(result) {
-                is Result.Error -> {
-                    Text(
-                        text = result.error ?: "An unexpected error, but a welcome one",
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-                is Result.Loading -> {
-                    viewModel.getSetsByTheme(theme.theme)
-                }
-                is Result.Success -> {
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Fixed(2),
-                        verticalItemSpacing = 8.dp,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp),
-                    ) {
-                        val data = result.data
-                        items(data.size) {
-                            data[it].let { set ->
-                                LegoItem(
-                                    set = set,
-                                    navigateToDetail = {
-                                        navController.navigate(Screen.DetailScreen(setId = set.setID))
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+    setState.let { setsState ->
+        if (setsState.error.isNotBlank()) {
+            Text(
+                text = "Some Error Happened",
+                color = MaterialTheme.colorScheme.error
+            )
+        } else if (setsState.isLoading) {
+            viewModel.getSetsByTheme2(theme.theme)
         }
     }
-}
+
+//        viewModel.themeSets.collectAsState(initial = Resource.Loading()).value.let { result ->
+//            when(result) {
+//                is Resource.Error -> {
+//                    Text(
+//                        text = "Some Error Occured",
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
+//                is Resource.Loading -> {
+//                    viewModel.getSetsByTheme(theme.theme)
+//                }
+//                is Resource.Success -> {
+//                    Text(
+//                        buildAnnotatedString {
+//                            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
+//                                append("Showing ")
+//                            }
+//                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+//                                append(setCount)
+//                            }
+//                            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
+//                                append(" Result")
+//                            }
+//                        },
+//                    )
+//                    LazyVerticalStaggeredGrid(
+//                        columns = StaggeredGridCells.Fixed(2),
+//                        verticalItemSpacing = 8.dp,
+//                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+//                        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp),
+//                    ) {
+//                        val data = result.data
+//                        items(data.size) {
+//                            data[it].let { set ->
+//                                LegoItem(
+//                                    set = set,
+//                                    navigateToDetail = {
+//                                        navController.navigate(Screen.DetailScreen(setId = set.setID))
+//                                    }
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+    }
