@@ -44,6 +44,11 @@ class CollectionViewModel @Inject constructor(
     private val _priceInput = MutableStateFlow("")
     val priceInput: StateFlow<String> = _priceInput
 
+
+    init {
+        getAllSetCollection()
+    }
+
     private fun insertSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.insertSetCollection(setCollection)
         _numberInput.value = ""
@@ -53,10 +58,6 @@ class CollectionViewModel @Inject constructor(
         _conditionInput.value = ""
         _acquiredDateInput.value = ""
         _priceInput.value = ""
-    }
-
-    init {
-        getAllSetCollection()
     }
 
     fun insertSetCollection() {
@@ -71,6 +72,10 @@ class CollectionViewModel @Inject constructor(
                 _priceInput.value.toInt()
             )
         )
+    }
+
+    fun deleteSetCollection(setCollection: SetCollection) = viewModelScope.launch {
+        localUseCase.deleteSetCollection(setCollection)
     }
 
     fun getAllSetCollection(): Flow<List<SetCollection>> {

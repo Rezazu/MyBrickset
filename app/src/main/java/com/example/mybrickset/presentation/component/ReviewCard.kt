@@ -4,15 +4,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,15 +47,18 @@ fun ReviewCard(
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold
         )
-        Row {
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = review.rating.overall.toString()
             )
             Icon(
-                painter = painterResource(id = R.drawable.ic_star),
+                painter = painterResource(id = R.drawable.ic_star_filled),
                 contentDescription = null,
                 tint = YellowMain,
                 modifier = Modifier
+                    .size(18.dp)
             )
         }
         Text(
@@ -69,22 +73,15 @@ fun ReviewCard(
             modifier = Modifier
                 .padding(4.dp)
         )
-
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun ReviewCardPreview() {
     MyBricksetTheme {
-        DetailReview(
-            rating = 5.0,
-            reviews = listOf(
-                Dummy.DummyReview,
-                Dummy.DummyReview,
-                Dummy.DummyReview,
-            ),
-            reviewCount = 5
+        ReviewCard(
+            review = Dummy.DummyReview
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,14 +14,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,106 +50,24 @@ import coil.request.ImageRequest
 import com.example.mybrickset.R
 import com.example.mybrickset.Services
 import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.presentation.ui.theme.DarkGray
+import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
+import com.example.mybrickset.presentation.ui.theme.Red
 
 @Composable
 fun CollectionItem(
     setCollection: SetCollection,
+    editState: Boolean,
+    onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
-        ),
-        modifier = modifier
-            .fillMaxWidth()
-            .height(128.dp)
-            .padding(
-                horizontal = 8.dp,
-                vertical = 4.dp
-            )
-    ) {
-        Row (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp)
-        ) {
-            AsyncImage(
-                modifier = Modifier
-                    .size(80.dp)
-                    .align(Alignment.CenterVertically),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .placeholder(R.drawable.img_placeholder)
-                    .data(Uri.parse(setCollection.image))
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-            )
-            Column (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 16.dp,
-                        bottom = 16.dp,
-                        start = 16.dp,
-                        end = 0.dp
-                    )
-            ) {
-                Text(
-                    text = setCollection.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "${setCollection.number} - ${setCollection.numberVariant}",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold
-                )
-                Row (
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Acquired Date",
-                        modifier = Modifier
-                            .size(16.dp)
-                    )
-                    Text(
-                        text = setCollection.acquiredDate,
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = Services.getPriceIDR(setCollection.price),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CollectionItem2(
-    setCollection: SetCollection,
-    modifier: Modifier = Modifier) {
-    Card(
-        border = BorderStroke(1.dp, Color.LightGray),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
+            defaultElevation = 0.5.dp
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -166,36 +91,79 @@ fun CollectionItem2(
                 Icon(
                     imageVector = Icons.Default.DateRange,
                     contentDescription = "Acquired Date",
+                    tint = Color.DarkGray,
                     modifier = Modifier
                         .size(16.dp)
+
                 )
                 Text(
                     text = setCollection.acquiredDate,
                     style = MaterialTheme.typography.labelSmall,
+                    color = Color.DarkGray,
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Image(
-                    painter = painterResource(
-                        id = Services.getConditionIcon(setCollection.condition)
-                    ),
-                    contentDescription = "Condition",
-                    modifier = Modifier
-                        .size(36.dp)
-                )
+                if (editState == true) {
+                    Button(
+                        onClick = {
+                            onDeleteSetCollection(setCollection)
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Red
+                        ),
+                        contentPadding = PaddingValues(4.dp),
+                        shape = CircleShape,
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .size(24.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "",
+                            modifier = Modifier
+                        )
+                    }
+                    Button(
+                        onClick = {
 
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MatteBlue
+                        ),
+                        contentPadding = PaddingValues(4.dp),
+                        shape = CircleShape,
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .size(24.dp),
+                        ) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = "",
+                            modifier = Modifier
+                        )
+                    }
+                } else {
+                    Image(
+                        painter = painterResource(
+                            id = Services.getConditionIcon(setCollection.condition)
+                        ),
+                        contentDescription = "Condition",
+                        modifier = Modifier
+                            .size(38.dp)
+                    )
+                }
             }
 
-            HorizontalDivider(modifier = Modifier
-                .height(1.dp)
-                .border(
-                    BorderStroke(
-                        1.dp,
-                        Color.LightGray
-                    )
-                )
-            )
+//            HorizontalDivider(modifier = Modifier
+//                .height(1.dp)
+//                .border(
+//                    BorderStroke(
+//                        1.dp,
+//                        Color.LightGray
+//                    )
+//                )
+//            )
             Row (modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
@@ -229,6 +197,7 @@ fun CollectionItem2(
                     )
                     Text(
                         text = "${setCollection.number} - ${setCollection.numberVariant}",
+                        color = Color.DarkGray,
                         style = MaterialTheme.typography.labelSmall,
                     )
                     Text(
@@ -246,11 +215,13 @@ fun CollectionItem2(
     }
 }
 
+
+
 @Preview
 @Composable
 private fun CollectionItemPreview() {
     MyBricksetTheme {
-        CollectionItem2(
+        CollectionItem(
             setCollection =
                 SetCollection(
                     name = "Harry Potter",
@@ -260,7 +231,9 @@ private fun CollectionItemPreview() {
                     condition = "New",
                     acquiredDate = "26/01/2002",
                     price = 300000
-                )
+                ),
+            editState = true,
+            onDeleteSetCollection = {}
         )
     }
 }

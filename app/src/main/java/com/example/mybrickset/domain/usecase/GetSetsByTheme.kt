@@ -23,6 +23,8 @@ class GetSetsByTheme(
             emit(Resource.Error(e.localizedMessage ?: "An unexpected error, but a welcome one"))
         } catch (e: IOException) {
             emit(Resource.Error("So unicivilized (No Connection!)"))
+        } catch (e: Exception) {
+            emit(Resource.Error("Something went wrong!"))
         }
     }
 }

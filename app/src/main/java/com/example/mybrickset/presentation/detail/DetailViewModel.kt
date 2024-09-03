@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getadditionalimages.AdditionalImage
 import com.example.mybrickset.data.remote.dto.getreviews.Review
@@ -35,14 +36,14 @@ class DetailViewModel @Inject constructor(
     private fun getAdditionalImages(setId: Int) {
         bricksetUseCases.getAdditionalImage(setId).onEach { result ->
             when(result) {
-                is Result.Error -> {
-                    _images.value = ImagesState(error = result.error)
+                is Resource.Error -> {
+                    _images.value = ImagesState(error = result.message ?: "An Error Occured")
                 }
-                is Result.Loading -> {
+                is Resource.Loading -> {
                     _images.value = ImagesState(isLoading = true)
                 }
-                is Result.Success -> {
-                    _images.value = ImagesState(images = result.data)
+                is Resource.Success -> {
+                    _images.value = ImagesState(images = result.data ?: emptyList())
                 }
             }
         }.launchIn(viewModelScope)
@@ -69,14 +70,14 @@ class DetailViewModel @Inject constructor(
     fun getReviews(setId: Int) {
         bricksetUseCases.getReviews(setId).onEach { result ->
             when(result) {
-                is Result.Error -> {
-                    _reviews.value = ReviewsState(error = result.error)
+                is Resource.Error -> {
+                    _reviews.value = ReviewsState(error = result.message ?: "An Error Occured")
                 }
-                is Result.Loading -> {
+                is Resource.Loading -> {
                     _reviews.value = ReviewsState(isLoading = true)
                 }
-                is Result.Success -> {
-                    _reviews.value = ReviewsState(reviews = result.data)
+                is Resource.Success -> {
+                    _reviews.value = ReviewsState(reviews = result.data ?: emptyList())
                 }
             }
         }.launchIn(viewModelScope)

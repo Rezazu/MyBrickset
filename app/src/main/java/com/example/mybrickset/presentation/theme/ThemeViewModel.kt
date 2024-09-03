@@ -22,11 +22,8 @@ class ThemeViewModel @Inject constructor(
     private val bricksetUseCases: BricksetUseCases,
     ): ViewModel() {
 
-    private val _themeSets: MutableStateFlow<Resource<List<Set>>> = MutableStateFlow(Resource.Loading())
-    val themeSets: StateFlow<Resource<List<Set>>> = _themeSets
-
-    private val _themeSets2 = mutableStateOf(ThemeSetsState())
-    val themeSets2: State<ThemeSetsState> = _themeSets2
+    private val _themeSets = mutableStateOf(ThemeSetsState())
+    val themeSets: State<ThemeSetsState> = _themeSets
 
     private val _countSets: MutableStateFlow<String> = MutableStateFlow("")
     val countSets: StateFlow<String> get() = _countSets
@@ -35,35 +32,13 @@ class ThemeViewModel @Inject constructor(
         bricksetUseCases.getSetsByTheme(theme, 0).onEach { result ->
             when(result) {
                 is Resource.Error -> {
-                    _themeSets.value = Resource.Error(result.message  ?: "An Error Occured")
+                    _themeSets.value = ThemeSetsState(error = result.message ?: "An Error Occured")
                 }
                 is Resource.Loading -> {
-                    _themeSets.value = Resource.Loading()
+                    _themeSets.value = ThemeSetsState(isLoading = true)
                 }
                 is Resource.Success -> {
-                    _themeSets.value = Resource.Success(
-                        result.data?.sets?.filterNot {
-                            it.name.contains("{?}")
-                        } ?: emptyList()
-                    )
-                    _countSets.value = result.data?.matches.toString()
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-
-    fun getSetsByTheme2(theme: String){
-        bricksetUseCases.getSetsByTheme(theme, 0).onEach { result ->
-            when(result) {
-                is Resource.Error -> {
-                    _themeSets2.value = ThemeSetsState(error = result.message  ?: "An Error Occured")
-                }
-                is Resource.Loading -> {
-                    _themeSets2.value = ThemeSetsState(isLoading = true)
-                }
-                is Resource.Success -> {
-                    _themeSets2.value = ThemeSetsState(
+                    _themeSets.value = ThemeSetsState(
                         sets = result.data?.sets?.filterNot {
                             it.name.contains("{?}")
                         } ?: emptyList()
