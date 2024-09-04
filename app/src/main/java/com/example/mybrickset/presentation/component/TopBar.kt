@@ -1,8 +1,8 @@
 package com.example.mybrickset.presentation.component
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
-import com.example.mybrickset.DefaultTopBar
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.SearchWidgetState
 
@@ -10,6 +10,7 @@ import com.example.mybrickset.presentation.SearchWidgetState
 fun TopBar(
     navController: NavHostController,
     searchWidgetState: SearchWidgetState,
+    backButtonState: MutableState<Boolean>,
     query: String,
     onSearch: (String) -> Unit,
     onQueryChange: (String) -> Unit,
@@ -19,7 +20,10 @@ fun TopBar(
     when(searchWidgetState) {
         SearchWidgetState.CLOSED -> {
             DefaultTopBar(
-                onSearchTriggered = { onSearchTriggered() })
+                onSearchTriggered = { onSearchTriggered() },
+                onBackPressed = { navController.popBackStack() },
+                backButtonState = backButtonState
+            )
         }
         SearchWidgetState.OPENED -> {
             SearchBar(

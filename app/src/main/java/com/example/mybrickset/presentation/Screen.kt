@@ -1,7 +1,10 @@
 package com.example.mybrickset.presentation
 
+import com.example.mybrickset.data.remote.dto.getreviews.Review
+import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
+import com.example.mybrickset.domain.usecase.GetReviews
 import kotlinx.serialization.Serializable
 
 sealed class Screen(
@@ -36,6 +39,11 @@ sealed class Screen(
     @Serializable
     data class DetailScreen(
         val setId: Int
+    ): Screen()
+
+    @Serializable
+    data class ReviewScreen(
+        val reviews: List<Review>,
     ): Screen()
 
     @Serializable

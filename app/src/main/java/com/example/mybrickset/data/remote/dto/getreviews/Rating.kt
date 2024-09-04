@@ -1,5 +1,8 @@
 package com.example.mybrickset.data.remote.dto.getreviews
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Rating(
     val buildingExperience: Int,
     val overall: Int,

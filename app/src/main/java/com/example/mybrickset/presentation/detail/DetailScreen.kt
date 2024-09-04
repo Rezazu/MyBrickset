@@ -67,6 +67,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
@@ -77,6 +78,7 @@ import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
 import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.DetailButton
 import com.example.mybrickset.presentation.component.DetailDescription
 import com.example.mybrickset.presentation.component.DetailPager
@@ -93,6 +95,7 @@ import com.example.mybrickset.presentation.ui.theme.YellowMain
 @Composable
 fun DetailScreen(
     setId: Int,
+    navController: NavHostController,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val images = viewModel.images.collectAsState()
@@ -112,7 +115,14 @@ fun DetailScreen(
                     set = result.data,
                     additionalImage = images.value.images,
                     reviews = reviews.value.reviews,
-                    context
+                    context,
+                    navigateToReviewScreen = {
+                        navController.navigate(
+                            Screen.ReviewScreen(
+                                reviews = reviews.value.reviews
+                            )
+                        )
+                    }
                 )
             }
         }
@@ -126,6 +136,7 @@ fun DetailScreenContent(
     additionalImage: List<Image>,
     reviews: List<Review>,
     context: Context,
+    navigateToReviewScreen:() -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { additionalImage.size })
@@ -206,6 +217,7 @@ fun DetailScreenContent(
             rating = set.rating,
             reviews = reviews,
             reviewCount = set.reviewCount,
+            navigateToReviewScreen = navigateToReviewScreen,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
@@ -230,7 +242,8 @@ private fun DetailScreenPreview(
             reviews = listOf(
                 Dummy.DummyReview,
                 Dummy.DummyReview,
-            )
+            ),
+            navigateToReviewScreen = {}
         )
     }
 }

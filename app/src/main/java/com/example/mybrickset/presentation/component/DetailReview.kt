@@ -36,6 +36,7 @@ fun DetailReview(
     rating: Double,
     reviews: List<Review>,
     reviewCount: Int,
+    navigateToReviewScreen:() -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -91,13 +92,13 @@ fun DetailReview(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     TextButton(
-                        onClick = {}
+                        onClick = navigateToReviewScreen
                     ) {
                         Text(
                             text = "See all reviews",
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = YellowMain,
+                            color = Color.DarkGray,
                             modifier = Modifier
                                 .padding(start = 8.dp)
                                 .align(Alignment.CenterVertically)
@@ -135,7 +136,8 @@ private fun DetailReviewPreview() {
                 Dummy.DummyReview,
                 Dummy.DummyReview,
             ),
-            reviewCount = 5
+            reviewCount = 5,
+            navigateToReviewScreen = {}
         )
     }
 }

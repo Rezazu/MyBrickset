@@ -1,4 +1,4 @@
-package com.example.mybrickset.presentation.errorr
+package com.example.mybrickset.presentation.error
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
