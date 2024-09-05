@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
@@ -28,7 +27,6 @@ import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.presentation.component.DetailReview
 import com.example.mybrickset.presentation.component.ReviewCard
-import com.example.mybrickset.presentation.component.ReviewCardVariant
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.YellowMain
 
@@ -47,7 +45,7 @@ fun ReviewScreen(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .height(36.dp)
                 .padding(16.dp)
         ) {
             Icon(
@@ -80,9 +78,7 @@ fun ReviewScreen(
             modifier = Modifier
         ) {
             items(reviews.size) { index ->
-                ReviewCardVariant(
-                    review = reviews[index]
-                )
+                ReviewCard(review = reviews[index])
             }
         }
     }

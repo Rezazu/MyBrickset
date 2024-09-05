@@ -119,7 +119,9 @@ fun DetailScreen(
                     navigateToReviewScreen = {
                         navController.navigate(
                             Screen.ReviewScreen(
-                                reviews = reviews.value.reviews
+                                reviews = reviews.value.reviews,
+                                rating = result.data.rating,
+                                reviewCount = result.data.reviewCount
                             )
                         )
                     }

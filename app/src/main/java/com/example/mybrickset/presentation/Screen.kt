@@ -44,6 +44,8 @@ sealed class Screen(
     @Serializable
     data class ReviewScreen(
         val reviews: List<Review>,
+        val rating: Double,
+        val reviewCount: Int,
     ): Screen()
 
     @Serializable

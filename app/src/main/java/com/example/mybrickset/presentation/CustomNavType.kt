@@ -49,7 +49,26 @@ object CustomNavType {
         override fun put(bundle: Bundle, key: String, value: List<Review>) {
             bundle.putString(key, Json.encodeToString(value))
         }
+    }
 
+    val rating = object : NavType<Double>(
+        isNullableAllowed = false
+    ) {
+        override fun get(bundle: Bundle, key: String): Double? {
+            return Json.decodeFromString(bundle.getString(key) ?: return null)
+        }
+
+        override fun parseValue(value: String): Double {
+            return Json.decodeFromString(Uri.decode(value))
+        }
+
+        override fun serializeAsValue(value: Double): String {
+            return Uri.encode(Json.encodeToString(value))
+        }
+
+        override fun put(bundle: Bundle, key: String, value: Double) {
+            bundle.putString(key, Json.encodeToString(value))
+        }
     }
 
     val set = object : NavType<Set>(

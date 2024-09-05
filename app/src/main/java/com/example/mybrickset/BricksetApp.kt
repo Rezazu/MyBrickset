@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -129,11 +130,12 @@ fun BricksetApp(
             }
             composable<Screen.ReviewScreen>(
                 typeMap = mapOf(
-                    typeOf<List<Review>>() to CustomNavType.review
+                    typeOf<List<Review>>() to CustomNavType.review,
+                    typeOf<Double>() to CustomNavType.rating
                 )
             ) {
                 val args = it.toRoute<Screen.ReviewScreen>()
-                ReviewScreen(reviews = args.reviews)
+                ReviewScreen(reviews = args.reviews, reviewCount = args.reviewCount, rating = args.rating)
             }
             composable<Screen.SearchScreen> { 
                 topBarState.value = true
