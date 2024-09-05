@@ -23,5 +23,6 @@ class MainActivity : ComponentActivity() {
                 BricksetApp()
             }
         }
+
     }
 }
