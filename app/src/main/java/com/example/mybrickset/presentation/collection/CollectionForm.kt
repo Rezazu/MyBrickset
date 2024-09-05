@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -204,21 +205,27 @@ fun CollectionForm(
                     Text(text = "Cancel")
                 }
                 Button(onClick = {
-
                     if (hasPermission) {
-
+                        imageInput.let {
+                            saveImage(context, Uri.parse(it))
+                        }
+                        if (listOf(
+                                nameInput.value,
+                                numberInput.value,
+                                variantInput.value,
+                                imageInput,
+                                dateInput.value,
+                                priceInput.value
+                        ).all { it.isNotEmpty() }) {
+                            viewModel.insertSetCollection()
+                            onDismissRequest()
+                        } else {
+                            Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         launcher.launch(
                             android.Manifest.permission.READ_EXTERNAL_STORAGE
                         )
-                    }
-
-                    imageInput.let {
-                        saveImage(context, Uri.parse(it))
-                    }
-                    if (nameInput.value != "") {
-                        viewModel.insertSetCollection()
-                        onDismissRequest()
                     }
                     },
                     shape = RoundedCornerShape(8.dp),
