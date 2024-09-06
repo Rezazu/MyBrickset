@@ -10,6 +10,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Collection
 import com.example.mybrickset.data.remote.dto.getsets.Dimensions
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.LEGOCom
+import java.math.BigDecimal
 import java.util.Date
 
 @Entity(tableName = "set_collection")
@@ -21,7 +22,7 @@ data class SetCollection(
 
     val condition: String,
     val acquiredDate: String,
-    val price: Int,
+    val price: Double,
 
     @PrimaryKey(autoGenerate = true)
     val setId : Int? = null,

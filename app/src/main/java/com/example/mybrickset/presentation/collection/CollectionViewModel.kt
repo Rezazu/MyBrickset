@@ -69,7 +69,7 @@ class CollectionViewModel @Inject constructor(
                 _nameInput.value,
                 _conditionInput.value,
                 _acquiredDateInput.value,
-                _priceInput.value.toInt()
+                _priceInput.value.toDouble()
             )
         )
     }

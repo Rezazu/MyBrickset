@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -93,7 +94,7 @@ fun CollectionForm(
         Surface(
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp))
-                .fillMaxHeight(0.8f)
+                .wrapContentHeight()
                 .fillMaxWidth()
                 .align(Alignment.Center) // or to a specific child
         ) {
@@ -182,58 +183,58 @@ fun CollectionForm(
                         onValueChange = viewModel::onPriceInputChange
                     )
                 }
-            }
-            Row (
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 8.dp,
-                        bottom = 32.dp,
-                        start = 16.dp,
-                        end = 16.dp
-                    )
-            ) {
-                Button(
-                    onClick = { onDismissRequest() },
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Red),
+                Row (
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.Bottom,
                     modifier = Modifier
-                        .wrapContentWidth()
-                ) {
-                    Text(text = "Cancel")
-                }
-                Button(onClick = {
-                    if (hasPermission) {
-                        imageInput.let {
-                            saveImage(context, Uri.parse(it))
-                        }
-                        if (listOf(
-                                nameInput.value,
-                                numberInput.value,
-                                variantInput.value,
-                                imageInput,
-                                dateInput.value,
-                                priceInput.value
-                        ).all { it.isNotEmpty() }) {
-                            viewModel.insertSetCollection()
-                            onDismissRequest()
-                        } else {
-                            Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        launcher.launch(
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                        .fillMaxWidth()
+                        .padding(
+                            top = 8.dp,
+                            bottom = 16.dp,
+                            start = 32.dp,
+                            end = 16.dp
                         )
-                    }
-                    },
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .wrapContentWidth()
-
                 ) {
-                    Text(text = "Add Set")
+                    Button(
+                        onClick = { onDismissRequest() },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Red),
+                        modifier = Modifier
+                            .wrapContentWidth()
+                    ) {
+                        Text(text = "Cancel")
+                    }
+                    Button(onClick = {
+                        if (hasPermission) {
+                            imageInput.let {
+                                saveImage(context, Uri.parse(it))
+                            }
+                            if (listOf(
+                                    nameInput.value,
+                                    numberInput.value,
+                                    variantInput.value,
+                                    imageInput,
+                                    dateInput.value,
+                                    priceInput.value
+                                ).all { it.isNotEmpty() }) {
+                                viewModel.insertSetCollection()
+                                onDismissRequest()
+                            } else {
+                                Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            launcher.launch(
+                                android.Manifest.permission.READ_EXTERNAL_STORAGE
+                            )
+                        }
+                    },
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .wrapContentWidth()
+
+                    ) {
+                        Text(text = "Add Set")
+                    }
                 }
             }
         }

@@ -32,6 +32,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,6 +64,9 @@ fun CollectionItem(
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val openAlertDialog = remember { mutableStateOf(false) }
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -230,7 +235,7 @@ private fun CollectionItemPreview() {
                     image = "content://com.android.providers.media.documents/document/image%3A69",
                     condition = "New",
                     acquiredDate = "26/01/2002",
-                    price = 300000
+                    price = 300000.00
                 ),
             editState = true,
             onDeleteSetCollection = {}

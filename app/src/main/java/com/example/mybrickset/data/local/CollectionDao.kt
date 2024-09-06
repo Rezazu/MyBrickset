@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import java.math.BigDecimal
 
 @Dao
 interface CollectionDao {
@@ -18,4 +19,7 @@ interface CollectionDao {
 
     @Query("SELECT * FROM set_collection")
     fun getAllSetCollection(): Flow<List<SetCollection>>
+
+//    @Query("SELECT SUM(PRICE) FROM set_collection")
+//    fun getSumPrice(): Flow<BigDecimal>
 }

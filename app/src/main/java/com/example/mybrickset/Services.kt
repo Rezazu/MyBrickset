@@ -43,7 +43,7 @@ object Services {
         return image
     }
 
-    fun getPriceIDR(price: Int): String {
+    fun getPriceIDR(price: Double): String {
         return "Rp. $price"
     }
 

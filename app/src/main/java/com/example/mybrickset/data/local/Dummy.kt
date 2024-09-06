@@ -89,7 +89,7 @@ object Dummy {
             name = "The Star Wars Set",
             condition = "New",
             acquiredDate = "26/01/02",
-            price = 5000000,
+            price = 5000000.00,
             setId = 1
         ),
         SetCollection(
@@ -99,7 +99,7 @@ object Dummy {
             name = "The Star Wars Set",
             condition = "New",
             acquiredDate = "26/01/02",
-            price = 5000000,
+            price = 5000000.00,
             setId = 1
         )
     )
