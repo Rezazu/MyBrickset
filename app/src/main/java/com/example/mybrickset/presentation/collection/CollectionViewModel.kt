@@ -44,9 +44,21 @@ class CollectionViewModel @Inject constructor(
     private val _priceInput = MutableStateFlow("")
     val priceInput: StateFlow<String> = _priceInput
 
-
     init {
         getAllSetCollection()
+    }
+
+
+    fun getAllSetCollection(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollection()
+    }
+
+    fun getSumPrice(): Flow<Double> {
+        return localUseCase.getSumPrice()
+    }
+
+    fun getSetCount(): Flow<Int> {
+        return localUseCase.getSetCount()
     }
 
     private fun insertSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
@@ -76,10 +88,6 @@ class CollectionViewModel @Inject constructor(
 
     fun deleteSetCollection(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.deleteSetCollection(setCollection)
-    }
-
-    fun getAllSetCollection(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollection()
     }
 
     fun onFloatingActionButtonClicked(value: Boolean){

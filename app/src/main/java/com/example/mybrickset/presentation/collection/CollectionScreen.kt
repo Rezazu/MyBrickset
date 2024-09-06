@@ -55,6 +55,8 @@ fun CollectionScreen(
 ) {
     val formState by viewModel.formState.collectAsState()
     val setCollectionList = viewModel.getAllSetCollection().collectAsState(initial = emptyList())
+    val sumPrice = viewModel.getSumPrice().collectAsState(initial = 0.00)
+    val setCount = viewModel.getSetCount().collectAsState(initial = 0)
 
     Scaffold(
         floatingActionButton = {
@@ -83,6 +85,8 @@ fun CollectionScreen(
                 }
             }
             CollectionContent(
+                setCount = setCount.value,
+                sumPrice = sumPrice.value,
                 setCollectionList = setCollectionList.value,
                 onDeleteSetCollection = viewModel::deleteSetCollection
             )
@@ -93,6 +97,8 @@ fun CollectionScreen(
 
 @Composable
 fun CollectionContent(
+    setCount: Int,
+    sumPrice: Double,
     setCollectionList: List<SetCollection>,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
     modifier: Modifier = Modifier
@@ -106,10 +112,10 @@ fun CollectionContent(
         color = WhiteBackground,
     ) {
         Column {
-            CollectionHeader()
+            CollectionHeader(setCount, sumPrice)
             HorizontalDivider()
             Row (
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(
                         top = 8.dp,
@@ -156,6 +162,8 @@ fun CollectionContent(
 
 @Composable
 fun CollectionHeader(
+    setCount: Int,
+    sumPrice: Double,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -173,7 +181,7 @@ fun CollectionHeader(
         ) {
             CollectionTextRow(
                 label = "Total Collection",
-                value = "34"
+                value = setCount.toString()
             )
             Row (
                 verticalAlignment = Alignment.Bottom,
@@ -186,7 +194,7 @@ fun CollectionHeader(
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "Rp. 12.345.000",
+                    text = sumPrice.toString(),
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.End,
                     fontWeight = FontWeight.Bold,
@@ -238,7 +246,9 @@ private fun CollectionContentPreview() {
     MyBricksetTheme {
         CollectionContent(
             setCollectionList = Dummy.DummyCollection,
-            onDeleteSetCollection = {}
+            onDeleteSetCollection = {},
+            setCount = 2,
+            sumPrice = 599.00
         )
 //        CollectionHeader()
     }

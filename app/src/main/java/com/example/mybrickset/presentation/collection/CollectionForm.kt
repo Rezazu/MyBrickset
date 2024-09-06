@@ -189,10 +189,8 @@ fun CollectionForm(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 8.dp,
+                            top = 32.dp,
                             bottom = 16.dp,
-                            start = 32.dp,
-                            end = 16.dp
                         )
                 ) {
                     Button(

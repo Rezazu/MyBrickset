@@ -7,4 +7,7 @@ interface LocalRepository {
     suspend fun insertSetCollection(setCollection: SetCollection)
     suspend fun deleteSetCollection(setCollection: SetCollection)
     fun getAllSetCollection(): Flow<List<SetCollection>>
+    fun getSumPrice(): Flow<Double>
+    fun getSetCount(): Flow<Int>
+
 }

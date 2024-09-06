@@ -24,6 +24,8 @@ import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
 import com.example.mybrickset.domain.usecase.local.DeleteSetColleciton
 import com.example.mybrickset.domain.usecase.local.GetAllSetCollection
+import com.example.mybrickset.domain.usecase.local.GetSetCount
+import com.example.mybrickset.domain.usecase.local.GetSumPrice
 import com.example.mybrickset.domain.usecase.local.InsertSetCollection
 import com.example.mybrickset.domain.usecase.local.LocalUseCase
 import dagger.Module
@@ -126,7 +128,9 @@ object AppModule {
         return LocalUseCase(
             insertSetCollection = InsertSetCollection(localRepository),
             deleteSetCollection = DeleteSetColleciton(localRepository),
-            getAllSetCollection = GetAllSetCollection(localRepository)
+            getAllSetCollection = GetAllSetCollection(localRepository),
+            getSetCount = GetSetCount(localRepository),
+            getSumPrice = GetSumPrice(localRepository)
         )
     }
 

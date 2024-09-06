@@ -20,4 +20,12 @@ class LocalRepositoryImplementation @Inject constructor(
     override fun getAllSetCollection(): Flow<List<SetCollection>> {
         return collectionDao.getAllSetCollection()
     }
+
+    override fun getSumPrice(): Flow<Double> {
+        return collectionDao.getSumPrice()
+    }
+
+    override fun getSetCount(): Flow<Int> {
+        return collectionDao.getSetCount()
+    }
 }

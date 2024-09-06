@@ -20,6 +20,9 @@ interface CollectionDao {
     @Query("SELECT * FROM set_collection")
     fun getAllSetCollection(): Flow<List<SetCollection>>
 
-//    @Query("SELECT SUM(PRICE) FROM set_collection")
-//    fun getSumPrice(): Flow<BigDecimal>
+    @Query("SELECT SUM(PRICE) FROM set_collection")
+    fun getSumPrice(): Flow<Double>
+
+    @Query("SELECT COUNT(SETID) FROM set_collection")
+    fun getSetCount(): Flow<Int>
 }
