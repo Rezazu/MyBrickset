@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.LegoItem
+import com.example.mybrickset.presentation.error.ErrorScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -24,7 +25,7 @@ fun SearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavHostController,
 ) {
-
+    
     viewModel.searchSetsState.collectAsState(initial = Result.Loading).value.let { result ->
         when (result) {
             is Result.Loading -> {
@@ -57,7 +58,7 @@ fun SearchScreen(
             }
 
             is Result.Error -> {
-
+                ErrorScreen(message = result.error)
             }
         }
     }

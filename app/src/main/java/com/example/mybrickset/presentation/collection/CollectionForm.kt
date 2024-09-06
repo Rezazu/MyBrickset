@@ -161,9 +161,14 @@ fun CollectionForm(
                 }
                 Button(
                     onClick = {
-                                singlePhotoPickerLauncher.launch(
-                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                )
+                                if (!hasPermission) {
+                                    launcher.launch(
+                                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                                    )
+                                }
+                                    singlePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
                               },
                     shape = RoundedCornerShape(8.dp)
                 ) {
@@ -203,27 +208,21 @@ fun CollectionForm(
                         Text(text = "Cancel")
                     }
                     Button(onClick = {
-                        if (hasPermission) {
-                            imageInput.let {
-                                saveImage(context, Uri.parse(it))
-                            }
-                            if (listOf(
-                                    nameInput.value,
-                                    numberInput.value,
-                                    variantInput.value,
-                                    imageInput,
-                                    dateInput.value,
-                                    priceInput.value
-                                ).all { it.isNotEmpty() }) {
-                                viewModel.insertSetCollection()
-                                onDismissRequest()
-                            } else {
-                                Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
-                            }
+                        imageInput.let {
+                            saveImage(context, Uri.parse(it))
+                        }
+                        if (listOf(
+                                nameInput.value,
+                                numberInput.value,
+                                variantInput.value,
+                                imageInput,
+                                dateInput.value,
+                                priceInput.value
+                            ).all { it.isNotEmpty() }) {
+                            viewModel.insertSetCollection()
+                            onDismissRequest()
                         } else {
-                            launcher.launch(
-                                android.Manifest.permission.READ_EXTERNAL_STORAGE
-                            )
+                            Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
                         }
                     },
                         shape = RoundedCornerShape(8.dp),

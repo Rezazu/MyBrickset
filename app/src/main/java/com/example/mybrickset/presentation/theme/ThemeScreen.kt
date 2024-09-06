@@ -25,6 +25,7 @@ import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.LegoItem
+import com.example.mybrickset.presentation.error.ErrorScreen
 
 @Composable
 fun ThemeScreen(
@@ -42,12 +43,7 @@ fun ThemeScreen(
 
     setState.let { setsState ->
         if (setsState.error.isNotBlank()) {
-            Text(
-                text = "Some Error Happened",
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
+            ErrorScreen(message = setsState.error)
         } else if (setsState.sets.isNotEmpty()) {
             Column {
                 Text(

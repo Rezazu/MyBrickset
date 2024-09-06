@@ -49,7 +49,7 @@ fun BricksetApp(
     val topBarState = rememberSaveable { mutableStateOf(false) }
     val bottomBarState = rememberSaveable { (mutableStateOf(false)) }
 
-    var backButtonState = rememberSaveable { mutableStateOf(false) }
+    val backButtonState = rememberSaveable { mutableStateOf(false) }
 
     val input by appViewModel.query.collectAsState()
 

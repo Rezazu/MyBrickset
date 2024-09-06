@@ -96,7 +96,7 @@ fun SearchBar(
                         if (query.isNotEmpty()) {
                             onQueryChange("")
                         } else {
-//                            onCloseClicked()
+                            onCloseClicked()
                         }
                     }
                 ) {
