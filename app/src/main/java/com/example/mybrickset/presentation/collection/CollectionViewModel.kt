@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.domain.usecase.local.LocalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
-    private val localUseCase: LocalUseCase
+    private val localUseCase: LocalUseCase,
+    private val pref: AuthPreferences
 ):ViewModel() {
 
     private val _formState = MutableStateFlow(false)
@@ -46,6 +48,10 @@ class CollectionViewModel @Inject constructor(
 
     init {
         getAllSetCollection()
+    }
+
+    fun getUserHash(): Flow<String> {
+        return pref.getUserHash()
     }
 
 

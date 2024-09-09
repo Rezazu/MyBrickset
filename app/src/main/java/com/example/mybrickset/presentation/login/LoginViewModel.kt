@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.local.datastore.AuthPreferences
+import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,8 +39,10 @@ class LoginViewModel  @Inject constructor(
 
                 }
                 is Result.Success -> {
-                    pref.saveUserHash(result.data.hash)
-                    _isLoggedIn.value = true
+                    if (result.data.status == "success") {
+                        pref.saveUserHash(result.data.hash)
+                        _isLoggedIn.value = true
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -53,3 +56,9 @@ class LoginViewModel  @Inject constructor(
         _onPasswordTextChange.value = passwordText
     }
 }
+
+data class LoginState (
+    val isLoading: Boolean = false,
+    val status: String = "",
+    val error: String = ""
+)

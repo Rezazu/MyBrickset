@@ -1,13 +1,10 @@
 package com.example.mybrickset.presentation.login
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,20 +12,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,35 +35,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.mybrickset.BricksetApp
 import com.example.mybrickset.R
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.YellowMain
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit,
-//    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
 
-//    val context = LocalContext.current
-//
-//    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
-//
-//    val usernameText by viewModel.onUsernameTextChange.collectAsState()
-//    val passwordText by viewModel.onPasswordTextChange.collectAsState()
+    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+
+    val usernameText by viewModel.onUsernameTextChange.collectAsState()
+    val passwordText by viewModel.onPasswordTextChange.collectAsState()
 
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
@@ -83,16 +73,26 @@ fun LoginScreen(
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = modifier
-                .padding(vertical = 32.dp, horizontal = 16.dp)
+                .padding(
+                    vertical = 32.dp,
+                    horizontal = 16.dp
+                )
         )
         Image(
             painter = painterResource(id = R.drawable.img_emmet),
             contentDescription = null,
             modifier = Modifier
+                .wrapContentHeight()
+                .width(180.dp)
                 .align(Alignment.TopEnd)
-                .padding(top = 72.dp, bottom = 0.dp, start = 0.dp, end = 32.dp)
+                .padding(
+                    top = 72.dp,
+                    bottom = 0.dp,
+                    start = 0.dp,
+                    end = 32.dp
+                )
         )
-        Box (
+        Box(
             modifier = Modifier
                 .fillMaxHeight(0.7f)
                 .fillMaxWidth()
@@ -124,12 +124,11 @@ fun LoginScreen(
                             fontFamily = FontFamily.SansSerif
                         ),
                         color = Color.Black,
-                        )
+                    )
                     OutlinedTextField(
-//                    value = usernameText,
-                        value = "",
+                        value = usernameText,
                         onValueChange = {
-//                        viewModel.onUsernameTextChange(it)
+                            viewModel.onUsernameTextChange(it)
                         },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -137,7 +136,8 @@ fun LoginScreen(
                             focusedTextColor = Color.Black,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
-                            unfocusedBorderColor = Color.Gray),
+                            unfocusedBorderColor = Color.Gray
+                        ),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -154,10 +154,9 @@ fun LoginScreen(
                         color = Color.Black
                     )
                     OutlinedTextField(
-//                    value = passwordText,
-                        value = "",
+                        value = passwordText,
                         onValueChange = {
-//                        viewModel.onPasswordTextChange(it)
+                            viewModel.onPasswordTextChange(it)
                         },
                         singleLine = true,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -165,22 +164,25 @@ fun LoginScreen(
                             focusedTextColor = Color.Black,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
-                            unfocusedBorderColor = Color.Gray),
+                            unfocusedBorderColor = Color.Gray
+                        ),
                         shape = RoundedCornerShape(12.dp),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         trailingIcon = {
-                            val image = if(passwordVisible)
+                            val image = if (passwordVisible)
                                 painterResource(id = R.drawable.ic_visible)
                             else painterResource(id = R.drawable.ic_invisible)
 
-                            val description = if (passwordVisible) "Hide password" else "Show password"
+                            val description =
+                                if (passwordVisible) "Hide password" else "Show password"
 
                             IconButton(
-                                onClick = {passwordVisible = !passwordVisible},
+                                onClick = { passwordVisible = !passwordVisible },
                                 modifier = Modifier
                                     .padding(8.dp)
                             ) {
-                                Icon(painter  = image,
+                                Icon(
+                                    painter = image,
                                     contentDescription = description,
                                     tint = Color.Gray,
                                     modifier = Modifier
@@ -197,8 +199,10 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-//                        viewModel.login(usernameText, passwordText)
-                        navigateToHomeScreen()
+                        viewModel.login(
+                            usernameText,
+                            passwordText
+                        )
                     },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
@@ -217,16 +221,17 @@ fun LoginScreen(
                 contentDescription = null,
                 modifier
                     .align(Alignment.BottomCenter)
+                    .wrapContentHeight()
+                    .width(210.dp)
             )
         }
     }
-//    when(isLoggedIn) {
-//        true -> {
-//            navigateToHomeScreen()
-//        }
-//        else -> {
-//        }
-//    }
+
+    LaunchedEffect(isLoggedIn) {
+        if (isLoggedIn == true) {
+            navigateToHomeScreen()
+        }
+    }
 }
 
 @Preview

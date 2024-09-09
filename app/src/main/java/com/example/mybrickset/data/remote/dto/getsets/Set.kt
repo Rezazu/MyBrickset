@@ -25,7 +25,7 @@ data class Set(
     val released: Boolean,
     val reviewCount: Int,
     val setID: Int,
-    val subtheme: String,
+    val subtheme: String = "",
     val theme: String,
     val themeGroup: String,
     val year: Int

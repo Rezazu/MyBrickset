@@ -22,6 +22,7 @@ import com.example.mybrickset.domain.usecase.GetSetsByTheme
 import com.example.mybrickset.domain.usecase.GetThemes
 import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
+import com.example.mybrickset.domain.usecase.SetCollectionWanted
 import com.example.mybrickset.domain.usecase.local.DeleteSetColleciton
 import com.example.mybrickset.domain.usecase.local.GetAllSetCollection
 import com.example.mybrickset.domain.usecase.local.GetSetCount
@@ -72,9 +73,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideBricksetRepository(
-        api: BricksetApi
+        api: BricksetApi,
+        preferences: AuthPreferences
     ): BricksetRepository {
-        return BricksetRepositoryImplementation(api)
+        return BricksetRepositoryImplementation(api, preferences)
     }
 
     @Provides
@@ -90,7 +92,8 @@ object AppModule {
             login = Login(bricksetRepository),
             getAdditionalImage = GetAdditionalImage(bricksetRepository),
             getSetById = GetSetById(bricksetRepository),
-            getReviews = GetReviews(bricksetRepository)
+            getReviews = GetReviews(bricksetRepository),
+            setCollectionWanted = SetCollectionWanted(bricksetRepository)
         )
     }
 

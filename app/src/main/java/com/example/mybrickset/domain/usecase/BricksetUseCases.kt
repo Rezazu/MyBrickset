@@ -8,5 +8,6 @@ data class BricksetUseCases(
     val login: Login,
     val getAdditionalImage: GetAdditionalImage,
     val getSetById: GetSetById,
-    val getReviews: GetReviews
+    val getReviews: GetReviews,
+    val setCollectionWanted: SetCollectionWanted
 )

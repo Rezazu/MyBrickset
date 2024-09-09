@@ -35,8 +35,9 @@ import com.example.mybrickset.presentation.ui.theme.Red
 @Composable
 fun DetailButton(
     modifier: Modifier = Modifier,
-    bricksetUrl: String,
-    isFavorite: Boolean
+    isFavorite: Boolean,
+    onButtonWebsiteClicked:() -> Unit,
+    onButtonFavoriteClicked:() -> Unit,
 ) {
     val context = LocalContext.current
     Row (
@@ -46,13 +47,7 @@ fun DetailButton(
             .padding(vertical = 16.dp)
     ) {
         Button(
-            onClick = {
-                val intent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(bricksetUrl)
-                )
-                startActivity(context, intent, null)
-            },
+            onClick = onButtonWebsiteClicked,
             contentPadding = PaddingValues(0.dp),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(containerColor = MatteBlue),
@@ -78,7 +73,7 @@ fun DetailButton(
         }
         if (isFavorite) {
             Button(
-                onClick = {  },
+                onClick = onButtonFavoriteClicked,
                 contentPadding = PaddingValues(0.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
@@ -107,7 +102,7 @@ fun DetailButton(
             }
         } else {
             OutlinedButton(
-                onClick = {  },
+                onClick = onButtonFavoriteClicked,
                 contentPadding = PaddingValues(0.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(

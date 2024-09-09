@@ -6,6 +6,7 @@ import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
+import com.example.mybrickset.data.remote.dto.setcollection.SetCollectionResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -41,4 +42,13 @@ interface BricksetApi {
         @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
         @Query("setID") setId: Int
     ): ReviewsResponse
+
+    @GET("setCollection")
+    suspend fun setCollection(
+        @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
+        @Query("userHash") userHash: String?,
+        @Query("setID") setId: Int,
+        @Query("params") params:String
+    ): SetCollectionResponse
+
 }

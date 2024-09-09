@@ -1,6 +1,8 @@
 package com.example.mybrickset.presentation.detail
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -65,6 +67,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -124,7 +127,14 @@ fun DetailScreen(
                                 reviewCount = result.data.reviewCount
                             )
                         )
-                    }
+                    },
+                    onButtonFavoriteClicked = viewModel::setCollectionWanted
+//                    onButtonFavoriteClicked = {
+//                        viewModel.setCollectionWanted(
+//                            setId = result.data.setID,
+//                            isWanted = if (result.data.collection.wanted) 0 else 1
+//                        )
+//                    }
                 )
             }
         }
@@ -139,10 +149,16 @@ fun DetailScreenContent(
     reviews: List<Review>,
     context: Context,
     navigateToReviewScreen:() -> Unit,
+    onButtonFavoriteClicked:(Int, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { additionalImage.size })
     val scrollState = rememberScrollState()
+
+    var isFavorited by remember {
+        mutableStateOf(set.collection.wanted)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -205,7 +221,20 @@ fun DetailScreenContent(
             price = set.LEGOCom
         )
         Spacer(modifier = Modifier.height(24.dp))
-        DetailButton(bricksetUrl = set.bricksetURL, isFavorite = set.collection.wanted)
+        DetailButton(
+            onButtonWebsiteClicked = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(set.bricksetURL)
+                )
+                startActivity(context, intent, null)
+            },
+            onButtonFavoriteClicked = {
+                onButtonFavoriteClicked(set.setID, if (isFavorited) 0 else 1)
+                isFavorited = !isFavorited
+            },
+            isFavorite = set.collection.wanted
+        )
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
         )
@@ -231,22 +260,23 @@ private fun DetailScreenPreview(
 
 ) {
     MyBricksetTheme {
-        DetailScreenContent(
-            additionalImage =
-            listOf(
-                Image(
-                    thumbnailURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/tn_40674_alt1_jpg.jpg",
-                    imageURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/40674_alt1.jpg",
-                )
-            ),
-            context = LocalContext.current,
-            set = Dummy.DummySet,
-            reviews = listOf(
-                Dummy.DummyReview,
-                Dummy.DummyReview,
-            ),
-            navigateToReviewScreen = {}
-        )
+//        DetailScreenContent(
+//            additionalImage =
+//            listOf(
+//                Image(
+//                    thumbnailURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/tn_40674_alt1_jpg.jpg",
+//                    imageURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/40674_alt1.jpg",
+//                )
+//            ),
+//            context = LocalContext.current,
+//            set = Dummy.DummySet,
+//            reviews = listOf(
+//                Dummy.DummyReview,
+//                Dummy.DummyReview,
+//            ),
+//            navigateToReviewScreen = {},
+//            onButtonFavoriteClicked = { }
+//        )
     }
 }
 
