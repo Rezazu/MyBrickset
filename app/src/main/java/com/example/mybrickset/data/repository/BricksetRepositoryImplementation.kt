@@ -52,6 +52,10 @@ class BricksetRepositoryImplementation @Inject constructor(
         return bricksetApi.getSets(userHash = hash.first(), params = "{'owned':'1'}")
     }
 
+    override suspend fun getSetsWanted(): SetsResponse {
+        return bricksetApi.getSets(userHash = hash.first(), params = "{'wanted':1}")
+    }
+
     override suspend fun getAdditionalImage(setId: Int): ImageResponse {
         return bricksetApi.getAdditionalImages(setId = setId)
     }
@@ -67,6 +71,8 @@ class BricksetRepositoryImplementation @Inject constructor(
     override suspend fun setCollectionWanted(setId: Int, isWanted: Int): SetCollectionResponse {
         return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'want':$isWanted}")
     }
+
+
 
 
 }

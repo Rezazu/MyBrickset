@@ -196,7 +196,7 @@ fun DetailScreenContent(
                             .height(32.dp)
                     )
                 }
-                if(set.released == true) {
+                if(set.released) {
                     Text(
                         text = "Available Now",
                         color = Green,

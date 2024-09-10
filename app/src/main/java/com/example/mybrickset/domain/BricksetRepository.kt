@@ -16,6 +16,7 @@ interface BricksetRepository {
     suspend fun getThemes(): ThemesResponse
     suspend fun searchSets(query: String): SetsResponse
     suspend fun getCollection(): SetsResponse
+    suspend fun getSetsWanted(): SetsResponse
     suspend fun login(username: String, password: String): LoginResponse
     suspend fun getAdditionalImage(setId: Int): ImageResponse
     suspend fun getSetById(setId: Int): SetsResponse
