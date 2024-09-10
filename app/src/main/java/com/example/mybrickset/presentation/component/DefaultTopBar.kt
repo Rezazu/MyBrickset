@@ -34,6 +34,7 @@ fun DefaultTopBar(
     onSearchTriggered: () -> Unit,
     onBackPressed: () -> Unit,
     backButtonState: MutableState<Boolean>,
+    navigateToFavoriteScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -87,7 +88,7 @@ fun DefaultTopBar(
                 )
             }
             IconButton(
-                onClick = { /* do something */ },
+                onClick = { navigateToFavoriteScreen() },
                 modifier = Modifier
                     .size(48.dp)
             ) {

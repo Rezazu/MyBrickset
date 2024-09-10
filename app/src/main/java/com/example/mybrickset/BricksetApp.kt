@@ -28,6 +28,7 @@ import com.example.mybrickset.presentation.collection.CollectionScreen
 import com.example.mybrickset.presentation.component.BottomBar
 import com.example.mybrickset.presentation.component.TopBar
 import com.example.mybrickset.presentation.detail.DetailScreen
+import com.example.mybrickset.presentation.favorite.FavoriteScreen
 import com.example.mybrickset.presentation.home.HomeScreen
 import com.example.mybrickset.presentation.login.LoginScreen
 import com.example.mybrickset.presentation.profile.ProfileScreen
@@ -154,6 +155,11 @@ fun BricksetApp(
                 backButtonState.value = true
                 val args = it.toRoute<Screen.ThemeScreen>()
                 ThemeScreen(theme = args.theme, navController = navController)
+            }
+            composable<Screen.FavoriteScreen> {
+                topBarState.value = true
+                backButtonState.value = true
+                FavoriteScreen(navController = navController)
             }
         }
     }

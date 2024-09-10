@@ -22,7 +22,10 @@ fun TopBar(
             DefaultTopBar(
                 onSearchTriggered = { onSearchTriggered() },
                 onBackPressed = { navController.popBackStack() },
-                backButtonState = backButtonState
+                backButtonState = backButtonState,
+                navigateToFavoriteScreen = {
+                    navController.navigate(Screen.FavoriteScreen)
+                }
             )
         }
         SearchWidgetState.OPENED -> {

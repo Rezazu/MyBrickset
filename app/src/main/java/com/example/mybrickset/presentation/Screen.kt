@@ -57,4 +57,7 @@ sealed class Screen(
     data class ThemeScreen(
         val theme: Theme
     ): Screen()
+
+    @Serializable
+    data object FavoriteScreen : Screen()
 }

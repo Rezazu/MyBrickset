@@ -19,6 +19,7 @@ import com.example.mybrickset.domain.usecase.GetNewReleasedSets
 import com.example.mybrickset.domain.usecase.GetReviews
 import com.example.mybrickset.domain.usecase.GetSetById
 import com.example.mybrickset.domain.usecase.GetSetsByTheme
+import com.example.mybrickset.domain.usecase.GetSetsWanted
 import com.example.mybrickset.domain.usecase.GetThemes
 import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
@@ -93,7 +94,8 @@ object AppModule {
             getAdditionalImage = GetAdditionalImage(bricksetRepository),
             getSetById = GetSetById(bricksetRepository),
             getReviews = GetReviews(bricksetRepository),
-            setCollectionWanted = SetCollectionWanted(bricksetRepository)
+            setCollectionWanted = SetCollectionWanted(bricksetRepository),
+            getSetsWanted = GetSetsWanted(bricksetRepository)
         )
     }
 

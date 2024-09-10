@@ -1,65 +1,44 @@
-package com.example.mybrickset.presentation.theme
+package com.example.mybrickset.presentation.favorite
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.mybrickset.data.Resource
-import com.example.mybrickset.data.Result
-import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.LegoItem
+import com.example.mybrickset.presentation.component.SectionText
 import com.example.mybrickset.presentation.error.ErrorScreen
+import com.example.mybrickset.presentation.theme.ThemeViewModel
+import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
-fun ThemeScreen(
-    theme: Theme,
+fun FavoriteScreen(
     navController: NavHostController,
-    viewModel: ThemeViewModel = hiltViewModel(),
+    viewModel: FavoriteViewModel = hiltViewModel()
 ) {
 
-    val setCount = viewModel.countSets.collectAsState().value
-    val themeSetsState = viewModel.themeSets.value
+    val wantedSetsState = viewModel.wantedSets.value
 
-    LaunchedEffect(viewModel) {
-        viewModel.getSetsByTheme(theme.theme)
-    }
-
-    themeSetsState.let { setsState ->
+    wantedSetsState.let { setsState ->
         if (setsState.error.isNotBlank()) {
             ErrorScreen(message = setsState.error)
-        } else if (setsState.sets.isNotEmpty()) {
-            Column {
-                Text(
-                    buildAnnotatedString {
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
-                            append("Showing ")
-                        }
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(setCount)
-                        }
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
-                            append(" Result")
-                        }
-                    },
-                    modifier = Modifier
-                        .padding(8.dp)
+        } else if(setsState.sets.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                SectionText(
+                    title = "Your Wanted Sets"
                 )
                 LazyVerticalStaggeredGrid(
                     columns = StaggeredGridCells.Fixed(2),
@@ -87,3 +66,10 @@ fun ThemeScreen(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun FavoriteScreenPreview() {
+    MyBricksetTheme {
+//        FavoriteScreen()
+    }
+}
