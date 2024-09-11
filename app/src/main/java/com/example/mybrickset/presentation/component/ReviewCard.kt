@@ -49,7 +49,7 @@ fun ReviewCard(
             containerColor = MaterialTheme.colorScheme.background
         ),
         shape = RoundedCornerShape(0.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(160.dp)
             .padding(8.dp)
@@ -77,7 +77,7 @@ fun ReviewCard(
             )
         }
         Text(
-            text = "review.title",
+            text = review.title,
             style = MaterialTheme.typography.titleSmall,
         )
         Text(
@@ -106,7 +106,7 @@ fun ReviewCardVariant(
             containerColor = MaterialTheme.colorScheme.background
         ),
         shape = RoundedCornerShape(0.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentSize()
             .padding(8.dp)
@@ -169,7 +169,7 @@ fun ReviewCardVariant(
                 )
             }
             Text(
-                text = "review.title",
+                text = review.title,
                 style = MaterialTheme.typography.titleSmall,
             )
             Text(

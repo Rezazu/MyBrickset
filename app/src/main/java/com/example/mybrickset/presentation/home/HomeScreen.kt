@@ -139,12 +139,13 @@ fun HomeContent(
         SectionText(title = "New 2024 Released sets")
         SetLazyRow(setsList = newSets, navController = navController)
         SectionText(title = "Celebrate Star Wars Day!")
-        Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(top = 8.dp))
+        Banner(banner = R.drawable.starwars_banner, modifier = Modifier.padding(vertical = 8.dp))
         SetLazyRow(setsList = themeSets, navController = navController, modifier = Modifier.padding(top = 8.dp))
         StoreBanner(
             location = "LEGO® Summarecon Mall Bekasi – 1st Floor",
             image = R.drawable.banner_store,
-            modifier = Modifier)
+            modifier = Modifier
+                .padding(vertical = 8.dp))
         Banner(banner = R.drawable.brickset_banner)
     }
 }

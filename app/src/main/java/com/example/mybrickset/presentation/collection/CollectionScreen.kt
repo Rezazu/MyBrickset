@@ -56,6 +56,7 @@ fun CollectionScreen(
     val formState by viewModel.formState.collectAsState()
     val setCollectionList = viewModel.getAllSetCollection().collectAsState(initial = emptyList())
     val sumPrice = viewModel.getSumPrice().collectAsState(initial = 0.00)
+//    val sumPrice = 124000.00
     val setCount = viewModel.getSetCount().collectAsState(initial = 0)
 
     Scaffold(

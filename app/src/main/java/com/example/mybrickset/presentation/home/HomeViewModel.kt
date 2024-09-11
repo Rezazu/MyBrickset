@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
@@ -20,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val bricksetUseCases: BricksetUseCases,
-    private val bricksetRepository: BricksetRepository
 ): ViewModel() {
 
     private val _newStateSets = mutableStateOf(NewSetsState())
@@ -33,8 +33,8 @@ class HomeViewModel @Inject constructor(
     val stateThemes: State<ThemeState> = _stateThemes
 
     init {
-//        getNewReleasedSet()
-//        getSetsByTheme("Star Wars")
+        getNewReleasedSet()
+        getSetsByTheme("Star Wars")
         if (_stateThemes.value.themes.isEmpty()) {
             getThemes()
         }
@@ -57,26 +57,26 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-//    private fun getSetsByTheme(theme: String){
-//        bricksetUseCases.getSetsByTheme(theme, 30).onEach { result ->
-//            when(result) {
-//                is Result.Success -> {
-//                    _theme1StateSets.value = Theme1SetsState(
-//                        sets = result.data.sets.filterNot {
-//                            it.name.contains("{?}")
-//                        }
-//                    )
-//                }
-//                is Result.Error -> {
-//                    _theme1StateSets.value = Theme1SetsState(error = result.error ?:
-//                    "An unexpected error, but a welcome one")
-//                }
-//                is Result.Loading -> {
-//                    _theme1StateSets.value = Theme1SetsState(isLoading = true)
-//                }
-//            }
-//        }.launchIn(viewModelScope)
-//    }
+    private fun getSetsByTheme(theme: String){
+        bricksetUseCases.getSetsByTheme(theme, 30).onEach { result ->
+            when(result) {
+                is Resource.Success -> {
+                    _theme1StateSets.value = Theme1SetsState(
+                        sets = result.data?.sets?.filterNot {
+                            it.name.contains("{?}")
+                        } ?: emptyList()
+                    )
+                }
+                is Resource.Error -> {
+                    _theme1StateSets.value = Theme1SetsState(error = result.message ?:
+                    "An unexpected error, but a welcome one")
+                }
+                is Resource.Loading -> {
+                    _theme1StateSets.value = Theme1SetsState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     private fun getThemes() {
         bricksetUseCases.getThemes().onEach { result ->

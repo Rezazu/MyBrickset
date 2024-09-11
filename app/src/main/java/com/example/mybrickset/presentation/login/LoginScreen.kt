@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -55,7 +56,9 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
-    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+//    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
+
+    val loggedIn by viewModel.loggedIn.collectAsState()
 
     val usernameText by viewModel.onUsernameTextChange.collectAsState()
     val passwordText by viewModel.onPasswordTextChange.collectAsState()
@@ -199,10 +202,15 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-                        viewModel.login(
-                            usernameText,
-                            passwordText
-                        )
+                        if (usernameText.isNotEmpty() && passwordText.isNotEmpty()) {
+                            viewModel.login(
+                                usernameText,
+                                passwordText
+                            )
+                        } else {
+                            Toast.makeText(context, "Username or Password cannot be empty", Toast.LENGTH_SHORT).show()
+                        }
+//                        navigateToHomeScreen()
                     },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
@@ -227,8 +235,12 @@ fun LoginScreen(
         }
     }
 
-    LaunchedEffect(isLoggedIn) {
-        if (isLoggedIn == true) {
+    if (loggedIn.message.isNotEmpty()) {
+        Toast.makeText(context, loggedIn.message, Toast.LENGTH_SHORT).show()
+    }
+
+    LaunchedEffect(loggedIn) {
+        if (loggedIn.isLoggedIn == true) {
             navigateToHomeScreen()
         }
     }
