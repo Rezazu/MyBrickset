@@ -1,12 +1,9 @@
 package com.example.mybrickset.data.repository
 
-import androidx.compose.ui.platform.LocalContext
-import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.data.remote.BricksetApi
 import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
 import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
-import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
@@ -14,7 +11,6 @@ import com.example.mybrickset.data.remote.dto.setcollection.SetCollectionRespons
 import com.example.mybrickset.domain.BricksetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import okhttp3.internal.EMPTY_HEADERS
 import java.util.Calendar
 import javax.inject.Inject
 

@@ -17,7 +17,6 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.UK
 import com.example.mybrickset.data.remote.dto.getsets.US
 import com.example.mybrickset.domain.model.News
-import com.example.mybrickset.presentation.component.LegoItem
 
 object Dummy {
 

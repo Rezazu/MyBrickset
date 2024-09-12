@@ -8,14 +8,12 @@ import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
-import com.example.mybrickset.domain.BricksetRepository
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

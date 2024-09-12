@@ -1,8 +1,5 @@
 package com.example.mybrickset.presentation.collection
 
-import android.net.Uri
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -40,11 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.component.CollectionItem
-import com.example.mybrickset.presentation.ui.theme.CreamBackground
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 

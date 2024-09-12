@@ -1,13 +1,10 @@
 package com.example.mybrickset.presentation.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.local.datastore.AuthPreferences
-import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.domain.usecase.BricksetUseCases
-import com.example.mybrickset.domain.usecase.Login
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

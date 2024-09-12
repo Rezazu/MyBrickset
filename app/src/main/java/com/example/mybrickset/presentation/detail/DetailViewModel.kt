@@ -1,20 +1,14 @@
 package com.example.mybrickset.presentation.detail
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
-import com.example.mybrickset.data.local.datastore.AuthPreferences
-import com.example.mybrickset.data.remote.dto.getadditionalimages.AdditionalImage
 import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn

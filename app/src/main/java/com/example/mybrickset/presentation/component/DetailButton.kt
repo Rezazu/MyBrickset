@@ -1,7 +1,5 @@
 package com.example.mybrickset.presentation.component
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import com.example.mybrickset.R
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.Red

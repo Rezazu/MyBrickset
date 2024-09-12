@@ -11,14 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.LegoItem
 import com.example.mybrickset.presentation.component.SectionText
 import com.example.mybrickset.presentation.error.ErrorScreen
-import com.example.mybrickset.presentation.theme.ThemeViewModel
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable

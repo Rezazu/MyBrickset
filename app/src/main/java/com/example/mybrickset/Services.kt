@@ -1,11 +1,5 @@
 package com.example.mybrickset
 
-import android.text.Html
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import com.example.mybrickset.data.local.Dummy.DummyTheme
-import com.example.mybrickset.data.remote.dto.getsets.Image
-
 object Services {
 
     fun GetThemeImage(theme: String): Int {

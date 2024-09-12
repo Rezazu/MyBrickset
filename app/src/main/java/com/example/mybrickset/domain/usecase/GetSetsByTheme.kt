@@ -1,8 +1,6 @@
 package com.example.mybrickset.domain.usecase
 
 import com.example.mybrickset.data.Resource
-import com.example.mybrickset.data.Result
-import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.domain.BricksetRepository
 import kotlinx.coroutines.flow.Flow

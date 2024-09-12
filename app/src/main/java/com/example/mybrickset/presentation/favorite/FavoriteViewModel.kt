@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.domain.usecase.BricksetUseCases
-import com.example.mybrickset.presentation.theme.ThemeSetsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -1,15 +1,12 @@
 package com.example.mybrickset.presentation.theme
 
-import android.content.res.Resources.Theme
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
-import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.domain.usecase.BricksetUseCases
-import com.example.mybrickset.presentation.home.Theme1SetsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
