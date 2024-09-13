@@ -25,7 +25,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun getSetsWanted(){
-        bricksetUseCases.getSetsWanted().onEach { result ->
+        bricksetUseCases.getSetsOwned().onEach { result ->
             when(result) {
                 is Resource.Error -> {
                     _wantedSets.value = WantedSetsState(error = result.message ?: "An Error Occured")

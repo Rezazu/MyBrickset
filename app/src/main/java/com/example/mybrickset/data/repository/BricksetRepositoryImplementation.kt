@@ -52,6 +52,10 @@ class BricksetRepositoryImplementation @Inject constructor(
         return bricksetApi.getSets(userHash = hash.first(), params = "{'wanted':1}")
     }
 
+    override suspend fun getSetsOwned(): SetsResponse {
+        return bricksetApi.getSets(userHash = hash.first(), params = "{'owned':1}")
+    }
+
     override suspend fun getAdditionalImage(setId: Int): ImageResponse {
         return bricksetApi.getAdditionalImages(setId = setId)
     }

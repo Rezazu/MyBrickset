@@ -235,8 +235,10 @@ fun LoginScreen(
         }
     }
 
-    if (loggedIn.message.isNotEmpty()) {
-        Toast.makeText(context, loggedIn.message, Toast.LENGTH_SHORT).show()
+    LaunchedEffect(loggedIn.message) {
+        if (loggedIn.message.isNotEmpty()) {
+            Toast.makeText(context, loggedIn.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     LaunchedEffect(loggedIn) {
