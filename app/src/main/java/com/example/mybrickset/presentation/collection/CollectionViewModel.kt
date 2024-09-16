@@ -23,6 +23,9 @@ class CollectionViewModel @Inject constructor(
     private val _formState = MutableStateFlow(false)
     val formState: StateFlow<Boolean> = _formState
 
+    private val _screenState = MutableStateFlow(1)
+    val screenState: StateFlow<Int> = _screenState
+
     private val _nameInput = MutableStateFlow("")
     val nameInput: StateFlow<String> = _nameInput
 
@@ -113,6 +116,10 @@ class CollectionViewModel @Inject constructor(
 
     fun onFloatingActionButtonClicked(value: Boolean){
         _formState.value = value
+    }
+
+    fun onPagerClicked(value: Int) {
+        _screenState.value = value
     }
 
     fun onNameInputChange(input: String) {

@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation.collection
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,12 +23,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,9 +47,13 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.presentation.component.CollectionHeader
 import com.example.mybrickset.presentation.component.CollectionItem
+import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.WhiteBackground
+import com.example.mybrickset.presentation.ui.theme.YellowMain
+import kotlinx.coroutines.launch
 
 @Composable
 fun CollectionScreen(
@@ -51,8 +63,13 @@ fun CollectionScreen(
     val formState by viewModel.formState.collectAsState()
     val setCollectionList = viewModel.getAllSetCollection().collectAsState(initial = emptyList())
     val sumPrice = viewModel.getSumPrice().collectAsState(initial = 0.00)
-//    val sumPrice = 124000.00
     val setCount = viewModel.getSetCount().collectAsState(initial = 0)
+
+    val scope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(pageCount = { 2 })
+    val selectedTab = remember {
+        derivedStateOf { pagerState.currentPage }
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -65,35 +82,78 @@ fun CollectionScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add") }
         },
     ) { innerPadding ->
-        Surface(
+        Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            if (formState) {
-                Dialog(
-                    properties =  DialogProperties( usePlatformDefaultWidth = false ),
-                    onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
-                ) {
-                    CollectionForm(
-                        onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) },
-                    )
+            Surface(
+                modifier = modifier
+                    .fillMaxSize()
+            ) {
+                if (formState) {
+                    Dialog(
+                        properties =  DialogProperties( usePlatformDefaultWidth = false ),
+                        onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
+                    ) {
+                        CollectionForm(
+                            onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) },
+                        )
+                    }
                 }
             }
-            CollectionContent(
-                setCount = setCount.value,
-                sumPrice = sumPrice.value,
-                setCollectionList = setCollectionList.value,
-                onDeleteSetCollection = viewModel::deleteSetCollection,
-                onEditSetCollection = viewModel::onEditSetCollection
-            )
+            Column {
+                HorizontalDivider()
+                TabRow(
+                    selectedTabIndex = selectedTab.value,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    CollectionTab.entries.forEachIndexed { index, collectionTab ->
+                        Tab(
+                            selected = selectedTab.value == index,
+                            selectedContentColor = DarkGray,
+                            unselectedContentColor = Color.LightGray,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(collectionTab.ordinal)
+                                }
+                            },
+                            text = { Text(text = collectionTab.text)}
+                        )
+                    }
+                }
+                HorizontalDivider()
+                HorizontalPager(state = pagerState) { page ->
+                    when(page) {
+                        0 -> {
+                            LocalCollectionContent(
+                                setCount = setCount.value,
+                                sumPrice = sumPrice.value,
+                                setCollectionList = setCollectionList.value,
+                                onDeleteSetCollection = viewModel::deleteSetCollection,
+                                onEditSetCollection = viewModel::onEditSetCollection
+                            )
+                        }
+                        1 -> {
+                            BricksetCollectionContent()
+                        }
+                    }
+                }
+            }
         }
-
     }
 }
 
 @Composable
-fun CollectionContent(
+fun BricksetCollectionContent(
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier.fillMaxSize())
+}
+
+@Composable
+fun LocalCollectionContent(
     setCount: Int,
     sumPrice: Double,
     setCollectionList: List<SetCollection>,
@@ -108,12 +168,14 @@ fun CollectionContent(
 
     Surface (
         color = WhiteBackground,
+        modifier = modifier
+            .fillMaxSize()
     ) {
         Column {
             CollectionHeader(setCount, sumPrice)
             HorizontalDivider()
             Row (
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         top = 8.dp,
@@ -159,96 +221,29 @@ fun CollectionContent(
     }
 }
 
-@Composable
-fun CollectionHeader(
-    setCount: Int,
-    sumPrice: Double,
-    modifier: Modifier = Modifier
+enum class CollectionTab(
+    val text: String
 ) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(72.dp)
-    ) {
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    horizontal = 4.dp,
-                    vertical = 8.dp
-                )
-        ) {
-            CollectionTextRow(
-                label = "Total Collection",
-                value = setCount.toString()
-            )
-            Row (
-                verticalAlignment = Alignment.Bottom,
-                modifier = modifier
-                    .fillMaxSize()
-            ) {
-                Text(
-                    text = "Total Spent",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = sumPrice.toString(),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.End,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .weight(1f)
-                )
-            }
-        }
-    }
+    Local(
+        text = "Local Collection"
+    ),
+    Brickset(
+        text = "Brickset Collection"
+    )
 }
-
-@Composable
-fun CollectionTextRow(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier
-) {
-    Row (modifier = Modifier
-        .fillMaxWidth()
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = modifier
-                .fillMaxWidth(0.4f)
-        )
-        Text(
-            text = ": ",
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .padding(horizontal = 4.dp)
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleMedium,
-            maxLines = 1,
-            color = Color.DarkGray
-        )
-    }
-}
-
 
 
 @Preview (showBackground = true)
 @Composable
 private fun CollectionContentPreview() {
     MyBricksetTheme {
-        CollectionContent(
+        LocalCollectionContent(
             setCollectionList = Dummy.DummyCollection,
             onDeleteSetCollection = {},
             setCount = 2,
             sumPrice = 599.00,
-            onEditSetCollection = {}
+            onEditSetCollection = {},
+
         )
 //        CollectionHeader()
     }
