@@ -44,14 +44,12 @@ class CollectionViewModel @Inject constructor(
     private val _priceInput = MutableStateFlow("")
     val priceInput: StateFlow<String> = _priceInput
 
+    private val _setId = MutableStateFlow(0)
+    val setId: StateFlow<Int> = _setId
+
     init {
         getAllSetCollection()
     }
-
-    fun getUserHash(): Flow<String> {
-        return pref.getUserHash()
-    }
-
 
     fun getAllSetCollection(): Flow<List<SetCollection>> {
         return localUseCase.getAllSetCollection()
@@ -74,6 +72,7 @@ class CollectionViewModel @Inject constructor(
         _conditionInput.value = ""
         _acquiredDateInput.value = ""
         _priceInput.value = ""
+        _setId.value = 0
     }
 
     fun insertSetCollection() {
@@ -85,13 +84,31 @@ class CollectionViewModel @Inject constructor(
                 _nameInput.value,
                 _conditionInput.value,
                 _acquiredDateInput.value,
-                _priceInput.value.toDouble()
+                _priceInput.value.toDouble(),
+                _setId.value
             )
         )
     }
 
     fun deleteSetCollection(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.deleteSetCollection(setCollection)
+    }
+
+    fun onEditSetCollection(setCollection: SetCollection) = viewModelScope.launch {
+        _formState.value = true
+        setSetId(setCollection.setId!!)
+
+        _numberInput.value = setCollection.number
+        _variantInput.value = setCollection.numberVariant.toString()
+        _imageInput.value = setCollection.image
+        _nameInput.value = setCollection.name
+        _conditionInput.value = setCollection.condition
+        _acquiredDateInput.value = setCollection.acquiredDate
+        _priceInput.value = setCollection.price.toString()
+    }
+
+    private fun setSetId(setId: Int) {
+        _setId.value = setId
     }
 
     fun onFloatingActionButtonClicked(value: Boolean){

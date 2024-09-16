@@ -31,8 +31,8 @@ class HomeViewModel @Inject constructor(
     val stateThemes: State<ThemeState> = _stateThemes
 
     init {
-        getNewReleasedSet()
-        getSetsByTheme("Star Wars")
+//        getNewReleasedSet()
+//        getSetsByTheme("Star Wars")
         if (_stateThemes.value.themes.isEmpty()) {
             getThemes()
         }

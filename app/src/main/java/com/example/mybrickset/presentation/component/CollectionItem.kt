@@ -50,6 +50,7 @@ fun CollectionItem(
     setCollection: SetCollection,
     editState: Boolean,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
+    onEditSetCollection: (setCollection: SetCollection) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -118,9 +119,7 @@ fun CollectionItem(
                         )
                     }
                     Button(
-                        onClick = {
-
-                        },
+                        onClick = { onEditSetCollection(setCollection) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MatteBlue
                         ),
@@ -147,16 +146,6 @@ fun CollectionItem(
                     )
                 }
             }
-
-//            HorizontalDivider(modifier = Modifier
-//                .height(1.dp)
-//                .border(
-//                    BorderStroke(
-//                        1.dp,
-//                        Color.LightGray
-//                    )
-//                )
-//            )
             Row (modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
@@ -226,7 +215,8 @@ private fun CollectionItemPreview() {
                     price = 300000.00
                 ),
             editState = true,
-            onDeleteSetCollection = {}
+            onDeleteSetCollection = {},
+            onEditSetCollection = {}
         )
     }
 }

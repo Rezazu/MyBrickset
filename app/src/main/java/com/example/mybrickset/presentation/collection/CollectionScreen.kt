@@ -84,7 +84,8 @@ fun CollectionScreen(
                 setCount = setCount.value,
                 sumPrice = sumPrice.value,
                 setCollectionList = setCollectionList.value,
-                onDeleteSetCollection = viewModel::deleteSetCollection
+                onDeleteSetCollection = viewModel::deleteSetCollection,
+                onEditSetCollection = viewModel::onEditSetCollection
             )
         }
 
@@ -97,11 +98,12 @@ fun CollectionContent(
     sumPrice: Double,
     setCollectionList: List<SetCollection>,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
+    onEditSetCollection:(setCollection: SetCollection) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     var editState by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
 
     Surface (
@@ -148,7 +150,8 @@ fun CollectionContent(
                     CollectionItem(
                         setCollection = setCollectionList[it],
                         editState = editState,
-                        onDeleteSetCollection = onDeleteSetCollection
+                        onDeleteSetCollection = onDeleteSetCollection,
+                        onEditSetCollection = onEditSetCollection
                     )
                 }
             }
@@ -244,7 +247,8 @@ private fun CollectionContentPreview() {
             setCollectionList = Dummy.DummyCollection,
             onDeleteSetCollection = {},
             setCount = 2,
-            sumPrice = 599.00
+            sumPrice = 599.00,
+            onEditSetCollection = {}
         )
 //        CollectionHeader()
     }

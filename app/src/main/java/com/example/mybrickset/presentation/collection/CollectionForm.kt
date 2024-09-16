@@ -65,6 +65,7 @@ fun CollectionForm(
     val conditionInput = viewModel.conditionInput.collectAsState()
     val dateInput = viewModel.acquiredDateInput.collectAsState()
     val priceInput = viewModel.priceInput.collectAsState()
+    val setId = viewModel.setId.collectAsState()
 
     val singlePhotoPickerLauncher =
         rememberLauncherForActivityResult(contract =
@@ -229,7 +230,9 @@ fun CollectionForm(
                             .wrapContentWidth()
 
                     ) {
-                        Text(text = "Add Set")
+                        Text(
+                            text = if(setId.value != 0) "Edit Set" else "Add Set"
+                        )
                     }
                 }
             }

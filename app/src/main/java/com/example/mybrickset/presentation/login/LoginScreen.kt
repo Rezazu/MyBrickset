@@ -56,8 +56,6 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
-//    val isLoggedIn by viewModel.isLoggedIn.collectAsState()
-
     val loggedIn by viewModel.loggedIn.collectAsState()
 
     val usernameText by viewModel.onUsernameTextChange.collectAsState()
@@ -202,15 +200,15 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-                        if (usernameText.isNotEmpty() && passwordText.isNotEmpty()) {
-                            viewModel.login(
-                                usernameText,
-                                passwordText
-                            )
-                        } else {
-                            Toast.makeText(context, "Username or Password cannot be empty", Toast.LENGTH_SHORT).show()
-                        }
-//                        navigateToHomeScreen()
+//                        if (usernameText.isNotEmpty() && passwordText.isNotEmpty()) {
+//                            viewModel.login(
+//                                usernameText,
+//                                passwordText
+//                            )
+//                        } else {
+//                            Toast.makeText(context, "Username or Password cannot be empty", Toast.LENGTH_SHORT).show()
+//                        }
+                        navigateToHomeScreen()
                     },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
