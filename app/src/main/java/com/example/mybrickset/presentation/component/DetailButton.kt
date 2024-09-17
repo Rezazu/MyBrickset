@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,20 +24,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mybrickset.R
+import com.example.mybrickset.presentation.ui.theme.Green
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
+import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
+import com.example.mybrickset.presentation.ui.theme.YellowMain
 
 
 @Composable
 fun DetailButton(
     modifier: Modifier = Modifier,
-    isFavorite: Boolean,
+    isowned: Boolean,
     onButtonWebsiteClicked:() -> Unit,
-    onButtonFavoriteClicked:() -> Unit,
+    onButtonOwnedClicked:() -> Unit,
 ) {
-    val context = LocalContext.current
     Row (
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
@@ -47,7 +51,7 @@ fun DetailButton(
             onClick = onButtonWebsiteClicked,
             contentPadding = PaddingValues(0.dp),
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MatteBlue),
+            colors = ButtonDefaults.buttonColors(containerColor = YellowMain),
             modifier = Modifier
                 .width(156.dp)
         ) {
@@ -68,14 +72,14 @@ fun DetailButton(
                 )
             }
         }
-        if (isFavorite) {
+        if (isowned) {
             Button(
-                onClick = onButtonFavoriteClicked,
+                onClick = onButtonOwnedClicked,
                 contentPadding = PaddingValues(0.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
                     contentColor = Color.White,
-                    containerColor = Red
+                    containerColor = MatteBlue
                 ),
                 modifier = Modifier
                     .width(156.dp),
@@ -84,13 +88,13 @@ fun DetailButton(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Icon(
-                        imageVector = Icons.Filled.Favorite,
+                        imageVector = Icons.Filled.CheckCircle,
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
                     )
                     Text(
-                        text = "In your Wishlist",
+                        text = "In your collection",
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .padding(2.dp)
@@ -99,14 +103,14 @@ fun DetailButton(
             }
         } else {
             OutlinedButton(
-                onClick = onButtonFavoriteClicked,
+                onClick = onButtonOwnedClicked,
                 contentPadding = PaddingValues(0.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = Red,
+                    contentColor = MatteBlue,
                     containerColor = Color.Transparent
                 ),
-                border = BorderStroke(2.dp, Red),
+                border = BorderStroke(2.dp, MatteBlue),
                 modifier = Modifier
                     .width(156.dp),
             ) {
@@ -114,13 +118,13 @@ fun DetailButton(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Icon(
-                        imageVector = Icons.Filled.Favorite,
+                        imageVector = Icons.Filled.CheckCircle,
                         contentDescription = null,
                         modifier = Modifier
                             .size(20.dp)
                     )
                     Text(
-                        text = "Add to Wishlist",
+                        text = "Own this set?",
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .padding(2.dp)
@@ -128,6 +132,18 @@ fun DetailButton(
                 }
             }
         }
+    }
+}
 
+@Preview(showBackground = true)
+@Composable
+private fun DetailButtonPreview() {
+    MyBricksetTheme {
+        DetailButton(
+            isowned = false,
+            onButtonWebsiteClicked = { /*TODO*/ }
+        ) {
+            
+        }
     }
 }

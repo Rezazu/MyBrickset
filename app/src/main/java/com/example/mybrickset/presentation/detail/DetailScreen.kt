@@ -3,6 +3,8 @@ package com.example.mybrickset.presentation.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,10 +14,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,8 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.mybrickset.R
 import com.example.mybrickset.Services
 import com.example.mybrickset.data.Result
+import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getsets.Set
@@ -46,6 +56,7 @@ import com.example.mybrickset.presentation.component.DetailDescription
 import com.example.mybrickset.presentation.component.DetailPager
 import com.example.mybrickset.presentation.component.DetailPrice
 import com.example.mybrickset.presentation.component.DetailReview
+import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.Green
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
@@ -83,13 +94,13 @@ fun DetailScreen(
                             )
                         )
                     },
-                    onButtonFavoriteClicked = viewModel::setCollectionWanted
-//                    onButtonFavoriteClicked = {
-//                        viewModel.setCollectionWanted(
-//                            setId = result.data.setID,
-//                            isWanted = if (result.data.collection.wanted) 0 else 1
-//                        )
-//                    }
+//                    onButtonFavoriteClicked = viewModel::setCollectionWanted
+                    onButtonFavoriteClicked = {
+                        viewModel.setCollectionWanted(
+                            setId = result.data.setID,
+                            isWanted = if (result.data.collection.wanted) 0 else 1
+                        )
+                    }
                 )
             }
         }
@@ -104,9 +115,12 @@ fun DetailScreenContent(
     reviews: List<Review>,
     context: Context,
     navigateToReviewScreen:() -> Unit,
-    onButtonFavoriteClicked:(Int, Int) -> Unit,
+    onButtonFavoriteClicked:() -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val context = LocalContext.current
+
     val pagerState = rememberPagerState(pageCount = { additionalImage.size })
     val scrollState = rememberScrollState()
 
@@ -143,13 +157,35 @@ fun DetailScreenContent(
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                     )
-                    Image(
-                        painter = painterResource(id = Services.getThemeIcon(set.theme)),
-                        contentDescription = "",
-                        contentScale = ContentScale.FillHeight,
-                        modifier = Modifier
-                            .height(32.dp)
-                    )
+                    IconButton(
+                        onClick = {
+                            onButtonFavoriteClicked()
+                            isFavorited = !isFavorited
+                            Toast.makeText(
+                                context,
+                                if (isFavorited) "Set added to wishlist" else "Set deleted from wishlist",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                    ) {
+                        if (isFavorited) {
+                            Icon(
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = null,
+                                tint = Red,
+                                modifier = Modifier
+                                    .size(32.dp)
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = null,
+                                tint = DarkGray,
+                                modifier = Modifier
+                                    .size(32.dp)
+                            )
+                        }
+                    }
                 }
                 if(set.released) {
                     Text(
@@ -157,7 +193,7 @@ fun DetailScreenContent(
                         color = Green,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
-                            .padding(2.dp)
+                            .padding(horizontal = 2.dp, vertical = 8.dp)
                     )
                 } else {
                     Text(
@@ -165,10 +201,17 @@ fun DetailScreenContent(
                         color = Red,
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier
-                            .padding(2.dp)
+                            .padding(horizontal = 2.dp, vertical = 8.dp)
                     )
 
                 }
+                Image(
+                    painter = painterResource(id = Services.getThemeIcon(set.theme)),
+                    contentDescription = "",
+                    contentScale = ContentScale.FillHeight,
+                    modifier = Modifier
+                        .height(32.dp)
+                )
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -184,11 +227,12 @@ fun DetailScreenContent(
                 )
                 startActivity(context, intent, null)
             },
-            onButtonFavoriteClicked = {
-                onButtonFavoriteClicked(set.setID, if (isFavorited) 0 else 1)
+            onButtonOwnedClicked = {
+//                onButtonFavoriteClicked(set.setID, if (isFavorited) 0 else 1)
+                onButtonFavoriteClicked()
                 isFavorited = !isFavorited
             },
-            isFavorite = set.collection.wanted
+            isowned = set.collection.owned
         )
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
@@ -215,23 +259,23 @@ private fun DetailScreenPreview(
 
 ) {
     MyBricksetTheme {
-//        DetailScreenContent(
-//            additionalImage =
-//            listOf(
-//                Image(
-//                    thumbnailURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/tn_40674_alt1_jpg.jpg",
-//                    imageURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/40674_alt1.jpg",
-//                )
-//            ),
-//            context = LocalContext.current,
-//            set = Dummy.DummySet,
-//            reviews = listOf(
-//                Dummy.DummyReview,
-//                Dummy.DummyReview,
-//            ),
-//            navigateToReviewScreen = {},
-//            onButtonFavoriteClicked = { }
-//        )
+        DetailScreenContent(
+            additionalImage =
+            listOf(
+                Image(
+                    thumbnailURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/tn_40674_alt1_jpg.jpg",
+                    imageURL = "https://images.brickset.com/sets/AdditionalImages/40674-1/40674_alt1.jpg",
+                )
+            ),
+            context = LocalContext.current,
+            set = Dummy.DummySet,
+            reviews = listOf(
+                Dummy.DummyReview,
+                Dummy.DummyReview,
+            ),
+            navigateToReviewScreen = {},
+            onButtonFavoriteClicked = {}
+        )
     }
 }
 

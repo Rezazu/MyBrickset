@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,7 @@ import com.example.mybrickset.presentation.component.LegoItem
 import com.example.mybrickset.presentation.component.SectionText
 import com.example.mybrickset.presentation.error.ErrorScreen
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
+import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 
 @Composable
 fun FavoriteScreen(
@@ -26,35 +28,41 @@ fun FavoriteScreen(
 
     val wantedSetsState = viewModel.wantedSets.value
 
-    wantedSetsState.let { setsState ->
-        if (setsState.error.isNotBlank()) {
-            ErrorScreen(message = setsState.error)
-        } else if(setsState.sets.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                SectionText(
-                    title = "Your Wanted Sets"
-                )
-                LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Fixed(2),
-                    verticalItemSpacing = 8.dp,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(
-                        vertical = 8.dp,
-                        horizontal = 8.dp
-                    ),
+    Surface(
+        color = WhiteBackground,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        wantedSetsState.let { setsState ->
+            if (setsState.error.isNotBlank()) {
+                ErrorScreen(message = setsState.error)
+            } else if(setsState.sets.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-                    val data = setsState.sets
-                    items(data.size) {
-                        data[it].let { set ->
-                            LegoItem(
-                                set = set,
-                                navigateToDetail = {
-                                    navController.navigate(Screen.DetailScreen(setId = set.setID))
-                                }
-                            )
+                    SectionText(
+                        title = "Your Wanted Sets"
+                    )
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Fixed(2),
+                        verticalItemSpacing = 8.dp,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(
+                            vertical = 8.dp,
+                            horizontal = 8.dp
+                        ),
+                    ) {
+                        val data = setsState.sets
+                        items(data.size) {
+                            data[it].let { set ->
+                                LegoItem(
+                                    set = set,
+                                    navigateToDetail = {
+                                        navController.navigate(Screen.DetailScreen(setId = set.setID))
+                                    }
+                                )
+                            }
                         }
                     }
                 }
