@@ -4,27 +4,33 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.data.local.datastore.AuthPreferences
+import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.local.LocalUseCase
+import com.example.mybrickset.presentation.favorite.WantedSetsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CollectionViewModel @Inject constructor(
     private val localUseCase: LocalUseCase,
-    private val pref: AuthPreferences
+    private val bricksetUseCases: BricksetUseCases
 ):ViewModel() {
+
+    private val _ownedSets = mutableStateOf(OwnedSetState())
+    val ownedSets: State<OwnedSetState> = _ownedSets
 
     private val _formState = MutableStateFlow(false)
     val formState: StateFlow<Boolean> = _formState
-
-    private val _screenState = MutableStateFlow(1)
-    val screenState: StateFlow<Int> = _screenState
 
     private val _nameInput = MutableStateFlow("")
     val nameInput: StateFlow<String> = _nameInput
@@ -52,6 +58,27 @@ class CollectionViewModel @Inject constructor(
 
     init {
         getAllSetCollection()
+        getSetsOwned()
+    }
+
+    fun getSetsOwned(){
+        bricksetUseCases.getSetsOwned().onEach { result ->
+            when(result) {
+                is Resource.Error -> {
+                    _ownedSets.value = OwnedSetState(error = result.message ?: "An Error Occured")
+                }
+                is Resource.Loading -> {
+                    _ownedSets.value = OwnedSetState(isLoading = true)
+                }
+                is Resource.Success -> {
+                    _ownedSets.value = OwnedSetState(
+                        sets = result.data?.sets?.filterNot {
+                            it.name.contains("{?}")
+                        } ?: emptyList()
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun getAllSetCollection(): Flow<List<SetCollection>> {
@@ -118,10 +145,6 @@ class CollectionViewModel @Inject constructor(
         _formState.value = value
     }
 
-    fun onPagerClicked(value: Int) {
-        _screenState.value = value
-    }
-
     fun onNameInputChange(input: String) {
         _nameInput.value = input
     }
@@ -150,3 +173,9 @@ class CollectionViewModel @Inject constructor(
         _priceInput.value = input
     }
 }
+
+data class OwnedSetState(
+    val isLoading: Boolean = false,
+    val sets: List<Set> = emptyList(),
+    val error: String = ""
+)

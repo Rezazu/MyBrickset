@@ -113,7 +113,9 @@ fun BricksetApp(
                 topBarState.value = true
                 bottomBarState.value = true
                 backButtonState.value = false
-                CollectionScreen()
+                CollectionScreen(
+                    navController = navController
+                )
             }
             composable<Screen.ProfileScreen> {
                 topBarState.value = true
