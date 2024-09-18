@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -30,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 
@@ -64,22 +67,28 @@ fun LocalCollectionContent(
                         end = 8.dp
                     )
             ) {
-//                Button(
-//                    onClick = {},
-//                    shape = RoundedCornerShape(10.dp),
-//                    contentPadding = PaddingValues(0.dp),
-//                    modifier = Modifier
-//                        .width(72.dp)
-//                ) {
-//                    Text(text = "Filter")
-//                }
-//                Spacer(modifier = Modifier.weight(1f))
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(10.dp),
+                    contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MatteBlue
+                    ),
+                    modifier = Modifier
+                        .width(72.dp)
+                ) {
+                    Text(text = "Filter")
+                }
+                Spacer(modifier = Modifier.width(16.dp))
                 Button(
                     onClick = {
                         editState = !editState
                     },
                     shape = RoundedCornerShape(10.dp),
                     contentPadding = PaddingValues(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MatteBlue
+                    ),
                     modifier = Modifier
                         .width(80.dp)
                 ) {

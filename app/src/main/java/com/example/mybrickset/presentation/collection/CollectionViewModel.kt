@@ -85,6 +85,22 @@ class CollectionViewModel @Inject constructor(
         return localUseCase.getAllSetCollection()
     }
 
+    fun getAllSetCollectionOrderByPriceAsc(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollectionOrderByPriceAsc()
+    }
+
+    fun getAllSetCollectionOrderByPriceDesc(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollectionOrderByPriceDesc()
+    }
+
+    fun getAllSetCollectionOrderByDateAsc(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollectionOrderByDateAsc()
+    }
+
+    fun getAllSetCollectionOrderByDateDesc(): Flow<List<SetCollection>> {
+        return localUseCase.getAllSetCollectionOrderByDateDesc()
+    }
+
     fun getSumPrice(): Flow<Double> {
         return localUseCase.getSumPrice()
     }

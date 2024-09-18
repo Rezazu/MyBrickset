@@ -1,11 +1,14 @@
 package com.example.mybrickset.presentation.component
 
+import android.widget.Space
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,14 +36,15 @@ fun CollectionHeader(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = 4.dp,
+                    horizontal = 12.dp,
                     vertical = 8.dp
                 )
         ) {
-            CollectionTextRow(
-                label = "Total Collection",
-                value = setCount.toString()
-            )
+//            CollectionTextRow(
+//                label = "Total Collection",
+//                value = setCount.toString()
+//            )
+            Text(text = "You have a total of $setCount item in your collection")
             Row (
                 verticalAlignment = Alignment.Bottom,
                 modifier = modifier
@@ -51,13 +55,13 @@ fun CollectionHeader(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
+                Spacer(modifier = Modifier.width(72.dp))
                 Text(
-                    text = sumPrice.toString(),
+                    text = "Rp. ${sumPrice} IDR",
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.End,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .weight(1f)
                 )
             }
         }
@@ -70,7 +74,7 @@ private fun ColectionHeaderPreview() {
     MyBricksetTheme {
         CollectionHeader(
             setCount = 2,
-            sumPrice = 124000.00
+            sumPrice = 124000.42
         )
     }
 }

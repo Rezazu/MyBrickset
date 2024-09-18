@@ -19,6 +19,18 @@ interface CollectionDao {
     @Query("SELECT * FROM set_collection")
     fun getAllSetCollection(): Flow<List<SetCollection>>
 
+    @Query("SELECT * FROM set_collection ORDER BY price ASC")
+    fun getAllSetCollectionOrderByPriceAsc(): Flow<List<SetCollection>>
+
+    @Query("SELECT * FROM set_collection ORDER BY price DESC")
+    fun getAllSetCollectionOrderByPriceDesc(): Flow<List<SetCollection>>
+
+    @Query("SELECT * FROM set_collection ORDER BY acquiredDate ASC")
+    fun getAllSetCollectionOrderByDateAsc(): Flow<List<SetCollection>>
+
+    @Query("SELECT * FROM set_collection ORDER BY acquiredDate DESC")
+    fun getAllSetCollectionOrderByDateDesc(): Flow<List<SetCollection>>
+
     @Query("SELECT SUM(PRICE) FROM set_collection")
     fun getSumPrice(): Flow<Double>
 

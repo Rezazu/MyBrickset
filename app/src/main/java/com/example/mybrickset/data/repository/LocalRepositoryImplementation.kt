@@ -21,6 +21,23 @@ class LocalRepositoryImplementation @Inject constructor(
         return collectionDao.getAllSetCollection()
     }
 
+    override fun getAllSetCollectionOrderByPriceAsc(): Flow<List<SetCollection>> {
+        return collectionDao.getAllSetCollectionOrderByPriceAsc()
+    }
+
+    override fun getAllSetCollectionOrderByPriceDesc(): Flow<List<SetCollection>> {
+        return collectionDao.getAllSetCollectionOrderByPriceDesc()
+    }
+
+    override fun getAllSetCollectionOrderByDateAsc(): Flow<List<SetCollection>> {
+        return collectionDao.getAllSetCollectionOrderByDateAsc()
+    }
+
+    override fun getAllSetCollectionOrderByDateDesc(): Flow<List<SetCollection>> {
+        return collectionDao.getAllSetCollectionOrderByDateDesc()
+    }
+
+
     override fun getSumPrice(): Flow<Double> {
         return collectionDao.getSumPrice()
     }

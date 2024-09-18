@@ -28,6 +28,10 @@ import com.example.mybrickset.domain.usecase.SetCollectionOwned
 import com.example.mybrickset.domain.usecase.SetCollectionWanted
 import com.example.mybrickset.domain.usecase.local.DeleteSetColleciton
 import com.example.mybrickset.domain.usecase.local.GetAllSetCollection
+import com.example.mybrickset.domain.usecase.local.GetAllSetCollectionOrderByDateAsc
+import com.example.mybrickset.domain.usecase.local.GetAllSetCollectionOrderByDateDesc
+import com.example.mybrickset.domain.usecase.local.GetAllSetCollectionOrderByPriceAsc
+import com.example.mybrickset.domain.usecase.local.GetAllSetCollectionOrderByPriceDesc
 import com.example.mybrickset.domain.usecase.local.GetSetCount
 import com.example.mybrickset.domain.usecase.local.GetSumPrice
 import com.example.mybrickset.domain.usecase.local.InsertSetCollection
@@ -138,6 +142,10 @@ object AppModule {
             insertSetCollection = InsertSetCollection(localRepository),
             deleteSetCollection = DeleteSetColleciton(localRepository),
             getAllSetCollection = GetAllSetCollection(localRepository),
+            getAllSetCollectionOrderByDateAsc = GetAllSetCollectionOrderByDateAsc(localRepository),
+            getAllSetCollectionOrderByDateDesc = GetAllSetCollectionOrderByDateDesc(localRepository),
+            getAllSetCollectionOrderByPriceAsc = GetAllSetCollectionOrderByPriceAsc(localRepository),
+            getAllSetCollectionOrderByPriceDesc = GetAllSetCollectionOrderByPriceDesc(localRepository),
             getSetCount = GetSetCount(localRepository),
             getSumPrice = GetSumPrice(localRepository)
         )
