@@ -69,6 +69,7 @@ fun DetailScreen(
 ) {
     val images = viewModel.images.collectAsState()
     val reviews = viewModel.reviews.collectAsState()
+    val isOwned = viewModel.isOwned.collectAsState()
 
     val context = LocalContext.current
     viewModel.set.collectAsState(initial = Result.Loading).value.let { result ->
@@ -84,7 +85,7 @@ fun DetailScreen(
                     set = result.data,
                     additionalImage = images.value.images,
                     reviews = reviews.value.reviews,
-                    context,
+                    context = context,
                     navigateToReviewScreen = {
                         navController.navigate(
                             Screen.ReviewScreen(
@@ -94,11 +95,16 @@ fun DetailScreen(
                             )
                         )
                     },
-//                    onButtonFavoriteClicked = viewModel::setCollectionWanted
                     onButtonFavoriteClicked = {
                         viewModel.setCollectionWanted(
                             setId = result.data.setID,
                             isWanted = if (result.data.collection.wanted) 0 else 1
+                        )
+                    },
+                    onButtonOwnedClicked = {
+                        viewModel.setCollectionOwned(
+                            setId = result.data.setID,
+                            isOwned = if (result.data.collection.owned) 0 else 1
                         )
                     }
                 )
@@ -116,16 +122,19 @@ fun DetailScreenContent(
     context: Context,
     navigateToReviewScreen:() -> Unit,
     onButtonFavoriteClicked:() -> Unit,
+    onButtonOwnedClicked:() -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    val context = LocalContext.current
 
     val pagerState = rememberPagerState(pageCount = { additionalImage.size })
     val scrollState = rememberScrollState()
 
     var isFavorited by remember {
         mutableStateOf(set.collection.wanted)
+    }
+
+    var isOwned by remember {
+        mutableStateOf(set.collection.owned)
     }
 
     Column(
@@ -163,7 +172,7 @@ fun DetailScreenContent(
                             isFavorited = !isFavorited
                             Toast.makeText(
                                 context,
-                                if (isFavorited) "Set added to wishlist" else "Set deleted from wishlist",
+                                if (isFavorited) "Set added to wishlist" else "Set removed from wishlist",
                                 Toast.LENGTH_SHORT
                             ).show()
                         },
@@ -228,11 +237,15 @@ fun DetailScreenContent(
                 startActivity(context, intent, null)
             },
             onButtonOwnedClicked = {
-//                onButtonFavoriteClicked(set.setID, if (isFavorited) 0 else 1)
-                onButtonFavoriteClicked()
-                isFavorited = !isFavorited
+                onButtonOwnedClicked()
+                isOwned = !isOwned
+                Toast.makeText(
+                    context,
+                    if (isOwned) "Set added to collection" else "Set removed from collection",
+                    Toast.LENGTH_SHORT
+                ).show()
             },
-            isowned = set.collection.owned
+            isowned = isOwned
         )
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
@@ -274,7 +287,8 @@ private fun DetailScreenPreview(
                 Dummy.DummyReview,
             ),
             navigateToReviewScreen = {},
-            onButtonFavoriteClicked = {}
+            onButtonFavoriteClicked = {},
+            onButtonOwnedClicked = {}
         )
     }
 }

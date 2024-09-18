@@ -20,4 +20,5 @@ interface BricksetRepository {
     suspend fun getSetById(setId: Int): SetsResponse
     suspend fun getReviews(setId: Int): ReviewsResponse
     suspend fun setCollectionWanted(setId: Int, isWanted: Int): SetCollectionResponse
+    suspend fun setCollectionOwned(setId: Int, isOwned: Int): SetCollectionResponse
 }

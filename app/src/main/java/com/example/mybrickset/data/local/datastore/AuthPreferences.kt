@@ -32,4 +32,10 @@ class AuthPreferences(
             preferences[USER_HASH] = userHash
         }
     }
+
+    suspend fun deleteUserHash() {
+        context.dataStore.edit { preferences ->
+            preferences[USER_HASH] = ""
+        }
+    }
 }

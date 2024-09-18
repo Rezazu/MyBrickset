@@ -141,7 +141,7 @@ private fun DetailButtonPreview() {
     MyBricksetTheme {
         DetailButton(
             isowned = false,
-            onButtonWebsiteClicked = { /*TODO*/ }
+            onButtonWebsiteClicked = { }
         ) {
             
         }

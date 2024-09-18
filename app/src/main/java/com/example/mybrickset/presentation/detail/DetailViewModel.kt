@@ -24,6 +24,9 @@ class DetailViewModel @Inject constructor(
     private val _set: MutableStateFlow<Result<Set>> = MutableStateFlow(Result.Loading)
     val set: StateFlow<Result<Set>> get() = _set
 
+    private val _isOwned: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isOwned: StateFlow<Boolean> get() = _isOwned
+
     private val _images = MutableStateFlow(ImagesState())
     val images: StateFlow<ImagesState> = _images
 
@@ -57,6 +60,7 @@ class DetailViewModel @Inject constructor(
                 }
                 is Result.Success -> {
                     _set.value = Result.Success(result.data.sets[0])
+                    _isOwned.value = result.data.sets[0].collection.owned
                     getAdditionalImages(setId)
                     getReviews(setId)
                 }
@@ -82,6 +86,10 @@ class DetailViewModel @Inject constructor(
 
     fun setCollectionWanted(setId: Int, isWanted: Int) = viewModelScope.launch {
         bricksetUseCases.setCollectionWanted(setId,isWanted)
+    }
+
+    fun setCollectionOwned(setId: Int, isOwned: Int) = viewModelScope.launch {
+        bricksetUseCases.setCollectionOwned(setId, isOwned)
     }
 }
 

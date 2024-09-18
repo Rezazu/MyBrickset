@@ -14,7 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
 fun CollectionHeader(
@@ -59,5 +61,16 @@ fun CollectionHeader(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ColectionHeaderPreview() {
+    MyBricksetTheme {
+        CollectionHeader(
+            setCount = 2,
+            sumPrice = 124000.00
+        )
     }
 }

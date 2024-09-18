@@ -72,7 +72,9 @@ class BricksetRepositoryImplementation @Inject constructor(
         return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'want':$isWanted}")
     }
 
-
+    override suspend fun setCollectionOwned(setId: Int, isOwned: Int): SetCollectionResponse {
+        return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'own':$isOwned}")
+    }
 
 
 }

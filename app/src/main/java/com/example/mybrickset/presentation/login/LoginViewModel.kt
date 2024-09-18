@@ -7,10 +7,13 @@ import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.Login
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +25,8 @@ class LoginViewModel  @Inject constructor(
 //    private val _isLoggedIn: MutableStateFlow<Boolean> = MutableStateFlow(false)
 //    val isLoggedIn: StateFlow<Boolean> get() = _isLoggedIn
 
+    private val hash: Flow<String> = pref.getUserHash()
+
     private val _loggedIn: MutableStateFlow<LoginState> = MutableStateFlow(LoginState())
     val loggedIn: StateFlow<LoginState> get() = _loggedIn
 
@@ -30,6 +35,16 @@ class LoginViewModel  @Inject constructor(
 
     private val _onPasswordTextChange: MutableStateFlow<String> = MutableStateFlow("")
     val onPasswordTextChange: StateFlow<String> = _onPasswordTextChange
+
+    init {
+        isLogginChecked()
+    }
+
+    fun isLogginChecked() = viewModelScope.launch {
+        if (hash.first().isNotEmpty()) {
+            _loggedIn.value = LoginState(isLoggedIn = true)
+        }
+    }
 
     fun login(username:String, password: String) {
         _loggedIn.value = LoginState(message = "")

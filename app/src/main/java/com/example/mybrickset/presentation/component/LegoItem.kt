@@ -13,16 +13,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,11 +36,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable
@@ -53,8 +60,8 @@ fun LegoItem(
             defaultElevation = 1.dp
         ),
         modifier = modifier
-            .height(220.dp)
-            .width(140.dp),
+            .height(260.dp)
+            .width(180.dp),
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(1.dp, LightGray),
         onClick = { navigateToDetail() }
@@ -65,12 +72,11 @@ fun LegoItem(
         ) {
             Box(
                 modifier = Modifier
-                    .wrapContentSize()
                     .align(Alignment.CenterHorizontally),
             ) {
                 AsyncImage(
                     modifier = Modifier
-                        .size(140.dp)
+                        .size(180.dp)
                         .padding(4.dp),
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Fit,
@@ -81,17 +87,25 @@ fun LegoItem(
                     placeholder = painterResource(id = R.drawable.logo_brickset),
                     contentDescription = null
                 )
-                Text(
-                    text = set.theme,
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.ExtraBold,
+                Box(
                     modifier = Modifier
+                        .wrapContentSize()
                         .padding(4.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MatteBlue)
                         .align(Alignment.BottomStart)
-                        .background(Color.White)
-                )
+                ) {
+                    Text(
+                        text = set.theme,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = White,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .align(Alignment.BottomStart)
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier

@@ -60,7 +60,7 @@ fun BricksetCollectionContent(
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
                 verticalItemSpacing = 8.dp,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(
                     vertical = 8.dp,
                     horizontal = 8.dp
@@ -75,7 +75,8 @@ fun BricksetCollectionContent(
                             set = set,
                             navigateToDetail = {
                                 navController.navigate(Screen.DetailScreen(setId = set.setID))
-                            }
+                            },
+                            modifier = Modifier
                         )
                     }
                 }
@@ -88,16 +89,9 @@ fun BricksetCollectionContent(
 @Composable
 private fun CollectionContentPreview() {
     MyBricksetTheme {
-//        LocalCollectionContent(
-//            setCollectionList = Dummy.DummyCollection,
-//            onDeleteSetCollection = {},
-//            setCount = 2,
-//            sumPrice = 599.00,
-//            onEditSetCollection = {},
-//
-//        )
+
         BricksetCollectionContent(
-            sets = listOf(Dummy.DummySet),
+            sets = listOf(Dummy.DummySet, Dummy.DummySet),
             navController = NavHostController(LocalContext.current)
         )
     }
