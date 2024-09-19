@@ -200,15 +200,14 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-//                        if (usernameText.isNotEmpty() && passwordText.isNotEmpty()) {
-//                            viewModel.login(
-//                                usernameText,
-//                                passwordText
-//                            )
-//                        } else {
-//                            Toast.makeText(context, "Username or Password cannot be empty", Toast.LENGTH_SHORT).show()
-//                        }
-                        navigateToHomeScreen()
+                        if (usernameText.isNotEmpty() && passwordText.isNotEmpty()) {
+                            viewModel.login(
+                                usernameText,
+                                passwordText
+                            )
+                        } else {
+                            Toast.makeText(context, "Username or Password cannot be empty", Toast.LENGTH_SHORT).show()
+                        }
                     },
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier

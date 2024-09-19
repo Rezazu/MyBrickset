@@ -177,4 +177,11 @@ object Dummy {
                 ),
                 lastUpdated = "2022-05-04T16:21:28.11Z"
             )
+
+    val radioOptions = mapOf(
+        1 to "Sort by prices asc (low to high)",
+        2 to "Sort by prices desc (high to low)",
+        3 to "Sort by date asc (older to newer)",
+        4 to "Sort by date desc (newer to older)"
+    )
 }

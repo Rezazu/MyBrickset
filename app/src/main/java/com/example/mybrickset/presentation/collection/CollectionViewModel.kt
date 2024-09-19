@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
+import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.data.remote.dto.getsets.Set
@@ -32,6 +33,8 @@ class CollectionViewModel @Inject constructor(
     private val _formState = MutableStateFlow(false)
     val formState: StateFlow<Boolean> = _formState
 
+
+
     private val _nameInput = MutableStateFlow("")
     val nameInput: StateFlow<String> = _nameInput
 
@@ -53,8 +56,11 @@ class CollectionViewModel @Inject constructor(
     private val _priceInput = MutableStateFlow("")
     val priceInput: StateFlow<String> = _priceInput
 
-    private val _setId = MutableStateFlow(0)
-    val setId: StateFlow<Int> = _setId
+    private val _setId = MutableStateFlow("")
+    val setId: StateFlow<String> = _setId
+
+    private val _filterState = MutableStateFlow(0)
+    val filterState: StateFlow<Int> = _filterState
 
     init {
         getAllSetCollection()
@@ -82,23 +88,17 @@ class CollectionViewModel @Inject constructor(
     }
 
     fun getAllSetCollection(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollection()
+        when(_filterState.value) {
+            1 -> return localUseCase.getAllSetCollectionOrderByPriceAsc()
+            2 -> return localUseCase.getAllSetCollectionOrderByPriceDesc()
+            3 -> return localUseCase.getAllSetCollectionOrderByDateAsc()
+            4 -> return localUseCase.getAllSetCollectionOrderByDateDesc()
+            else -> return localUseCase.getAllSetCollection()
+        }
     }
 
-    fun getAllSetCollectionOrderByPriceAsc(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollectionOrderByPriceAsc()
-    }
-
-    fun getAllSetCollectionOrderByPriceDesc(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollectionOrderByPriceDesc()
-    }
-
-    fun getAllSetCollectionOrderByDateAsc(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollectionOrderByDateAsc()
-    }
-
-    fun getAllSetCollectionOrderByDateDesc(): Flow<List<SetCollection>> {
-        return localUseCase.getAllSetCollectionOrderByDateDesc()
+    fun onFilterSelected(filterId: Int) {
+        _filterState.value = filterId
     }
 
     fun getSumPrice(): Flow<Double> {
@@ -112,28 +112,53 @@ class CollectionViewModel @Inject constructor(
     private fun insertSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
         localUseCase.insertSetCollection(setCollection)
         _numberInput.value = ""
-        _variantInput.value = ""
+        _variantInput.value = "1"
         _imageInput.value = ""
         _nameInput.value = ""
         _conditionInput.value = ""
         _acquiredDateInput.value = ""
         _priceInput.value = ""
-        _setId.value = 0
     }
 
-    fun insertSetCollection() {
-        insertSetCollectionIntoDb(
-            SetCollection(
-                _numberInput.value,
-                _variantInput.value.toInt(),
-                _imageInput.value,
-                _nameInput.value,
-                _conditionInput.value,
-                _acquiredDateInput.value,
-                _priceInput.value.toDouble(),
-                _setId.value
+    private fun insertEditedSetCollectionIntoDb(setCollection: SetCollection) = viewModelScope.launch {
+        localUseCase.insertSetCollection(setCollection)
+        _numberInput.value = ""
+        _variantInput.value = "1"
+        _imageInput.value = ""
+        _nameInput.value = ""
+        _conditionInput.value = ""
+        _acquiredDateInput.value = ""
+        _priceInput.value = ""
+        _setId.value = ""
+    }
+
+    fun insertSetCollection(editState: Boolean) {
+        if (editState){
+            insertEditedSetCollectionIntoDb(
+                SetCollection(
+                    _numberInput.value,
+                    _variantInput.value.toInt(),
+                    _imageInput.value,
+                    _nameInput.value,
+                    _conditionInput.value,
+                    _acquiredDateInput.value,
+                    _priceInput.value.toDouble(),
+                    _setId.value.toInt()
+                )
             )
-        )
+        } else {
+            insertSetCollectionIntoDb(
+                SetCollection(
+                    _numberInput.value,
+                    _variantInput.value.toInt(),
+                    _imageInput.value,
+                    _nameInput.value,
+                    _conditionInput.value,
+                    _acquiredDateInput.value,
+                    _priceInput.value.toDouble(),
+                )
+            )
+        }
     }
 
     fun deleteSetCollection(setCollection: SetCollection) = viewModelScope.launch {
@@ -154,7 +179,7 @@ class CollectionViewModel @Inject constructor(
     }
 
     private fun setSetId(setId: Int) {
-        _setId.value = setId
+        _setId.value = setId.toString()
     }
 
     fun onFloatingActionButtonClicked(value: Boolean){

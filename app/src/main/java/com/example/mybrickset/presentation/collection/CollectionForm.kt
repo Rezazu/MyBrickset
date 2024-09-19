@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
+import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.component.ConditionDropDown
 import com.example.mybrickset.presentation.component.DatePickerForm
 import com.example.mybrickset.presentation.component.NumberForm
@@ -66,6 +67,16 @@ fun CollectionForm(
     val dateInput = viewModel.acquiredDateInput.collectAsState()
     val priceInput = viewModel.priceInput.collectAsState()
     val setId = viewModel.setId.collectAsState()
+
+    val editState by remember {
+        mutableStateOf(
+            if (setId.value.isNotEmpty()) {
+                true
+            } else {
+                false
+            }
+        )
+    }
 
     val singlePhotoPickerLauncher =
         rememberLauncherForActivityResult(contract =
@@ -211,15 +222,20 @@ fun CollectionForm(
                         imageInput.let {
                             saveImage(context, Uri.parse(it))
                         }
+
+                        if (editState) {
+
+                        }
+
                         if (listOf(
                                 nameInput.value,
                                 numberInput.value,
                                 variantInput.value,
                                 imageInput,
                                 dateInput.value,
-                                priceInput.value
+                                priceInput.value,
                             ).all { it.isNotEmpty() }) {
-                            viewModel.insertSetCollection()
+                            viewModel.insertSetCollection(editState = editState)
                             onDismissRequest()
                         } else {
                             Toast.makeText(context, "Please fill all the form", Toast.LENGTH_SHORT).show()
@@ -231,7 +247,7 @@ fun CollectionForm(
 
                     ) {
                         Text(
-                            text = if(setId.value != 0) "Edit Set" else "Add Set"
+                            text = if(editState) "Edit Set" else "Add Set"
                         )
                     }
                 }

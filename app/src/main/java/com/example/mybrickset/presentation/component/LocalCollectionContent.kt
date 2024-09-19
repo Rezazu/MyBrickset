@@ -20,6 +20,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,85 +30,122 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
+import com.example.mybrickset.presentation.collection.CollectionFilter
+import com.example.mybrickset.presentation.collection.CollectionViewModel
+import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 
 @Composable
 fun LocalCollectionContent(
+    modifier: Modifier = Modifier,
     setCount: Int,
     sumPrice: Double,
+    filterId: Int,
     setCollectionList: List<SetCollection>,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
     onEditSetCollection:(setCollection: SetCollection) -> Unit,
-    modifier: Modifier = Modifier
+    onFilterSelected:(filterId: Int) -> Unit,
 ) {
 
     var editState by remember {
         mutableStateOf(false)
     }
 
-    Surface (
-        color = WhiteBackground,
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column {
-            CollectionHeader(setCount, sumPrice)
-            HorizontalDivider()
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 8.dp,
-                        start = 8.dp,
-                        end = 8.dp
-                    )
-            ) {
-                Button(
-                    onClick = {},
-                    shape = RoundedCornerShape(10.dp),
-                    contentPadding = PaddingValues(0.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MatteBlue
-                    ),
+    var showBottomSheet by remember {
+        mutableStateOf(false)
+    }
+
+    Scaffold (
+
+    ) { contentPadding ->
+
+        Surface (
+            color = WhiteBackground,
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            Column {
+                CollectionHeader(setCount, sumPrice)
+                HorizontalDivider()
+                Row (
                     modifier = Modifier
-                        .width(72.dp)
+                        .fillMaxWidth()
+                        .padding(
+                            top = 8.dp,
+                            start = 8.dp,
+                            end = 8.dp
+                        )
                 ) {
-                    Text(text = "Filter")
+                    Button(
+                        onClick = {
+                            showBottomSheet = !showBottomSheet
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MatteBlue
+                        ),
+                        modifier = Modifier
+                            .width(72.dp)
+                    ) {
+                        Text(text = "Filter")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            editState = !editState
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MatteBlue
+                        ),
+                        modifier = Modifier
+                            .width(80.dp)
+                    ) {
+                        Text(text = "Manage")
+                    }
                 }
-                Spacer(modifier = Modifier.width(16.dp))
-                Button(
-                    onClick = {
-                        editState = !editState
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    contentPadding = PaddingValues(0.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MatteBlue
-                    ),
-                    modifier = Modifier
-                        .width(80.dp)
+                Dummy.radioOptions[filterId]?.let {
+                    Text(
+                        text = it + filterId,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        color = DarkGray,
+                        modifier = Modifier
+                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                    )
+                }
+                LazyColumn (
+                    contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
-                    Text(text = "Manage")
+                    items(setCollectionList.size) {
+                        CollectionItem(
+                            setCollection = setCollectionList[it],
+                            editState = editState,
+                            onDeleteSetCollection = onDeleteSetCollection,
+                            onEditSetCollection = onEditSetCollection
+                        )
+                    }
                 }
             }
-            LazyColumn (
-                contentPadding = PaddingValues(vertical = 12.dp)
-            ) {
-                items(setCollectionList.size) {
-                    CollectionItem(
-                        setCollection = setCollectionList[it],
-                        editState = editState,
-                        onDeleteSetCollection = onDeleteSetCollection,
-                        onEditSetCollection = onEditSetCollection
-                    )
+        }
+        if (showBottomSheet) {
+            CollectionFilter(
+                onFilterSelected = onFilterSelected,
+                onDismissRequest = {
+                    showBottomSheet = false
                 }
-            }
+            )
         }
     }
 }
@@ -122,7 +161,8 @@ private fun CollectionContentPreview() {
             setCount = 2,
             sumPrice = 599.00,
             onEditSetCollection = {},
-
+            onFilterSelected = {},
+            filterId = 3
             )
     }
 }
