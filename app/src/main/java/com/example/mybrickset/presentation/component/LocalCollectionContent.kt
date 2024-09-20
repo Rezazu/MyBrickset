@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
-import com.example.mybrickset.presentation.collection.CollectionFilter
+import com.example.mybrickset.presentation.collection.CollectionSort
 import com.example.mybrickset.presentation.collection.CollectionViewModel
 import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
@@ -49,7 +49,7 @@ fun LocalCollectionContent(
     modifier: Modifier = Modifier,
     setCount: Int,
     sumPrice: Double,
-    filterId: Int,
+    sortId: Int,
     setCollectionList: List<SetCollection>,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,
     onEditSetCollection:(setCollection: SetCollection) -> Unit,
@@ -97,7 +97,7 @@ fun LocalCollectionContent(
                         modifier = Modifier
                             .width(72.dp)
                     ) {
-                        Text(text = "Filter")
+                        Text(text = "Sort")
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(
@@ -115,9 +115,9 @@ fun LocalCollectionContent(
                         Text(text = "Manage")
                     }
                 }
-                Dummy.radioOptions[filterId]?.let {
+                Dummy.radioOptions[sortId]?.let {
                     Text(
-                        text = it + filterId,
+                        text = it + sortId,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = DarkGray,
@@ -140,11 +140,12 @@ fun LocalCollectionContent(
             }
         }
         if (showBottomSheet) {
-            CollectionFilter(
+            CollectionSort(
                 onFilterSelected = onFilterSelected,
                 onDismissRequest = {
                     showBottomSheet = false
-                }
+                },
+                sortId = sortId
             )
         }
     }
@@ -162,7 +163,7 @@ private fun CollectionContentPreview() {
             sumPrice = 599.00,
             onEditSetCollection = {},
             onFilterSelected = {},
-            filterId = 3
+            sortId = 3
             )
     }
 }

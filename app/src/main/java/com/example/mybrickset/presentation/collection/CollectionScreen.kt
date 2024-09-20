@@ -80,12 +80,13 @@ fun CollectionScreen(
     viewModel: CollectionViewModel = hiltViewModel()
 ) {
     val formState by viewModel.formState.collectAsState()
-    val filterState by viewModel.filterState.collectAsState()
+    val filterState by viewModel.sortState.collectAsState()
 
     val ownedSetState = viewModel.ownedSets.value
 
-    val setCollectionList = viewModel.getAllSetCollection().collectAsState(initial = emptyList())
-//    val sumPrice = viewModel.getSumPrice().collectAsState(initial = 0.00)
+    val setCollectionList = viewModel.setCollection
+
+    val sumPrice = viewModel.getSumPrice().collectAsState(initial = 0.00)
     val setCount = viewModel.getSetCount().collectAsState(initial = 0)
 
     val scope = rememberCoroutineScope()
@@ -152,25 +153,25 @@ fun CollectionScreen(
                         0 -> {
                             LocalCollectionContent(
                                 setCount = setCount.value,
-                                sumPrice = 1000.00,
-                                filterId = filterState,
-                                setCollectionList = setCollectionList.value,
+                                sumPrice = sumPrice.value,
+                                sortId = filterState,
+                                setCollectionList = setCollectionList,
                                 onDeleteSetCollection = viewModel::deleteSetCollection,
                                 onEditSetCollection = viewModel::onEditSetCollection,
-                                onFilterSelected = viewModel::onFilterSelected,
+                                onFilterSelected = viewModel::onSortSelected,
                             )
                         }
                         1 -> {
-//                            ownedSetState.let { setsState ->
-//                                if (setsState.error.isNotBlank()) {
-//                                    ErrorScreen(message = setsState.error)
-//                                } else if(setsState.sets.isNotEmpty()) {
-//                                    BricksetCollectionContent(
-//                                        sets = setsState.sets,
-//                                        navController = navController
-//                                    )
-//                                }
-//                            }
+                            ownedSetState.let { setsState ->
+                                if (setsState.error.isNotBlank()) {
+                                    ErrorScreen(message = setsState.error)
+                                } else if(setsState.sets.isNotEmpty()) {
+                                    BricksetCollectionContent(
+                                        sets = setsState.sets,
+                                        navController = navController
+                                    )
+                                }
+                            }
                         }
                     }
                 }

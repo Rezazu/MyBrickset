@@ -1,6 +1,7 @@
 package com.example.mybrickset.presentation.collection
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,9 +31,11 @@ class CollectionViewModel @Inject constructor(
     private val _ownedSets = mutableStateOf(OwnedSetState())
     val ownedSets: State<OwnedSetState> = _ownedSets
 
+    private var _setCollection = mutableListOf<SetCollection>()
+    val setCollection: List<SetCollection> = _setCollection
+
     private val _formState = MutableStateFlow(false)
     val formState: StateFlow<Boolean> = _formState
-
 
 
     private val _nameInput = MutableStateFlow("")
@@ -59,8 +62,8 @@ class CollectionViewModel @Inject constructor(
     private val _setId = MutableStateFlow("")
     val setId: StateFlow<String> = _setId
 
-    private val _filterState = MutableStateFlow(0)
-    val filterState: StateFlow<Int> = _filterState
+    private val _sortState = MutableStateFlow(0)
+    val sortState: StateFlow<Int> = _sortState
 
     init {
         getAllSetCollection()
@@ -87,18 +90,44 @@ class CollectionViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getAllSetCollection(): Flow<List<SetCollection>> {
-        when(_filterState.value) {
-            1 -> return localUseCase.getAllSetCollectionOrderByPriceAsc()
-            2 -> return localUseCase.getAllSetCollectionOrderByPriceDesc()
-            3 -> return localUseCase.getAllSetCollectionOrderByDateAsc()
-            4 -> return localUseCase.getAllSetCollectionOrderByDateDesc()
-            else -> return localUseCase.getAllSetCollection()
+    fun getAllSetCollection() = viewModelScope.launch {
+        localUseCase.getAllSetCollection().collect { setCollectionList ->
+            _setCollection.clear()
+            _setCollection.addAll(setCollectionList)
         }
     }
 
-    fun onFilterSelected(filterId: Int) {
-        _filterState.value = filterId
+    fun onSortSelected(filterId: Int) = viewModelScope.launch {
+        _sortState.value = filterId
+        when(_sortState.value) {
+            1 -> {
+                localUseCase.getAllSetCollectionOrderByPriceAsc().collect { setCollectionList ->
+                    _setCollection.clear()
+                    _setCollection.addAll(setCollectionList)
+                }
+            }
+            2 -> {
+                localUseCase.getAllSetCollectionOrderByPriceDesc().collect { setCollectionList ->
+                    _setCollection.clear()
+                    _setCollection.addAll(setCollectionList)
+                }
+            }
+            3 -> {
+                localUseCase.getAllSetCollectionOrderByDateAsc().collect { setCollectionList ->
+                    _setCollection.clear()
+                    _setCollection.addAll(setCollectionList)
+                }
+            }
+            4 -> {
+                localUseCase.getAllSetCollectionOrderByDateDesc().collect { setCollectionList ->
+                    _setCollection.clear()
+                    _setCollection.addAll(setCollectionList)
+                }
+            }
+            else -> {
+                getAllSetCollection()
+            }
+        }
     }
 
     fun getSumPrice(): Flow<Double> {
