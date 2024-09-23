@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -30,11 +31,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.collection.CollectionSort
@@ -90,14 +93,23 @@ fun LocalCollectionContent(
                             showBottomSheet = !showBottomSheet
                         },
                         shape = RoundedCornerShape(10.dp),
-                        contentPadding = PaddingValues(0.dp),
+                        contentPadding = PaddingValues(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MatteBlue
                         ),
                         modifier = Modifier
-                            .width(72.dp)
+                            .width(80.dp)
                     ) {
-                        Text(text = "Sort")
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_sort),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Sort",
+                        )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(
@@ -117,14 +129,15 @@ fun LocalCollectionContent(
                 }
                 Dummy.radioOptions[sortId]?.let {
                     Text(
-                        text = it + sortId,
+                        text = it,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
                         color = DarkGray,
                         modifier = Modifier
-                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                            .padding(vertical = 8.dp, horizontal = 8.dp)
                     )
                 }
+                HorizontalDivider()
                 LazyColumn (
                     contentPadding = PaddingValues(vertical = 12.dp)
                 ) {
