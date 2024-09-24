@@ -90,9 +90,9 @@ fun CollectionScreen(
     val setCount = viewModel.getSetCount().collectAsState(initial = 0)
 
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = rememberPagerState(pageCount = { 2 }, initialPage = 0)
     val selectedTab = remember {
-        derivedStateOf { pagerState.currentPage }
+        derivedStateOf { 1 }
     }
 
     Scaffold(

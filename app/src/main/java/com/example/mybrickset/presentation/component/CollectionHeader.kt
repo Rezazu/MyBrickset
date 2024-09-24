@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +43,10 @@ fun CollectionHeader(
                     vertical = 8.dp
                 )
         ) {
-            Text(text = "You have a total of $setCount item in your collection")
+            Text(
+                text = "You have a total of $setCount item in your collection",
+                color = Color.DarkGray
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Row (
                 verticalAlignment = Alignment.Bottom,
@@ -52,7 +56,9 @@ fun CollectionHeader(
                 Text(
                     text = "Total Spent",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.DarkGray
+
                 )
                 Spacer(modifier = Modifier.width(72.dp))
                 Text(
@@ -60,6 +66,7 @@ fun CollectionHeader(
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.End,
                     fontWeight = FontWeight.Bold,
+                    color = Color.DarkGray,
                     modifier = Modifier
                 )
             }

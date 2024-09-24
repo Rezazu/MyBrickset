@@ -5,6 +5,7 @@ import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Star
@@ -43,7 +45,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mybrickset.R
+import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MatteRed
@@ -53,8 +60,14 @@ import com.example.mybrickset.presentation.ui.theme.YellowMain
 
 @Composable
 fun ProfileScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+
+    val collectionsCount = viewModel.collectionsCount.value
+    val wishlistsCount = viewModel.wishlistsCount.value
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,9 +75,19 @@ fun ProfileScreen(
             .verticalScroll(rememberScrollState())
     ) {
         ProfileHeader()
-        ProfileCollectionCount()
+        ProfileCollectionCount(
+            collectionsCount = collectionsCount.collectionsCount,
+            wishlistsCount = wishlistsCount.wishlistsCount
+        )
         HorizontalDivider()
-        ProfileMenu()
+        ProfileMenu(
+            navigateToLegoCollections = {
+                navController.navigate(Screen.CollectionScreen)
+            },
+            navigateToLegoWishlists = {
+                navController.navigate(Screen.FavoriteScreen)
+            },
+        )
     }
 }
 
@@ -136,7 +159,9 @@ fun ProfileHeader(
 
 @Composable
 fun ProfileCollectionCount(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    collectionsCount: String,
+    wishlistsCount: String
 ) {
     Box (
         modifier = modifier
@@ -153,8 +178,14 @@ fun ProfileCollectionCount(
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            CollectionCountItem(isOwned = true)
-            CollectionCountItem(isOwned = false)
+            CollectionCountItem(
+                isOwned = true,
+                setCount = collectionsCount
+            )
+            CollectionCountItem(
+                isOwned = false,
+                setCount = wishlistsCount
+            )
         }
     }
 }
@@ -162,7 +193,8 @@ fun ProfileCollectionCount(
 @Composable
 fun CollectionCountItem(
     modifier: Modifier = Modifier,
-    isOwned: Boolean
+    isOwned: Boolean,
+    setCount: String,
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -195,7 +227,7 @@ fun CollectionCountItem(
                 )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = if (isOwned) "18" else "34",
+                text = setCount,
                 style = MaterialTheme.typography.displaySmall,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
@@ -206,7 +238,9 @@ fun CollectionCountItem(
 
 @Composable
 fun ProfileMenu(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToLegoCollections:() -> Unit,
+    navigateToLegoWishlists:() -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -215,15 +249,18 @@ fun ProfileMenu(
     ) {
         ProfileMenuItem(
             icon = Icons.Default.Menu,
-            title = "Lego Collections"
+            title = "Lego Collections",
+            navigation = navigateToLegoCollections
         )
         ProfileMenuItem(
             icon = Icons.Default.Favorite,
-            title = "Wishlist"
+            title = "Wishlists",
+            navigation = navigateToLegoWishlists
         )
         ProfileMenuItem(
-            icon = Icons.Default.Star,
-            title = "Reviews"
+            icon = Icons.Default.Edit,
+            title = "Your notes",
+            navigation = {}
         )
     }
 }
@@ -232,12 +269,18 @@ fun ProfileMenu(
 fun ProfileMenuItem(
     modifier: Modifier = Modifier,
     icon: ImageVector,
-    title: String
+    title: String,
+    navigation:() -> Unit,
 ) {
-    Column {
+    Column (
+        modifier = modifier
+            .clickable {
+                navigation()
+            }
+    ) {
         Row (
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
                 .background(Color.White)
@@ -272,6 +315,8 @@ fun ProfileMenuItem(
 private fun ProfileScreenPreview(
 ) {
     MyBricksetTheme {
-        ProfileScreen()
+        ProfileScreen(
+            navController = rememberNavController()
+        )
     }
 }
