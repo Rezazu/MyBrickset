@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -61,6 +62,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.DetailButton
 import com.example.mybrickset.presentation.component.DetailDescription
+import com.example.mybrickset.presentation.component.DetailNotes
 import com.example.mybrickset.presentation.component.DetailNotesForm
 import com.example.mybrickset.presentation.component.DetailPager
 import com.example.mybrickset.presentation.component.DetailPrice
@@ -70,6 +72,7 @@ import com.example.mybrickset.presentation.ui.theme.Green
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
+import com.example.mybrickset.presentation.ui.theme.YellowMain
 
 @Composable
 fun DetailScreen(
@@ -139,6 +142,7 @@ fun DetailScreen(
                         additionalImage = images.images,
                         reviews = reviews.reviews,
                         context = context,
+                        notes = notes,
                         navigateToReviewScreen = {
                             navController.navigate(
                                 Screen.ReviewScreen(
@@ -175,6 +179,7 @@ fun DetailScreenContent(
     additionalImage: List<Image>,
     reviews: List<Review>,
     context: Context,
+    notes: String,
     navigateToReviewScreen:() -> Unit,
     onButtonFavoriteClicked:() -> Unit,
     onButtonOwnedClicked:() -> Unit,
@@ -279,6 +284,7 @@ fun DetailScreenContent(
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
+        Spacer(modifier = Modifier.height(16.dp))
         DetailPrice(
             price = set.LEGOCom
         )
@@ -308,6 +314,17 @@ fun DetailScreenContent(
         DetailDescription(
             set = set,
         )
+        HorizontalDivider(
+            modifier = Modifier.height(1.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.height(1.dp)
+        )
+        if(notes.isNotEmpty()) {
+            DetailNotes(
+                notes = notes
+            )
+        }
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
         )
@@ -341,6 +358,7 @@ private fun DetailScreenPreview(
                 Dummy.DummyReview,
                 Dummy.DummyReview,
             ),
+            notes = "Probably Bought in January 2025, if I have the money :) and also a couple of other set and more of the other set",
             navigateToReviewScreen = {},
             onButtonFavoriteClicked = {},
             onButtonOwnedClicked = {}

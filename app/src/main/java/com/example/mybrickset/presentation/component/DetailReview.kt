@@ -52,8 +52,8 @@ fun DetailReview(
 
             ) {
                 Text(
-                    text = "Review",
-                    style = MaterialTheme.typography.titleSmall,
+                    text = "Reviews",
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 Row (
@@ -72,7 +72,7 @@ fun DetailReview(
                     )
                     Text(
                         text = rating.toString(),
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .padding(horizontal = 2.dp)
@@ -103,7 +103,7 @@ fun DetailReview(
                 }
             }
             Column {
-                ReviewCard(review = reviews[0])
+                ReviewCard(review = reviews[0], modifier = Modifier.padding(horizontal = 8.dp))
                 HorizontalDivider()
                 if (reviewCount >= 2) {
                     ReviewCard(review = reviews[1])

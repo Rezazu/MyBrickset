@@ -102,7 +102,7 @@ fun DetailNotesForm(
                     modifier = Modifier
                         .align(Alignment.End)
                 ) {
-                    Text(text = "Add Note")
+                    Text(text = "Save Note")
                 }
             }
         }
