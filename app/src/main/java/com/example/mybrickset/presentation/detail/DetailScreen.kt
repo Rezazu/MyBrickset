@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,16 +16,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,6 +46,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -53,11 +61,13 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.Screen
 import com.example.mybrickset.presentation.component.DetailButton
 import com.example.mybrickset.presentation.component.DetailDescription
+import com.example.mybrickset.presentation.component.DetailNotesForm
 import com.example.mybrickset.presentation.component.DetailPager
 import com.example.mybrickset.presentation.component.DetailPrice
 import com.example.mybrickset.presentation.component.DetailReview
 import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.Green
+import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.Red
 
@@ -67,51 +77,96 @@ fun DetailScreen(
     navController: NavHostController,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
-    val images = viewModel.images.collectAsState()
-    val reviews = viewModel.reviews.collectAsState()
-    val isOwned = viewModel.isOwned.collectAsState()
+    val images by viewModel.images.collectAsState()
+    val reviews by viewModel.reviews.collectAsState()
+    val formState by viewModel.formState.collectAsState()
+    val notes by viewModel.notes.collectAsState()
 
     val context = LocalContext.current
-    viewModel.set.collectAsState(initial = Result.Loading).value.let { result ->
-        when(result) {
-            is Result.Error ->  {
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    viewModel.onFloatingActionButtonClicked(true)
+                },
+                containerColor = MatteBlue,
+                modifier = Modifier
+            ) {
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Add Notes",
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = "Add Notes")
+                }
+            }
+        },
+    ) { innerPadding ->
+        viewModel.set.collectAsState(initial = Result.Loading).value.let { result ->
+            when(result) {
+                is Result.Error ->  {
 
-            }
-            is Result.Loading -> {
-                viewModel.getSetByID(setId)
-            }
-            is Result.Success -> {
-                DetailScreenContent(
-                    set = result.data,
-                    additionalImage = images.value.images,
-                    reviews = reviews.value.reviews,
-                    context = context,
-                    navigateToReviewScreen = {
-                        navController.navigate(
-                            Screen.ReviewScreen(
-                                reviews = reviews.value.reviews,
-                                rating = result.data.rating,
-                                reviewCount = result.data.reviewCount
+                }
+                is Result.Loading -> {
+                    viewModel.getSetByID(setId)
+                }
+                is Result.Success -> {
+                    if (formState) {
+                        Dialog(
+                            properties =  DialogProperties( usePlatformDefaultWidth = false ),
+                            onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
+                        ) {
+                            DetailNotesForm(
+                                notes = notes,
+                                onNotesInputChanges = viewModel::onNotesInputChange,
+                                onNotesSubmitted = {
+                                    viewModel.setCollectionNotes(result.data.setID, notes)
+                                },
+                                onDismissRequest = { viewModel.onFloatingActionButtonClicked(false) }
                             )
-                        )
-                    },
-                    onButtonFavoriteClicked = {
-                        viewModel.setCollectionWanted(
-                            setId = result.data.setID,
-                            isWanted = if (result.data.collection.wanted) 0 else 1
-                        )
-                    },
-                    onButtonOwnedClicked = {
-                        viewModel.setCollectionOwned(
-                            setId = result.data.setID,
-                            isOwned = if (result.data.collection.owned) 0 else 1
-                        )
+                        }
                     }
-                )
+                    DetailScreenContent(
+                        set = result.data,
+                        additionalImage = images.images,
+                        reviews = reviews.reviews,
+                        context = context,
+                        navigateToReviewScreen = {
+                            navController.navigate(
+                                Screen.ReviewScreen(
+                                    reviews = reviews.reviews,
+                                    rating = result.data.rating,
+                                    reviewCount = result.data.reviewCount
+                                )
+                            )
+                        },
+                        onButtonFavoriteClicked = {
+                            viewModel.setCollectionWanted(
+                                setId = result.data.setID,
+                                isWanted = if (result.data.collection.wanted) 0 else 1
+                            )
+                        },
+                        onButtonOwnedClicked = {
+                            viewModel.setCollectionOwned(
+                                setId = result.data.setID,
+                                isOwned = if (result.data.collection.owned) 0 else 1
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(innerPadding)
+                    )
+                }
             }
         }
     }
-
 }
 
 @Composable

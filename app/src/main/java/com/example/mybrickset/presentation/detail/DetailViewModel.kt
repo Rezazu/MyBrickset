@@ -11,6 +11,7 @@ import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -25,7 +26,13 @@ class DetailViewModel @Inject constructor(
     val set: StateFlow<Result<Set>> get() = _set
 
     private val _isOwned: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isOwned: StateFlow<Boolean> get() = _isOwned
+    private val _setId: MutableStateFlow<Int> = MutableStateFlow(0)
+
+    private val _formState = MutableStateFlow(false)
+    val formState: StateFlow<Boolean> = _formState
+
+    private val _notes = MutableStateFlow("")
+    val notes: StateFlow<String> = _notes
 
     private val _images = MutableStateFlow(ImagesState())
     val images: StateFlow<ImagesState> = _images
@@ -61,6 +68,8 @@ class DetailViewModel @Inject constructor(
                 is Result.Success -> {
                     _set.value = Result.Success(result.data.sets[0])
                     _isOwned.value = result.data.sets[0].collection.owned
+                    _notes.value = result.data.sets[0].collection.notes
+                    _setId.value = setId
                     getAdditionalImages(setId)
                     getReviews(setId)
                 }
@@ -90,6 +99,18 @@ class DetailViewModel @Inject constructor(
 
     fun setCollectionOwned(setId: Int, isOwned: Int) = viewModelScope.launch {
         bricksetUseCases.setCollectionOwned(setId, isOwned)
+    }
+
+    fun setCollectionNotes(setId: Int, notes: String) = viewModelScope.launch {
+        bricksetUseCases.setCollectionNotes(setId, notes)
+    }
+
+    fun onFloatingActionButtonClicked(value: Boolean){
+        _formState.value = value
+    }
+
+    fun onNotesInputChange(input: String) {
+        _notes.value = input
     }
 }
 

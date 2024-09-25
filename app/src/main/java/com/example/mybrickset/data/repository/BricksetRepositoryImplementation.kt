@@ -76,5 +76,9 @@ class BricksetRepositoryImplementation @Inject constructor(
         return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'own':$isOwned}")
     }
 
+    override suspend fun setCollectionNotes(setId: Int, notes: String): SetCollectionResponse {
+        return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'notes':'$notes'}")
+    }
+
 
 }

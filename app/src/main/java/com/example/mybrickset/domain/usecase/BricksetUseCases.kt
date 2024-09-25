@@ -11,6 +11,7 @@ data class BricksetUseCases(
     val getReviews: GetReviews,
     val setCollectionWanted: SetCollectionWanted,
     val setCollectionOwned: SetCollectionOwned,
+    val setCollectionNotes: SetCollectionNotes,
     val getSetsWanted: GetSetsWanted,
     val getSetsOwned: GetSetsOwned
 )

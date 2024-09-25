@@ -104,10 +104,10 @@ fun CollectionForm(
     ) {
         Surface(
             modifier = Modifier
-                .clip(RoundedCornerShape(15.dp))
+                .clip(RoundedCornerShape(12.dp))
                 .wrapContentHeight()
                 .fillMaxWidth()
-                .align(Alignment.Center) // or to a specific child
+                .align(Alignment.Center)
         ) {
             Column(
                 modifier = Modifier

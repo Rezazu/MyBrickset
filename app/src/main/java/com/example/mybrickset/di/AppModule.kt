@@ -24,6 +24,7 @@ import com.example.mybrickset.domain.usecase.GetSetsWanted
 import com.example.mybrickset.domain.usecase.GetThemes
 import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
+import com.example.mybrickset.domain.usecase.SetCollectionNotes
 import com.example.mybrickset.domain.usecase.SetCollectionOwned
 import com.example.mybrickset.domain.usecase.SetCollectionWanted
 import com.example.mybrickset.domain.usecase.local.DeleteSetColleciton
@@ -102,6 +103,7 @@ object AppModule {
             getReviews = GetReviews(bricksetRepository),
             setCollectionWanted = SetCollectionWanted(bricksetRepository),
             setCollectionOwned = SetCollectionOwned(bricksetRepository),
+            setCollectionNotes = SetCollectionNotes(bricksetRepository),
             getSetsWanted = GetSetsWanted(bricksetRepository),
             getSetsOwned = GetSetsOwned(bricksetRepository)
         )
