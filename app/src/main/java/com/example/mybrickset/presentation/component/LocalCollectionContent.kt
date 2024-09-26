@@ -41,7 +41,7 @@ import com.example.mybrickset.presentation.ui.theme.WhiteBackground
 fun LocalCollectionContent(
     modifier: Modifier = Modifier,
     setCount: Int,
-    sumPrice: Double,
+    sumPrice: Double?,
     sortId: Int,
     setCollectionList: List<SetCollection>,
     onDeleteSetCollection: (setCollection: SetCollection) -> Unit,

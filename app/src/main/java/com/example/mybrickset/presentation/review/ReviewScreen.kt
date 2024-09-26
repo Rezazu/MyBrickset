@@ -1,12 +1,15 @@
 package com.example.mybrickset.presentation.review
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
@@ -16,10 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getreviews.Review
@@ -32,12 +39,46 @@ fun ReviewScreen(
     reviews: List<Review>,
     rating: Double,
     reviewCount: Int,
+    setName: String,
+    setNumber: String,
+    imageUrl: String,
     modifier: Modifier = Modifier
 ) {
     Column (
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
+            .padding(vertical = 16.dp)
     ) {
+        Row (
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+            AsyncImage(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .size(50.dp),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .placeholder(R.drawable.img_placeholder)
+                    .data(Uri.parse(imageUrl))
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                Text(
+                    text = setName,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                )
+                Text(
+                    text = setNumber,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+        }
         Row (
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -93,7 +134,10 @@ private fun ReviewScreenPreview() {
                 Dummy.DummyReview,
             ),
             rating = 5.0,
-            reviewCount = 5
+            reviewCount = 5,
+            setName = "Mando Starfighter",
+            setNumber = "75123-1",
+            imageUrl = "https://images.brickset.com/sets/small/75325-1.jpg"
         )
     }
 }

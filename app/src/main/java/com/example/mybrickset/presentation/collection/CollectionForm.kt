@@ -223,10 +223,6 @@ fun CollectionForm(
                             saveImage(context, Uri.parse(it))
                         }
 
-                        if (editState) {
-
-                        }
-
                         if (listOf(
                                 nameInput.value,
                                 numberInput.value,

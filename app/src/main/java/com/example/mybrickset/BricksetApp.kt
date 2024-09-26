@@ -139,7 +139,14 @@ fun BricksetApp(
                 )
             ) {
                 val args = it.toRoute<Screen.ReviewScreen>()
-                ReviewScreen(reviews = args.reviews, reviewCount = args.reviewCount, rating = args.rating)
+                ReviewScreen(
+                    reviews = args.reviews,
+                    reviewCount = args.reviewCount,
+                    rating = args.rating,
+                    setName = args.setName,
+                    setNumber = args.setNumber,
+                    imageUrl = args.imageUrl
+                )
             }
             composable<Screen.SearchScreen> { 
                 topBarState.value = true

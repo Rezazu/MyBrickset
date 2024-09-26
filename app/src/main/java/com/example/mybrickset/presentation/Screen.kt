@@ -43,6 +43,9 @@ sealed class Screen(
         val reviews: List<Review>,
         val rating: Double,
         val reviewCount: Int,
+        val setName: String,
+        val setNumber: String,
+        val imageUrl: String,
     ): Screen()
 
     @Serializable

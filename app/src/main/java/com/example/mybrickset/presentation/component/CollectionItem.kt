@@ -183,7 +183,7 @@ fun CollectionItem(
                         style = MaterialTheme.typography.labelSmall,
                     )
                     Text(
-                        text = Services.getPriceIDR(setCollection.price),
+                        text = "Rp. ${"%,d".format(setCollection.price.toInt())}",
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.End,

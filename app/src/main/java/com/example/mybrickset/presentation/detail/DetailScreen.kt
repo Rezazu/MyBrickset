@@ -148,7 +148,10 @@ fun DetailScreen(
                                 Screen.ReviewScreen(
                                     reviews = reviews.reviews,
                                     rating = result.data.rating,
-                                    reviewCount = result.data.reviewCount
+                                    reviewCount = result.data.reviewCount,
+                                    setName = result.data.name,
+                                    setNumber = result.data.number + result.data.numberVariant.toString(),
+                                    imageUrl = result.data.image.thumbnailURL
                                 )
                             )
                         },
@@ -284,7 +287,7 @@ fun DetailScreenContent(
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         DetailPrice(
             price = set.LEGOCom
         )
