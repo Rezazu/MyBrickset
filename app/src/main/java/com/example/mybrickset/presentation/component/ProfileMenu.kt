@@ -17,6 +17,7 @@ fun ProfileMenu(
     modifier: Modifier = Modifier,
     navigateToLegoCollections:() -> Unit,
     navigateToLegoWishlists:() -> Unit,
+    navigateToUserNotes:() -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -36,7 +37,7 @@ fun ProfileMenu(
         ProfileMenuItem(
             icon = Icons.Default.Edit,
             title = "Your notes",
-            navigation = {}
+            navigation = navigateToUserNotes
         )
         ProfileMenuItem(
             icon = Icons.AutoMirrored.Default.ExitToApp,

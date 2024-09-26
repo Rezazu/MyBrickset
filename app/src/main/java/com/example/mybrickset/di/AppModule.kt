@@ -22,6 +22,7 @@ import com.example.mybrickset.domain.usecase.GetSetsByTheme
 import com.example.mybrickset.domain.usecase.GetSetsOwned
 import com.example.mybrickset.domain.usecase.GetSetsWanted
 import com.example.mybrickset.domain.usecase.GetThemes
+import com.example.mybrickset.domain.usecase.GetUserNotes
 import com.example.mybrickset.domain.usecase.Login
 import com.example.mybrickset.domain.usecase.SearchSets
 import com.example.mybrickset.domain.usecase.SetCollectionNotes
@@ -105,7 +106,8 @@ object AppModule {
             setCollectionOwned = SetCollectionOwned(bricksetRepository),
             setCollectionNotes = SetCollectionNotes(bricksetRepository),
             getSetsWanted = GetSetsWanted(bricksetRepository),
-            getSetsOwned = GetSetsOwned(bricksetRepository)
+            getSetsOwned = GetSetsOwned(bricksetRepository),
+            getUserNotes = GetUserNotes(bricksetRepository)
         )
     }
 

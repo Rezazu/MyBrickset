@@ -60,4 +60,7 @@ sealed class Screen(
 
     @Serializable
     data object FavoriteScreen : Screen()
+
+    @Serializable
+    data object UserNotesScreen: Screen()
 }

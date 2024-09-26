@@ -90,6 +90,9 @@ fun ProfileScreen(
             navigateToLegoWishlists = {
                 navController.navigate(Screen.FavoriteScreen)
             },
+            navigateToUserNotes = {
+                navController.navigate(Screen.UserNotesScreen)
+            }
         )
     }
 }

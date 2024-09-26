@@ -5,6 +5,7 @@ import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
 import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
+import com.example.mybrickset.data.remote.dto.getusernotes.UserNotesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
 import com.example.mybrickset.data.remote.dto.setcollection.SetCollectionResponse
 import retrofit2.http.GET
@@ -51,4 +52,9 @@ interface BricksetApi {
         @Query("params") params:String
     ): SetCollectionResponse
 
+    @GET("getUserNotes")
+    suspend fun GetUserNotes(
+        @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
+        @Query("userHash") userHash: String?,
+    ): UserNotesResponse
 }

@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThemeViewModel @Inject constructor(
-    private val bricksetUseCases: BricksetUseCases,
-    ): ViewModel() {
+    private val bricksetUseCases: BricksetUseCases
+): ViewModel() {
 
     private val _themeSets = mutableStateOf(ThemeSetsState())
     val themeSets: State<ThemeSetsState> = _themeSets

@@ -30,6 +30,7 @@ import com.example.mybrickset.presentation.detail.DetailScreen
 import com.example.mybrickset.presentation.favorite.FavoriteScreen
 import com.example.mybrickset.presentation.home.HomeScreen
 import com.example.mybrickset.presentation.login.LoginScreen
+import com.example.mybrickset.presentation.notes.UserNotesScreen
 import com.example.mybrickset.presentation.profile.ProfileScreen
 import com.example.mybrickset.presentation.review.ReviewScreen
 import com.example.mybrickset.presentation.search.SearchScreen
@@ -170,6 +171,13 @@ fun BricksetApp(
                 topBarState.value = true
                 backButtonState.value = true
                 FavoriteScreen(navController = navController)
+            }
+
+            composable<Screen.UserNotesScreen> {
+                topBarState.value = true
+                backButtonState.value = false
+                backButtonState.value = true
+                UserNotesScreen(navController = navController)
             }
         }
     }

@@ -4,6 +4,7 @@ import com.example.mybrickset.data.remote.dto.getadditionalimages.ImageResponse
 import com.example.mybrickset.data.remote.dto.getreviews.ReviewsResponse
 import com.example.mybrickset.data.remote.dto.getsets.SetsResponse
 import com.example.mybrickset.data.remote.dto.getthemes.ThemesResponse
+import com.example.mybrickset.data.remote.dto.getusernotes.UserNotesResponse
 import com.example.mybrickset.data.remote.dto.login.LoginResponse
 import com.example.mybrickset.data.remote.dto.setcollection.SetCollectionResponse
 
@@ -22,4 +23,5 @@ interface BricksetRepository {
     suspend fun setCollectionWanted(setId: Int, isWanted: Int): SetCollectionResponse
     suspend fun setCollectionOwned(setId: Int, isOwned: Int): SetCollectionResponse
     suspend fun setCollectionNotes(setId: Int, notes: String): SetCollectionResponse
+    suspend fun getUserNotes(): UserNotesResponse
 }
