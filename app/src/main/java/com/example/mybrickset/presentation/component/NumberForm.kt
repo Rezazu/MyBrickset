@@ -31,6 +31,8 @@ fun NumberForm(
             focusedLabelColor = Color.Black,
             unfocusedLabelColor = Color.DarkGray,
             cursorColor = Color.Black,
+            unfocusedTextColor = Color.Black,
+            focusedTextColor = Color.Black
         ),
     )
 }

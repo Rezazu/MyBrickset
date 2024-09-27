@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getreviews.Review
+import com.example.mybrickset.presentation.component.LegoItemSmall
 import com.example.mybrickset.presentation.component.ReviewCardVariant
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.YellowMain
@@ -45,40 +46,16 @@ fun ReviewScreen(
     modifier: Modifier = Modifier
 ) {
     Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
             .padding(vertical = 16.dp)
     ) {
-        Row (
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-        ){
-            AsyncImage(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(50.dp),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .placeholder(R.drawable.img_placeholder)
-                    .data(Uri.parse(imageUrl))
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = setName,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = setNumber,
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-        }
+        LegoItemSmall(
+            setName = setName,
+            setNumber = setNumber,
+            imageUrl = imageUrl,
+        )
         Row (
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,

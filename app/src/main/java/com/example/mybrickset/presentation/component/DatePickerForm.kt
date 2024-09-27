@@ -55,6 +55,8 @@ fun DatePickerForm(
                 focusedLabelColor = Color.Black,
                 unfocusedLabelColor = Color.DarkGray,
                 cursorColor = Color.Black,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
                 ),
             readOnly = true,
             trailingIcon =

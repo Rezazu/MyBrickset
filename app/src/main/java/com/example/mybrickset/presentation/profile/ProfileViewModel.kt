@@ -27,7 +27,7 @@ class ProfileViewModel @Inject constructor(
     val wishlistsCount: State<wishlistsCountState> get() = _wishlistsCount
 
     init {
-        getCountData()
+//        getCountData()
     }
 
     fun getCountData() {
