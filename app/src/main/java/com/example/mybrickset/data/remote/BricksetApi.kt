@@ -15,7 +15,7 @@ interface BricksetApi {
 
     @GET("getSets")
     suspend fun getSets(
-        @Query("apiKey") apiKey: String = "3-o1Dw-cnMv-NcVSG",
+        @Query("apiKey") apiKey: String = BuildConfig.API_KEY,
         @Query("userHash") userHash: String?,
         @Query("params") params:String,
     ): SetsResponse

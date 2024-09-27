@@ -67,6 +67,7 @@ import com.example.mybrickset.presentation.component.DetailNotesForm
 import com.example.mybrickset.presentation.component.DetailPager
 import com.example.mybrickset.presentation.component.DetailPrice
 import com.example.mybrickset.presentation.component.DetailReview
+import com.example.mybrickset.presentation.component.DetailUserReview
 import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.Green
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
@@ -328,6 +329,11 @@ fun DetailScreenContent(
                 notes = notes
             )
         }
+        DetailUserReview(
+            rating = 1,
+            onRatingChanged = {},
+            isRated = true
+        )
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
         )
