@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation.component
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,16 +43,15 @@ fun DetailUserReview(
     maxStars: Int = 5,
     rating: Int,
     isRated: Boolean,
-    onRatingChanged: (Int) -> Unit
+    onRatingChanged: (Int) -> Unit,
+    onRatingButtonClicked: () -> Unit
 ) {
 
     val density = LocalDensity.current.density
     val starSize = (16f * density).dp
     val starSpacing = (0.5f * density).dp
 
-    var rate by remember {
-        mutableStateOf(rating)
-    }
+    val context = LocalContext.current
 
     Box (
         modifier = modifier
@@ -64,8 +65,7 @@ fun DetailUserReview(
         ) {
             Text(
                 text = "Your Rating",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -83,7 +83,7 @@ fun DetailUserReview(
                             .selectable(
                                 selected = isSelected,
                                 onClick = {
-                                    rate = i
+                                    onRatingChanged(i)
                                 }
                             )
                             .width(starSize)
@@ -98,7 +98,10 @@ fun DetailUserReview(
             Spacer(modifier = Modifier.height(12.dp))
             if(rating > 0) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                        onRatingButtonClicked()
+                        Toast.makeText(context, "Successfully rated", Toast.LENGTH_SHORT).show()
+                    },
                     modifier = Modifier
                         .align(Alignment.End)
                 ) {
@@ -119,8 +122,8 @@ private fun DetailUserReviewPreview() {
             maxStars = 5,
             rating = 3,
             isRated = false,
-            onRatingChanged = {}
-
+            onRatingChanged = {},
+            onRatingButtonClicked = {}
         )
     }
 }

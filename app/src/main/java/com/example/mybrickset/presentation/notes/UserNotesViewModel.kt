@@ -43,10 +43,9 @@ class UserNotesViewModel @Inject constructor(
     private val _userSetsState:MutableStateFlow<UserSetsState> = MutableStateFlow(UserSetsState(sets = emptyList()))
     val userSetsState: StateFlow<UserSetsState> get() = _userSetsState.asStateFlow()
 
-    private val _images = MutableStateFlow(ImagesState())
-    val images: StateFlow<ImagesState> = _images
-
     private val _listId = mutableListOf<Int>()
+    private val _listSet = mutableListOf<Set>()
+
 //    private val _listId = listOf<Int>(48869,23369)
 //    val listId: MutableList<Int> = _listId
 
@@ -106,28 +105,45 @@ class UserNotesViewModel @Inject constructor(
                     result.data.userNotes.forEach {
                         _listId += it.setID
                     }
-                    getSetById()
+                    _listId.forEach {
+                        bricksetUseCases.getSetById(it).onEach { result ->
+                            when(result) {
+                                is Result.Error -> {
+
+                                }
+                                is Result.Loading -> {
+
+                                }
+                                is Result.Success -> {
+                                    _listSet += result.data.sets[0]
+                                }
+                            }
+                            if (_listId.size == _userNotesState.value.notes.size) {
+                                _userSetsState.value = UserSetsState(sets = _listSet)
+                            }
+                        }.launchIn(viewModelScope)
+                    }
+//                    getSetById()
                 }
             }
         }.launchIn(viewModelScope)
     }
 
     fun getSetById() {
-        val listSet = mutableListOf<Set>()
-        _listId.onEach {
+        _listId.forEach {
             bricksetUseCases.getSetById(it).onEach { result ->
                 when(result) {
                     is Result.Error -> {
 
                     }
                     is Result.Loading -> {
-
+                        _userSetsState.value = UserSetsState(isLoading = true)
                     }
                     is Result.Success -> {
-                        listSet.add(result.data.sets[0])
+                        _listSet += Dummy.DummySet
                     }
                 }
-                _userSetsState.value = UserSetsState(sets = listSet)
+                _userSetsState.value = UserSetsState(sets = _listSet)
             }.launchIn(viewModelScope)
         }
     }

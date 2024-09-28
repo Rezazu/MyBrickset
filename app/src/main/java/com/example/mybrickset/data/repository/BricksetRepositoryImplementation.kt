@@ -81,6 +81,10 @@ class BricksetRepositoryImplementation @Inject constructor(
         return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'notes':'$notes'}")
     }
 
+    override suspend fun setCollectionRating(setId: Int, rating: Int): SetCollectionResponse {
+        return bricksetApi.setCollection(userHash = hash.first(), setId = setId, params = "{'rating':'$rating'}")
+    }
+
     override suspend fun getUserNotes(): UserNotesResponse {
         return bricksetApi.GetUserNotes(userHash = hash.first())
     }

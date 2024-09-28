@@ -85,6 +85,7 @@ fun DetailScreen(
     val reviews by viewModel.reviews.collectAsState()
     val formState by viewModel.formState.collectAsState()
     val notes by viewModel.notes.collectAsState()
+    val userRating by viewModel.userRating.collectAsState()
 
     val context = LocalContext.current
     Scaffold(
@@ -144,6 +145,7 @@ fun DetailScreen(
                         reviews = reviews.reviews,
                         context = context,
                         notes = notes,
+                        userRating = userRating,
                         navigateToReviewScreen = {
                             navController.navigate(
                                 Screen.ReviewScreen(
@@ -168,6 +170,8 @@ fun DetailScreen(
                                 isOwned = if (result.data.collection.owned) 0 else 1
                             )
                         },
+                        onRatingButtonClicked = viewModel::setCollectionRating,
+                        onRatingChanged = viewModel::onRatingChanged,
                         modifier = Modifier
                             .padding(innerPadding)
                     )
@@ -184,9 +188,12 @@ fun DetailScreenContent(
     reviews: List<Review>,
     context: Context,
     notes: String,
+    userRating: Int,
     navigateToReviewScreen:() -> Unit,
     onButtonFavoriteClicked:() -> Unit,
     onButtonOwnedClicked:() -> Unit,
+    onRatingChanged:(Int) -> Unit,
+    onRatingButtonClicked:() -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -199,6 +206,10 @@ fun DetailScreenContent(
 
     var isOwned by remember {
         mutableStateOf(set.collection.owned)
+    }
+
+    val isRated by remember {
+        mutableStateOf(set.collection.rating != 0)
     }
 
     Column(
@@ -329,11 +340,14 @@ fun DetailScreenContent(
                 notes = notes
             )
         }
-        DetailUserReview(
-            rating = 1,
-            onRatingChanged = {},
-            isRated = true
-        )
+        if (set.collection.owned) {
+            DetailUserReview(
+                rating = userRating,
+                onRatingChanged = onRatingChanged,
+                onRatingButtonClicked = onRatingButtonClicked,
+                isRated = isRated
+            )
+        }
         HorizontalDivider(
             modifier = Modifier.height(1.dp)
         )
@@ -368,9 +382,12 @@ private fun DetailScreenPreview(
                 Dummy.DummyReview,
             ),
             notes = "Probably Bought in January 2025, if I have the money :) and also a couple of other set and more of the other set",
+            userRating = 4,
             navigateToReviewScreen = {},
             onButtonFavoriteClicked = {},
-            onButtonOwnedClicked = {}
+            onButtonOwnedClicked = {},
+            onRatingChanged = {},
+            onRatingButtonClicked = {}
         )
     }
 }

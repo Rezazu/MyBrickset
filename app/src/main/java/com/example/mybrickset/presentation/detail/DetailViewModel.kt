@@ -1,5 +1,6 @@
 package com.example.mybrickset.presentation.detail
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
@@ -25,8 +26,9 @@ class DetailViewModel @Inject constructor(
     private val _set: MutableStateFlow<Result<Set>> = MutableStateFlow(Result.Loading)
     val set: StateFlow<Result<Set>> get() = _set
 
-    private val _isOwned: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private val _setId: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _setId = mutableStateOf(0)
+    private val _userRating= MutableStateFlow(0)
+    val userRating: StateFlow<Int> = _userRating
 
     private val _formState = MutableStateFlow(false)
     val formState: StateFlow<Boolean> = _formState
@@ -67,18 +69,18 @@ class DetailViewModel @Inject constructor(
                 }
                 is Result.Success -> {
                     _set.value = Result.Success(result.data.sets[0])
-                    _isOwned.value = result.data.sets[0].collection.owned
                     _notes.value = result.data.sets[0].collection.notes
+                    _userRating.value = result.data.sets[0].collection.rating
                     _setId.value = setId
-                    getAdditionalImages(setId)
-                    getReviews(setId)
+                    getAdditionalImages(_setId.value)
+                    getReviews()
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    fun getReviews(setId: Int) {
-        bricksetUseCases.getReviews(setId).onEach { result ->
+    fun getReviews() {
+        bricksetUseCases.getReviews(_setId.value).onEach { result ->
             when(result) {
                 is Resource.Error -> {
                     _reviews.value = ReviewsState(error = result.message ?: "An Error Occured")
@@ -105,12 +107,20 @@ class DetailViewModel @Inject constructor(
         bricksetUseCases.setCollectionNotes(setId, notes)
     }
 
+    fun setCollectionRating() = viewModelScope.launch {
+        bricksetUseCases.setCollectionRating(_setId.value, _userRating.value)
+    }
+
     fun onFloatingActionButtonClicked(value: Boolean){
         _formState.value = value
     }
 
     fun onNotesInputChange(input: String) {
         _notes.value = input
+    }
+
+    fun onRatingChanged(input: Int) {
+        _userRating.value = input
     }
 }
 

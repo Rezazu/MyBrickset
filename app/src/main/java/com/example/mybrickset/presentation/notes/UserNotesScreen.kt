@@ -35,12 +35,14 @@ fun UserNotesScreen(
     val userSetState by viewModel.userSetsState.collectAsState()
 
     Column {
+        Text(text = userSetState.sets.size.toString() + "sets")
+        Text(text = userNotesState.notes.size.toString() + "notes")
         userNotesState.let { notesState ->
             if (notesState.error.isNotBlank()) {
                 ErrorScreen(message = notesState.error)
-            } else if (notesState.notes.isNotEmpty()) {
+            } else if (userSetState.sets.isNotEmpty()) {
                 userSetState.let { userSetState ->
-                    if (userSetState.sets.size + 1 == userNotesState.notes.size) {
+                    if (userSetState.sets.size == userNotesState.notes.size) {
                         LazyColumn {
                             items(notesState.notes.size) { index ->
                                 notesState.notes[index].let {
@@ -49,7 +51,6 @@ fun UserNotesScreen(
                                         note = it.notes,
                                         navigateToDetail = { }
                                     )
-//                                    Text(text = it.notes)
                                     HorizontalDivider()
                                 }
                             }
