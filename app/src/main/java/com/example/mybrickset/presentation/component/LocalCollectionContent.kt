@@ -99,6 +99,8 @@ fun LocalCollectionContent(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "Sort",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
                         )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
@@ -114,15 +116,19 @@ fun LocalCollectionContent(
                         modifier = Modifier
                             .width(80.dp)
                     ) {
-                        Text(text = "Manage")
+                        Text(
+                            text = "Manage",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                        )
                     }
                 }
                 Dummy.radioOptions[sortId]?.let {
                     Text(
                         text = it,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold,
-                        color = DarkGray,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MatteBlue,
                         modifier = Modifier
                             .padding(vertical = 8.dp, horizontal = 8.dp)
                     )

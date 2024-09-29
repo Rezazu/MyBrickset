@@ -75,7 +75,7 @@ fun ReviewScreen(
             Text(
                 text = rating.toString(),
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
                     .padding(horizontal = 2.dp)
                     .align(Alignment.CenterVertically)

@@ -93,6 +93,7 @@ fun CollectionItem(
                 Text(
                     text = setCollection.acquiredDate,
                     style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray,
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
@@ -180,11 +181,12 @@ fun CollectionItem(
                     Text(
                         text = "${setCollection.number} - ${setCollection.numberVariant}",
                         color = Color.DarkGray,
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
                     )
                     Text(
                         text = "Rp. ${"%,d".format(setCollection.price.toInt())}",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.End,
                         modifier = Modifier

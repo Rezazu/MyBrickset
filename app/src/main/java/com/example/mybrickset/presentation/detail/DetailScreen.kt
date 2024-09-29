@@ -110,7 +110,11 @@ fun DetailScreen(
                             .size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Add Notes")
+                    Text(
+                        text = "Add Notes",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
             }
         },
@@ -237,7 +241,7 @@ fun DetailScreenContent(
                     Text(
                         text = "${set.name} ${set.number}-${set.numberVariant}",
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                     )
@@ -276,6 +280,7 @@ fun DetailScreenContent(
                         text = "Available Now",
                         color = Green,
                         style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .padding(horizontal = 2.dp, vertical = 8.dp)
                     )
@@ -284,6 +289,7 @@ fun DetailScreenContent(
                         text = "Not Available",
                         color = Red,
                         style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.SemiBold,
                         modifier = Modifier
                             .padding(horizontal = 2.dp, vertical = 8.dp)
                     )

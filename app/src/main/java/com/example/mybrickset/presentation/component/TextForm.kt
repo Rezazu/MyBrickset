@@ -13,6 +13,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +29,6 @@ fun TextForm(
         mutableStateOf(false)
     }
 
-
     fun validate(text: String) {
         isError = text.isNotEmpty()
     }
@@ -36,7 +37,8 @@ fun TextForm(
         modifier = modifier,
         value = textInput,
         onValueChange = onValueChange,
-        label = { Text(text = label, style = MaterialTheme.typography.labelMedium) },
+        label = { Text(text = label, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold) },
+        textStyle = TextStyle(fontWeight = FontWeight.SemiBold),
         singleLine = true,
         supportingText = {
             if (isError) {

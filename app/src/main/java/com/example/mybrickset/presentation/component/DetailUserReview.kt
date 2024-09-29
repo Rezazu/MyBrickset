@@ -65,8 +65,9 @@ fun DetailUserReview(
         ) {
             Text(
                 text = "Your Rating",
-                style = MaterialTheme.typography.titleMedium
-            )
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                )
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier
@@ -106,8 +107,9 @@ fun DetailUserReview(
                         .align(Alignment.End)
                 ) {
                     Text(
-                        text = if (isRated) "Change Rating" else "Add Rating"
-                    )
+                        text = if (isRated) "Change Rating" else "Add Rating",
+                        fontWeight = FontWeight.Bold,
+                        )
                 }
             }
         }

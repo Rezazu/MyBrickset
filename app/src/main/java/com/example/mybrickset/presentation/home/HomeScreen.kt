@@ -75,7 +75,7 @@ fun HomeContent(
                 listDummyNews[page]
             )
         }
-        SectionText(title = "Lego Themes")
+        SectionText(title = "LEGO Themes")
 
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),

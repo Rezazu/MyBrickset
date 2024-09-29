@@ -75,7 +75,7 @@ fun DetailDescription(
             ) {
                 Text(
                     text = "Description",
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
                 Icon(
@@ -145,7 +145,8 @@ fun DetailDescription(
                 Text(
                     text = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
                     color = Color.DarkGray,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }
@@ -188,7 +189,7 @@ fun DetailDescriptionRow(
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .fillMaxWidth(0.3f)
             )
@@ -201,6 +202,8 @@ fun DetailDescriptionRow(
             text = value,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 1,
+            fontWeight = FontWeight.SemiBold,
+
             color = Color.DarkGray
         )
     }

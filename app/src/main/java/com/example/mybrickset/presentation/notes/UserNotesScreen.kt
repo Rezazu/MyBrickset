@@ -24,6 +24,7 @@ import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.presentation.component.LegoItemSmall
 import com.example.mybrickset.presentation.component.UserNoteItem
 import com.example.mybrickset.presentation.error.ErrorScreen
+import kotlinx.coroutines.delay
 
 @Composable
 fun UserNotesScreen(
@@ -35,8 +36,6 @@ fun UserNotesScreen(
     val userSetState by viewModel.userSetsState.collectAsState()
 
     Column {
-        Text(text = userSetState.sets.size.toString() + "sets")
-        Text(text = userNotesState.notes.size.toString() + "notes")
         userNotesState.let { notesState ->
             if (notesState.error.isNotBlank()) {
                 ErrorScreen(message = notesState.error)
@@ -57,26 +56,6 @@ fun UserNotesScreen(
                         }
                     }
                 }
-//                LazyColumn() {
-//                    items(notesState.notes.size) { index ->
-//                        notesState.notes.let {
-//                            UserNoteItem(
-//                                set = userNotesState.sets[index],
-//                                note = userNotesState.notes[index].notes,
-//                                navigateToDetail = { })
-//                        }
-//                    }
-//                }
-//                LazyColumn() {
-//                    items(notesState.notes) { notes ->
-//                        UserNoteItem(
-//                            set = notes.sets,
-//                            note = notes.notes,
-//                            navigateToDetail = { }
-//                        )
-//                        HorizontalDivider()
-//                    }
-//                }
             }
         }
     }

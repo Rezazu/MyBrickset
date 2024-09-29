@@ -3,6 +3,11 @@
 
     <style name="Theme.MyBrickset" parent="android:Theme.Material.Light.NoActionBar" >
         <item name="android:forceDarkAllowed">false</item>
+        <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
+    </style>
+
+    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/opensans_light</item>
     </style>
 </resources>
 

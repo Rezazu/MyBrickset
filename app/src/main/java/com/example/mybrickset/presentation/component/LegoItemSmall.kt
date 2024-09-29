@@ -72,7 +72,8 @@ fun LegoItemSmall(
             Text(
                 text = setNumber,
                 style = MaterialTheme.typography.bodySmall,
-            )
+                fontWeight = FontWeight.SemiBold,
+                )
         }
     }
 }

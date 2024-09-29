@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -118,6 +119,7 @@ fun CollectionForm(
                 Text(
                     text = "Add Set to Your Local Collection",
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
                 TextForm(
@@ -245,7 +247,9 @@ fun CollectionForm(
 
                     ) {
                         Text(
-                            text = if(editState) "Edit Set" else "Add Set"
+                            text = if(editState) "Edit Set" else "Add Set",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
                         )
                     }
                 }

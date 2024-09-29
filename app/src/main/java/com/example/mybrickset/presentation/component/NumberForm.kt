@@ -9,6 +9,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,7 +25,8 @@ fun NumberForm(
         modifier = modifier,
         value = numberInput,
         onValueChange = onValueChange,
-        label = { Text(text = label, style = MaterialTheme.typography.labelMedium) },
+        label = { Text(text = label, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold) },
+        textStyle = TextStyle(fontWeight = FontWeight.SemiBold),
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(

@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -57,18 +58,19 @@ fun CollectionHeader(
         ) {
             Text(
                 buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                         append("You have a total of ")
                     }
                     withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
                         append(setCount.toString())
                     }
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                         append(" item in your collection")
                     }
                 },
                 modifier = Modifier,
-                color = Color.DarkGray
+                color = Color.DarkGray,
+                style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row (
@@ -80,7 +82,7 @@ fun CollectionHeader(
                     text = "Total Spent",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.DarkGray
+                    color = Color.DarkGray,
 
                 )
                 Spacer(modifier = Modifier.width(72.dp))

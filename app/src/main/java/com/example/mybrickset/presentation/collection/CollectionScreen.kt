@@ -143,7 +143,13 @@ fun CollectionScreen(
                                     pagerState.animateScrollToPage(collectionTab.ordinal)
                                 }
                             },
-                            text = { Text(text = collectionTab.text)}
+                            text = {
+                                Text(
+                                    text = collectionTab.text,
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
                         )
                     }
                 }

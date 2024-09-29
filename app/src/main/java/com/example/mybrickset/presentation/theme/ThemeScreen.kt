@@ -52,13 +52,13 @@ fun ThemeScreen(
                 Column {
                     Text(
                         buildAnnotatedString {
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                                 append("Showing ")
                             }
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append(setCount)
                             }
-                            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)) {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                                 append(" Result")
                             }
                         },

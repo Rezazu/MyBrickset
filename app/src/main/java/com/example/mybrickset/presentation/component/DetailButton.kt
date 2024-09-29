@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mybrickset.R
@@ -67,6 +68,7 @@ fun DetailButton(
                 Text(
                     text = "Visit on Brickset",
                     style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(4.dp)
                 )
@@ -96,6 +98,7 @@ fun DetailButton(
                     Text(
                         text = "In your collection",
                         style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(2.dp)
                     )
@@ -126,6 +129,7 @@ fun DetailButton(
                     Text(
                         text = "Own this set?",
                         style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(2.dp)
                     )

@@ -53,13 +53,14 @@ fun DetailNotes(
             Text(
                 text = "Your Note",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.Bold,
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = notes,
             style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
             maxLines = 4,
             color = Color.DarkGray
         )

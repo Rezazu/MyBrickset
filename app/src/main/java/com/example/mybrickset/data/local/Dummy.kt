@@ -179,9 +179,9 @@ object Dummy {
             )
 
     val radioOptions = mapOf(
-        1 to "Sort by prices asc (low to high)",
-        2 to "Sort by prices desc (high to low)",
-        3 to "Sort by date asc (older to newer)",
-        4 to "Sort by date desc (newer to older)"
+        1 to "Sort by prices ASC (Low to High)",
+        2 to "Sort by prices DESC (High to Low)",
+        3 to "Sort by date ASC (Older to Newer)",
+        4 to "Sort by date DESC (Newer to Older)"
     )
 }

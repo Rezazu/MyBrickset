@@ -3,7 +3,7 @@ package com.example.mybrickset.presentation.notes
 import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import kotlinx.coroutines.async
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,16 +18,23 @@ import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.remote.dto.getsets.Image
 import com.example.mybrickset.data.remote.dto.getusernotes.UserNote
 import com.example.mybrickset.presentation.detail.ImagesState
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -37,114 +44,71 @@ class UserNotesViewModel @Inject constructor(
     private val bricksetUseCases: BricksetUseCases
 ): ViewModel() {
 
-    private val _userNotesState:MutableStateFlow<UserNotesState> = MutableStateFlow(UserNotesState(notes = emptyList()))
+    private val _userNotesState: MutableStateFlow<UserNotesState> =
+        MutableStateFlow(UserNotesState(notes = emptyList()))
     val userNotesState: StateFlow<UserNotesState> get() = _userNotesState.asStateFlow()
 
-    private val _userSetsState:MutableStateFlow<UserSetsState> = MutableStateFlow(UserSetsState(sets = emptyList()))
+    private val _userSetsState: MutableStateFlow<UserSetsState> =
+        MutableStateFlow(UserSetsState(sets = emptyList()))
     val userSetsState: StateFlow<UserSetsState> get() = _userSetsState.asStateFlow()
 
     private val _listId = mutableListOf<Int>()
-    private val _listSet = mutableListOf<Set>()
-
-//    private val _listId = listOf<Int>(48869,23369)
-//    val listId: MutableList<Int> = _listId
+    private val _listSets = mutableListOf<Set>()
 
     init {
         getUserNotes()
     }
 
-    fun getUserNotes2() {
-        _userNotesState.value = UserNotesState(isLoading = true)
+    fun getUserNotes() {
         bricksetUseCases.getUserNotes().onEach { result ->
             when (result) {
                 is Resource.Error -> {
-                    _userNotesState.value =
-                        UserNotesState(error = result.message ?: "An Error Occured")
+                    _userNotesState.value = UserNotesState(error = result.message ?: "Something happened")
                 }
+
                 is Resource.Loading -> {
                     _userNotesState.value = UserNotesState(isLoading = true)
                 }
-                is Resource.Success -> {
-                    val listSet = mutableListOf<Set>()
-                    result.data?.userNotes?.forEach { userNotes ->
-                        bricksetUseCases.getSetById(userNotes.setID).onEach { result ->
-                            when (result) {
-                                is Result.Error -> {
-                                    _userNotesState.value = UserNotesState(error = result.error)
-                                }
 
-                                is Result.Loading -> {
-                                    _userNotesState.value = UserNotesState(isLoading = true)
-
-                                }
-
-                                is Result.Success -> {
-                                    listSet.add(result.data.sets[0])
-                                }
-                            }
-                        }.launchIn(viewModelScope)
-                    }
-
-                }
-            }
-            _userNotesState.value = UserNotesState(isLoading = false)
-        }.launchIn(viewModelScope)
-    }
-
-    fun getUserNotes() {
-        bricksetUseCases.getUserNotes().onEach { result ->
-            when(result) {
-                is Resource.Error -> {
-
-                }
-                is Resource.Loading -> {
-                    _userNotesState.value = UserNotesState(isLoading = true)
-                }
                 is Resource.Success -> {
                     _userNotesState.value = UserNotesState(notes = result.data!!.userNotes)
                     result.data.userNotes.forEach {
                         _listId += it.setID
                     }
-                    _listId.forEach {
-                        bricksetUseCases.getSetById(it).onEach { result ->
-                            when(result) {
-                                is Result.Error -> {
-
-                                }
-                                is Result.Loading -> {
-
-                                }
-                                is Result.Success -> {
-                                    _listSet += result.data.sets[0]
-                                }
-                            }
-                            if (_listId.size == _userNotesState.value.notes.size) {
-                                _userSetsState.value = UserSetsState(sets = _listSet)
-                            }
-                        }.launchIn(viewModelScope)
-                    }
-//                    getSetById()
+                    getSetById()
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    fun getSetById() {
-        _listId.forEach {
-            bricksetUseCases.getSetById(it).onEach { result ->
-                when(result) {
-                    is Result.Error -> {
 
-                    }
-                    is Result.Loading -> {
-                        _userSetsState.value = UserSetsState(isLoading = true)
-                    }
-                    is Result.Success -> {
-                        _listSet += Dummy.DummySet
-                    }
+    fun getSetById() {
+        viewModelScope.launch {
+            val completedCalls = MutableStateFlow(0)
+            _listId.forEach { setID ->
+                launch(Dispatchers.IO) {
+                    bricksetUseCases.getSetById(setID).onEach{ result ->
+                        when(result) {
+                            is Result.Error -> {
+
+                            }
+                            is Result.Loading -> {
+
+                            }
+                            is Result.Success -> {
+                                _listSets.add(result.data.sets[0])
+                                completedCalls.value++
+                            }
+                        }
+                    }.launchIn(viewModelScope) // Launch within the current coroutine
                 }
-                _userSetsState.value = UserSetsState(sets = _listSet)
-            }.launchIn(viewModelScope)
+            }
+
+            completedCalls.collect { count ->
+                if (count == _listId.size) {
+                    _userSetsState.value = UserSetsState(sets = _listSets)
+                }
+            }
         }
     }
 }
@@ -154,19 +118,11 @@ class UserNotesViewModel @Inject constructor(
 data class UserNotesState(
     val isLoading: Boolean = false,
     val notes: List<UserNote> = emptyList(),
-//    val notes: List<UserNotesItem> = emptyList(),
     val error: String = ""
 )
 
 data class UserSetsState(
     val isLoading: Boolean = false,
     val sets: List<Set> = emptyList(),
-//    val notes: List<UserNotesItem> = emptyList(),
     val error: String = ""
-)
-
-@Immutable
-data class UserNotesItem(
-    val set: Set,
-    val notes: String
 )

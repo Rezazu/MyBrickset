@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -135,7 +136,7 @@ fun ReviewCardVariant(
                 Text(
                     text = review.author,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.ExtraBold
                 )
                 Icon(
                     imageVector =
@@ -156,7 +157,8 @@ fun ReviewCardVariant(
             ) {
                 Text(
                     text = review.rating.overall.toString(),
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_star_filled),
@@ -169,10 +171,13 @@ fun ReviewCardVariant(
             Text(
                 text = review.title,
                 style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic
             )
             Text(
                 text = HtmlCompat.fromHtml(review.review, HtmlCompat.FROM_HTML_MODE_LEGACY).toString(),
                 style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .padding(horizontal = 4.dp, vertical = 8.dp)
             )

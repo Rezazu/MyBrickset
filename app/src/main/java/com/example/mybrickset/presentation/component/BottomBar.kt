@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -20,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mybrickset.R
 import com.example.mybrickset.presentation.NavigationItem
 import com.example.mybrickset.presentation.Screen
+import com.example.mybrickset.presentation.ui.theme.DarkGray
 
 @Composable
 fun BottomBar(
@@ -63,7 +66,7 @@ fun BottomBar(
                             launchSingleTop = true
                         }
                     },
-                    label = { Text(text = item.title) },
+                    label = { Text(text = item.title, fontWeight = FontWeight.SemiBold, color = Color.Black) },
                     icon = {
                         Icon(
                             imageVector = item.icon,

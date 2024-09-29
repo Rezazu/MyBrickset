@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +74,7 @@ fun DetailReview(
                     Text(
                         text = rating.toString(),
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(horizontal = 2.dp)
                             .align(Alignment.CenterVertically)
@@ -114,6 +115,7 @@ fun DetailReview(
             Text(
                 text = "This set has no review yet",
                 style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(vertical = 6.dp)
             )

@@ -69,7 +69,7 @@ fun NewsCard(
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -88,7 +88,7 @@ private fun NewsCardPreview() {
     MyBricksetTheme {
         NewsCard(
             News(
-                "Lego Zelda is out",
+                "Lego Zelda is out, therefore praise the message",
                 R.drawable.news_banner_1
             ),
         )
