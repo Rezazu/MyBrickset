@@ -49,13 +49,14 @@ fun TextForm(
                 )
             }
         },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = Color.White,
-            focusedLabelColor = Color.Black,
-            unfocusedLabelColor = Color.DarkGray,
-            cursorColor = Color.Black,
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,
-            focusedTextColor = Color.Black
-            ),
+            focusedContainerColor = Color.White,
+            unfocusedContainerColor = Color.White,
+            disabledContainerColor = Color.White,
+            cursorColor = Color.Black,
+            focusedLabelColor = Color.Black,
+            unfocusedLabelColor = Color.DarkGray),
         )
 }

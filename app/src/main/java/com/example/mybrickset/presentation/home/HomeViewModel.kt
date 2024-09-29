@@ -45,8 +45,7 @@ class HomeViewModel @Inject constructor(
                     _newStateSets.value = NewSetsState(sets = result.data)
                 }
                 is Result.Error -> {
-                    _newStateSets.value = NewSetsState(error = result.error ?:
-                    "An unexpected error, but a welcome one")
+                    _newStateSets.value = NewSetsState(error = result.error)
                 }
                 is Result.Loading -> {
                     _newStateSets.value = NewSetsState(isLoading = true)
@@ -83,8 +82,7 @@ class HomeViewModel @Inject constructor(
                     _stateThemes.value = ThemeState(themes = result.data)
                 }
                 is Result.Error -> {
-                    _stateThemes.value = ThemeState(error = result.error ?:
-                    "An unexpected error, but a welcome one")
+                    _stateThemes.value = ThemeState(error = result.error)
                 }
                 is Result.Loading -> {
                     _stateThemes.value = ThemeState(isLoading = true)

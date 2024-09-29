@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.mybrickset.data.local.Dummy
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,11 +50,13 @@ fun ConditionDropDown(
                 textStyle = TextStyle(fontWeight = FontWeight.SemiBold),
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    disabledContainerColor = Color.White,
+                    cursorColor = Color.Black,
                     focusedLabelColor = Color.Black,
                     unfocusedLabelColor = Color.DarkGray,
-                    cursorColor = Color.Black,
                 ),
                 modifier = Modifier
                     .menuAnchor()

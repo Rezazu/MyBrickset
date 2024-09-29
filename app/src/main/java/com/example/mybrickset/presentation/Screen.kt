@@ -4,8 +4,7 @@ import com.example.mybrickset.data.remote.dto.getreviews.Review
 import com.example.mybrickset.data.remote.dto.getthemes.Theme
 import kotlinx.serialization.Serializable
 
-sealed class Screen(
-) {
+sealed class Screen {
 //    object LoginScreen: Screen("login_screen")
 //
 //    object HomeScreen: Screen("home_screen")

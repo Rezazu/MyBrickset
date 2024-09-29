@@ -93,11 +93,13 @@ fun SearchBar(
                     navigateToSearchScreen()
                 }
             ),
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                cursorColor = Color.White,
+            colors = TextFieldDefaults.colors(
                 focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                unfocusedTextColor = Color.Black,
+                focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                cursorColor = Color.White,
             ),
             modifier = Modifier
                 .fillMaxWidth()

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,9 +25,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
-import com.example.mybrickset.data.local.Dummy
-import com.example.mybrickset.data.remote.dto.getsets.Set
-import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 
 @Composable

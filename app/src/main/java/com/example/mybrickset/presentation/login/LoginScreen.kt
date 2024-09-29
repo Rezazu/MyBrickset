@@ -21,8 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -132,12 +132,16 @@ fun LoginScreen(
                             viewModel.onUsernameTextChange(it)
                         },
                         singleLine = true,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = YellowMain,
+                        colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.Black,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            errorContainerColor = Color.Transparent,
+                            focusedBorderColor = YellowMain,
+                            unfocusedBorderColor = Color.Gray,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
-                            unfocusedBorderColor = Color.Gray
                         ),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier
@@ -160,12 +164,16 @@ fun LoginScreen(
                             viewModel.onPasswordTextChange(it)
                         },
                         singleLine = true,
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = YellowMain,
+                        colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.Black,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            errorContainerColor = Color.Transparent,
+                            focusedBorderColor = YellowMain,
+                            unfocusedBorderColor = Color.Gray,
                             focusedPlaceholderColor = Color.LightGray,
                             unfocusedPlaceholderColor = Color.LightGray,
-                            unfocusedBorderColor = Color.Gray
                         ),
                         shape = RoundedCornerShape(12.dp),
                         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),

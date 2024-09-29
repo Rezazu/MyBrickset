@@ -1,42 +1,21 @@
 package com.example.mybrickset.presentation.notes
 
-import android.util.Log
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
-import kotlinx.coroutines.async
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
 import com.example.mybrickset.data.Result
 import com.example.mybrickset.data.remote.dto.getsets.Set
+import com.example.mybrickset.data.remote.dto.getusernotes.UserNote
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import androidx.compose.runtime.State
-import androidx.core.app.NotificationCompat.StreamType
-import com.example.mybrickset.data.local.Dummy
-import com.example.mybrickset.data.remote.dto.getsets.Image
-import com.example.mybrickset.data.remote.dto.getusernotes.UserNote
-import com.example.mybrickset.presentation.detail.ImagesState
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel

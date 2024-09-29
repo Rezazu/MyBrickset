@@ -22,7 +22,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.mybrickset.R
 import com.example.mybrickset.presentation.NavigationItem
 import com.example.mybrickset.presentation.Screen
-import com.example.mybrickset.presentation.ui.theme.DarkGray
 
 @Composable
 fun BottomBar(

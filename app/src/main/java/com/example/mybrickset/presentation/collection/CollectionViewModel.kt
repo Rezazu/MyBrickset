@@ -1,18 +1,14 @@
 package com.example.mybrickset.presentation.collection
 
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mybrickset.data.Resource
-import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
-import com.example.mybrickset.data.local.datastore.AuthPreferences
 import com.example.mybrickset.data.remote.dto.getsets.Set
 import com.example.mybrickset.domain.usecase.BricksetUseCases
 import com.example.mybrickset.domain.usecase.local.LocalUseCase
-import com.example.mybrickset.presentation.favorite.WantedSetsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

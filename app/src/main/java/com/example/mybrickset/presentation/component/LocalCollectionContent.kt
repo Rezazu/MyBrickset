@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mybrickset.R
 import com.example.mybrickset.data.local.Dummy
 import com.example.mybrickset.data.local.SetCollection
-import com.example.mybrickset.presentation.ui.theme.DarkGray
 import com.example.mybrickset.presentation.ui.theme.MatteBlue
 import com.example.mybrickset.presentation.ui.theme.MyBricksetTheme
 import com.example.mybrickset.presentation.ui.theme.WhiteBackground
@@ -57,9 +56,7 @@ fun LocalCollectionContent(
         mutableStateOf(false)
     }
 
-    Scaffold (
-
-    ) { contentPadding ->
+    Scaffold { contentPadding ->
 
         Surface (
             color = WhiteBackground,

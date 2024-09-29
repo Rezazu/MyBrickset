@@ -53,14 +53,16 @@ fun DatePickerForm(
             textStyle = TextStyle(fontWeight = FontWeight.SemiBold),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             singleLine = true,
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.White,
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                disabledContainerColor = Color.White,
+                cursorColor = Color.Black,
                 focusedLabelColor = Color.Black,
                 unfocusedLabelColor = Color.DarkGray,
-                cursorColor = Color.Black,
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
-                ),
+            ),
             readOnly = true,
             trailingIcon =
             {

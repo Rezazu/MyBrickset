@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +44,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mybrickset.R
-import com.example.mybrickset.data.local.SetCollection
 import com.example.mybrickset.presentation.component.ConditionDropDown
 import com.example.mybrickset.presentation.component.DatePickerForm
 import com.example.mybrickset.presentation.component.NumberForm
@@ -72,11 +70,7 @@ fun CollectionForm(
 
     val editState by remember {
         mutableStateOf(
-            if (setId.value.isNotEmpty()) {
-                true
-            } else {
-                false
-            }
+            setId.value.isNotEmpty()
         )
     }
 
